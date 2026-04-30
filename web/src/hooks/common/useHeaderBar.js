@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../context/User';
 import { StatusContext } from '../../context/Status';
 import { useSetTheme, useTheme, useActualTheme } from '../../context/Theme';
-import { getLogo, getSystemName, API, showSuccess } from '../../helpers';
+import { API, showSuccess } from '../../helpers';
 import { normalizeLanguage } from '../../i18n/language';
 import { useIsMobile } from './useIsMobile';
 import { useSidebarCollapsed } from './useSidebarCollapsed';
@@ -35,7 +35,6 @@ export const useHeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const [statusState] = useContext(StatusContext);
   const isMobile = useIsMobile();
   const [collapsed, toggleCollapsed] = useSidebarCollapsed();
-  const [logoLoaded, setLogoLoaded] = useState(false);
   const navigate = useNavigate();
   const [currentLang, setCurrentLang] = useState(normalizeLanguage(i18n.language));
   const location = useLocation();
@@ -43,8 +42,6 @@ export const useHeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const loading = statusState?.status === undefined;
   const isLoading = useMinimumLoadingTime(loading, 200);
 
-  const systemName = getSystemName();
-  const logo = getLogo();
   const currentDate = new Date();
   const isNewYear = currentDate.getMonth() === 0 && currentDate.getDate() === 1;
 
@@ -93,15 +90,6 @@ export const useHeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const theme = useTheme();
   const actualTheme = useActualTheme();
   const setTheme = useSetTheme();
-
-  // Logo loading effect
-  useEffect(() => {
-    setLogoLoaded(false);
-    if (!logo) return;
-    const img = new Image();
-    img.src = logo;
-    img.onload = () => setLogoLoaded(true);
-  }, [logo]);
 
   // Send theme to iframe
   useEffect(() => {
@@ -223,12 +211,9 @@ export const useHeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     statusState,
     isMobile,
     collapsed,
-    logoLoaded,
     currentLang,
     location,
     isLoading,
-    systemName,
-    logo,
     isNewYear,
     isSelfUseMode,
     docsLink,

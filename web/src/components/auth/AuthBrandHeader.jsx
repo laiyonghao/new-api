@@ -17,24 +17,20 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React, { useContext, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { StatusContext } from '../../context/Status';
+import React from 'react';
 
-const SetupCheck = ({ children }) => {
-  const [statusState] = useContext(StatusContext);
-  const location = useLocation();
-
-  useEffect(() => {
-    if (
-      statusState?.status?.setup === false &&
-      location.pathname !== '/setup'
-    ) {
-      window.location.href = '/setup';
-    }
-  }, [statusState?.status?.setup, location.pathname]);
-
-  return children;
+const AuthBrandHeader = () => {
+  return (
+    <div className='auth-brand-header'>
+      <div className='auth-brand-logo-wrap'>
+        <img src='/logo_1tok.jpg' alt='1tok' className='auth-brand-logo' />
+      </div>
+      <div className='auth-brand-copy'>
+        <div className='auth-brand-title'>小红花技术领袖俱乐部</div>
+        <div className='auth-brand-desc'>旗下 AI 服务平台</div>
+      </div>
+    </div>
+  );
 };
 
-export default SetupCheck;
+export default AuthBrandHeader;

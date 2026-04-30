@@ -40,7 +40,6 @@ import {
   ERROR_MESSAGES,
 } from '../../constants/playground.constants';
 import {
-  getLogo,
   stringToColor,
   buildMessageContent,
   createMessage,
@@ -168,11 +167,11 @@ const Playground = () => {
     },
     assistant: {
       name: 'Assistant',
-      avatar: getLogo(),
+      avatar: '/logo_1tok.jpg',
     },
     system: {
       name: 'System',
-      avatar: getLogo(),
+      avatar: '/logo_1tok.jpg',
     },
   };
 

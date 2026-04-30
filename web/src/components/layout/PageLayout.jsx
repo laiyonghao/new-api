@@ -30,7 +30,6 @@ import { useSidebarCollapsed } from '../../hooks/common/useSidebarCollapsed';
 import { useTranslation } from 'react-i18next';
 import {
   API,
-  getLogo,
   getSystemName,
   showError,
   setStatusData,
@@ -41,6 +40,14 @@ import { useLocation } from 'react-router-dom';
 import { normalizeLanguage } from '../../i18n/language';
 const { Sider, Content, Header } = Layout;
 
+const statusOptionalRoutes = new Set([
+  '/',
+  '/pricing',
+  '/about',
+  '/agreement',
+  '/privacy',
+]);
+
 const PageLayout = () => {
   const [userState, userDispatch] = useContext(UserContext);
   const [, statusDispatch] = useContext(StatusContext);
@@ -50,20 +57,6 @@ const PageLayout = () => {
   const { i18n } = useTranslation();
   const location = useLocation();
 
-  const cardProPages = [
-    '/console/channel',
-    '/console/log',
-    '/console/redemption',
-    '/console/user',
-    '/console/token',
-    '/console/midjourney',
-    '/console/task',
-    '/console/models',
-    '/pricing',
-  ];
-
-  const shouldHideFooter = cardProPages.includes(location.pathname);
-
   const shouldInnerPadding =
     location.pathname.includes('/console') &&
     !location.pathname.startsWith('/console/chat') &&
@@ -71,6 +64,7 @@ const PageLayout = () => {
 
   const isConsoleRoute = location.pathname.startsWith('/console');
   const showSider = isConsoleRoute && (!isMobile || drawerOpen);
+  const shouldSilentlySkipStatus = statusOptionalRoutes.has(location.pathname);
 
   useEffect(() => {
     if (isMobile && drawerOpen && collapsed) {
@@ -88,32 +82,35 @@ const PageLayout = () => {
 
   const loadStatus = async () => {
     try {
-      const res = await API.get('/api/status');
+      const res = await API.get('/api/status', { skipErrorHandler: true });
       const { success, data } = res.data;
       if (success) {
         statusDispatch({ type: 'set', payload: data });
         setStatusData(data);
       } else {
-        showError('Unable to connect to server');
+        if (!shouldSilentlySkipStatus) {
+          showError('Unable to connect to server');
+        }
       }
     } catch (error) {
-      showError('Failed to load status');
+      if (!shouldSilentlySkipStatus) {
+        showError('Failed to load status');
+      }
+      console.warn('status endpoint unavailable, continue with local fallback', error);
     }
   };
 
   useEffect(() => {
     loadUser();
     loadStatus().catch(console.error);
-    let systemName = getSystemName();
+    // let systemName = getSystemName();
+    let systemName = '1tok：小红花技术领袖俱乐部旗下 AI 服务平台';
     if (systemName) {
       document.title = systemName;
     }
-    let logo = getLogo();
-    if (logo) {
-      let linkElement = document.querySelector("link[rel~='icon']");
-      if (linkElement) {
-        linkElement.href = logo;
-      }
+    let linkElement = document.querySelector("link[rel~='icon']");
+    if (linkElement) {
+      linkElement.href = '/logo_1tok.jpg';
     }
   }, []);
 
@@ -221,16 +218,14 @@ const PageLayout = () => {
               <App />
             </ErrorBoundary>
           </Content>
-          {!shouldHideFooter && (
-            <Layout.Footer
-              style={{
-                flex: '0 0 auto',
-                width: '100%',
-              }}
-            >
-              <FooterBar />
-            </Layout.Footer>
-          )}
+          <Layout.Footer
+            style={{
+              flex: '0 0 auto',
+              width: '100%',
+            }}
+          >
+            <FooterBar />
+          </Layout.Footer>
         </Layout>
       </Layout>
       <ToastContainer />
