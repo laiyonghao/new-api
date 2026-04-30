@@ -59,8 +59,8 @@ const { Title, Text, Paragraph } = Typography;
 
 const heroHighlights = [
   { icon: Building2, text: '面向中小微企业的 AI 接入基础设施' },
-  { icon: Lock, text: '零日志，不存储用户数据' },
   { icon: ReceiptText, text: '支持对公转账、合同与发票' },
+  { icon: Lock, text: '零日志，不存储用户数据' },
 ];
 
 const trustMetrics = [
