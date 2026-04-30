@@ -79,7 +79,7 @@ const compareRows = [
   {
     dimension: '货源透明',
     bad: '来源不明，可能掺杂黑卡或灰产货源',
-    good: '企业合同正规采购，坚持只用白货',
+    good: '企业合同正规采购，只用可信供应链',
   },
   {
     dimension: '模型真实性',
@@ -451,15 +451,19 @@ const Home = () => {
                     <div className='landing-bullet-grid'>
                       <div className='landing-bullet-item'>
                         <BadgeCheck size={16} />
-                        货源透明，拒绝灰产与黑产
+                        有组织可追溯
                       </div>
                       <div className='landing-bullet-item'>
                         <BadgeCheck size={16} />
-                        定价清晰，无隐藏费用
+                        不跑路不失联
                       </div>
                       <div className='landing-bullet-item'>
                         <BadgeCheck size={16} />
-                        有组织可追溯，不跑路不失联
+                        货源透明
+                      </div>
+                      <div className='landing-bullet-item'>
+                        <BadgeCheck size={16} />
+                        无隐藏费用
                       </div>
                     </div>
                   </div>
@@ -570,7 +574,7 @@ const Home = () => {
                   为什么值得信任
                 </Title>
                 <Paragraph className='landing-section-desc'>
-                  1tok 不和投机中转站比谁更便宜，而是把中小微企业最在意的组织信用、
+                  1tok 不和无品牌中转站比谁更便宜，而是把中小微企业最在意的组织信用、
                   模型真实性、数据安全和交付稳定性做透。
                 </Paragraph>
               </div>
@@ -591,16 +595,16 @@ const Home = () => {
                     <thead>
                       <tr>
                         <th>维度</th>
-                        <th>个人 / 投机中转站</th>
-                        <th>1tok</th>
+                        <th>1tok（新一代品牌 Token 中转站）</th>
+                        <th>个人 / 无品牌中转站</th>
                       </tr>
                     </thead>
                     <tbody>
                       {compareRows.map((row) => (
                         <tr key={row.dimension}>
                           <td>{row.dimension}</td>
-                          <td>{row.bad}</td>
-                          <td>{row.good}</td>
+                          <td className='landing-compare-good'>{row.good}</td>
+                          <td className='landing-compare-bad'>{row.bad}</td>
                         </tr>
                       ))}
                     </tbody>

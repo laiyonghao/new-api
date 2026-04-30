@@ -573,13 +573,23 @@ body.landing-page-body {
   background: rgba(16, 35, 63, 0.03);
 }
 
-.landing-compare-table td:nth-child(2) {
+.landing-compare-table td.landing-compare-good {
+  color: #18552d;
+  font-weight: 600;
+}
+
+.landing-compare-table td.landing-compare-good::before {
+  content: '✅';
+  margin-right: 6px;
+}
+
+.landing-compare-table td.landing-compare-bad {
   color: #7c3343;
 }
 
-.landing-compare-table td:nth-child(3) {
-  color: #18552d;
-  font-weight: 600;
+.landing-compare-table td.landing-compare-bad::before {
+  content: '⚠️';
+  margin-right: 6px;
 }
 
 .landing-card-grid-four {
@@ -2166,12 +2176,12 @@ body.landing-page-body .landing-site-header nav a:hover {
   border-bottom-color: rgba(9, 18, 32, 0.08);
 }
 
-.landing-compare-table td:nth-child(2) {
-  color: #a7353c;
+.landing-compare-table td.landing-compare-good {
+  color: #0560c9;
 }
 
-.landing-compare-table td:nth-child(3) {
-  color: #0560c9;
+.landing-compare-table td.landing-compare-bad {
+  color: #a7353c;
 }
 
 .landing-faq-item summary::after {
@@ -2314,12 +2324,12 @@ html.dark .landing-compare-table td {
   border-bottom-color: rgba(255, 255, 255, 0.09);
 }
 
-html.dark .landing-compare-table td:nth-child(2) {
-  color: #ff8f96;
+html.dark .landing-compare-table td.landing-compare-good {
+  color: #7fc2ff;
 }
 
-html.dark .landing-compare-table td:nth-child(3) {
-  color: #7fc2ff;
+html.dark .landing-compare-table td.landing-compare-bad {
+  color: #ff8f96;
 }
 
 html.dark .landing-enterprise-footer-inner {
