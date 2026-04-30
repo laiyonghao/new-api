@@ -46,7 +46,7 @@
 | 路径 | 用途 | 建议 TTL |
 | --- | --- | --- |
 | `/assets/*` | Vite 构建产物，通常带 hash | 7 天到 30 天 |
-| `/favicon.ico`、`/logo.png`、`/robots.txt` | public 静态文件 | 1 天到 7 天 |
+| `/favicon.ico`、`/logo_1tok.jpg`、`/logo_xhh.png`、`/robots.txt` | public 静态文件 | 1 天到 7 天 |
 | `/cover-4.webp`、`/ratio.png`、`/azure_model_name.png`、`/pay-*.png` | public 图片 | 1 天到 7 天 |
 
 项目自己的 Web 缓存中间件对 `/` 返回 `Cache-Control: no-cache`，对其他静态路径返回 `max-age=604800`；SPA fallback 的 `index.html` 也会返回 `no-cache`。CDN 配置应尊重这个设计，避免把 HTML 或 API 响应缓存住。
@@ -196,8 +196,8 @@ SESSION_SECRET=$(openssl rand -hex 32)
 CRYPTO_SECRET=$(openssl rand -hex 32)
 ORIGIN_SECRET=$(openssl rand -hex 32)
 
-# 默认镜像来自 Docker Hub。国内服务器如果 Docker Hub 拉取超时，把这三项改成你同步到阿里云 ACR 的镜像地址。
-NEW_API_IMAGE=calciumion/new-api:latest
+# 应用镜像来自当前 CNB 仓库的 Docker 制品库，由 .cnb.yml 自动构建并推送 latest。
+NEW_API_IMAGE=docker.cnb.cool/gzqichang/1tok:latest
 POSTGRES_IMAGE=postgres:15
 REDIS_IMAGE=redis:7
 EOF
@@ -207,20 +207,30 @@ cat .env
 
 把输出保存到你的密码管理器。`SESSION_SECRET` 和 `CRYPTO_SECRET` 后续不要随意更换，否则会影响登录会话和加密数据读取。
 
-如果后续 `docker compose pull` 仍然报 `registry-1.docker.io` 超时，说明 Docker Hub 访问仍不稳定。生产环境更稳的做法是把三个镜像同步到阿里云 ACR，然后改 `.env` 里的镜像地址，例如：
+`NEW_API_IMAGE` 不使用原项目的 Docker Hub 镜像空间，因为你没有那个镜像仓库的写入权限。当前项目代码托管在 CNB，最省事的做法是使用 CNB 自带 Docker 制品库：每次 push 到 `1tok-main` 后，由 CNB 云原生构建把当前仓库打成 `docker.cnb.cool/gzqichang/1tok:latest`，服务器更新时只需要拉取这个 latest。
+
+如果代码仓库或 Docker 制品是私有的，服务器第一次拉取前需要登录 CNB Docker 制品库。到 CNB「个人设置」>「访问令牌」创建一个访问令牌，授权范围选择制品库 `registry-package` 读权限，使用范围指定当前仓库。然后在服务器执行：
+
+```bash
+docker login docker.cnb.cool -u cnb -p '<CNB_ACCESS_TOKEN>'
+docker pull docker.cnb.cool/gzqichang/1tok:latest
+```
+
+如果仓库和制品公开，匿名拉取也可以，但生产环境更建议使用私有制品 + 服务器只读 token。
+
+PostgreSQL 和 Redis 仍来自 Docker Hub 官方镜像。如果后续 `docker compose pull postgres redis` 报 `registry-1.docker.io` 超时，说明 Docker Hub 访问仍不稳定。此时可以继续依赖 `/etc/docker/daemon.json` 里的 Docker Hub 镜像加速器，或只把数据库与 Redis 镜像同步到阿里云 ACR/其他镜像仓库。例如：
 
 ```dotenv
-NEW_API_IMAGE=registry.cn-hangzhou.aliyuncs.com/<你的命名空间>/new-api:latest
 POSTGRES_IMAGE=registry.cn-hangzhou.aliyuncs.com/<你的命名空间>/postgres:15
 REDIS_IMAGE=registry.cn-hangzhou.aliyuncs.com/<你的命名空间>/redis:7
 ```
 
-这里的 ACR 镜像可以通过阿里云 ACR 的镜像同步能力、CNB 构建推送，或在一台能访问 Docker Hub 的机器上 `pull/tag/push` 得到。不要只依赖 Docker Hub 直连作为生产部署前提。
+这里的 ACR 镜像可以通过阿里云 ACR 的镜像同步能力，或在一台能访问 Docker Hub 的机器上 `pull/tag/push` 得到。应用镜像不需要再放到 ACR，优先使用 CNB Docker 制品库即可。
 
-如果你暂时不想创建 ACR 命名空间和仓库，就先保持 `.env` 里的默认镜像名，通过 Docker Hub 镜像加速器拉取：
+如果你暂时不想创建任何额外镜像仓库，就先只保留 CNB 应用镜像，并让 PostgreSQL/Redis 继续通过 Docker Hub 镜像加速器拉取：
 
 ```dotenv
-NEW_API_IMAGE=calciumion/new-api:latest
+NEW_API_IMAGE=docker.cnb.cool/gzqichang/1tok:latest
 POSTGRES_IMAGE=postgres:15
 REDIS_IMAGE=redis:7
 ```
@@ -234,6 +244,35 @@ REDIS_IMAGE=redis:7
   ]
 }
 ```
+
+### 5.1 配置 CNB 自动构建应用镜像
+
+在本地仓库根目录新增 `.cnb.yml` 并提交到 `1tok-main`。这个流水线会在每次 push 后构建当前代码，并把镜像推送到当前仓库的 CNB Docker 制品库，同时覆盖 `latest` 标签：
+
+```yaml
+"1tok-main":
+  push:
+    - name: build-and-push-docker-image
+      services:
+        - docker
+      stages:
+        - name: docker build
+          script: |
+            docker build \
+              -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT_SHORT} \
+              -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest \
+              .
+
+        - name: push commit tag
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT_SHORT}
+
+        - name: push latest
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest
+```
+
+CNB 流水线里内置了临时访问令牌和 Docker 制品库地址，可信的 push 事件默认具备 `registry-package:rw` 权限，因此推送到当前仓库的 Docker 制品库不需要额外配置 Docker 用户名和密码。
+
+首次部署前，先在 CNB 页面确认最近一次 `1tok-main` 流水线已经成功，且「制品」里能看到 `docker.cnb.cool/gzqichang/1tok:latest`。服务器上的 `docker compose pull` 才会拉到你自己的 1tok 镜像，而不是原项目镜像。
 
 ## 6. 写入生产 Docker Compose 文件
 
@@ -596,7 +635,7 @@ https://1tok.cn
 
 ## 10. 日常更新
 
-先备份数据库，再更新镜像：
+先确认本次代码已经 push 到 `origin/1tok-main`，并且 CNB 页面里对应流水线已经构建成功，`docker.cnb.cool/gzqichang/1tok:latest` 已经更新。然后在服务器备份数据库，再拉取 latest 镜像并重启应用：
 
 ```bash
 cd /data/project/1tok
@@ -605,8 +644,8 @@ mkdir -p runtime/backups
 docker compose -f docker-compose.prod.yml exec -T postgres pg_dump -U newapi -d newapi | gzip > "runtime/backups/newapi_$(date +%F_%H%M%S).sql.gz"
 
 git pull --ff-only
-docker compose -f docker-compose.prod.yml pull
-docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml pull new-api
+docker compose -f docker-compose.prod.yml up -d new-api
 docker compose -f docker-compose.prod.yml ps
 docker image prune -f
 
@@ -621,7 +660,8 @@ curl -i -H "X-1tok-Origin-Secret: $ORIGIN_SECRET" https://1tok-origin.xhh.club/a
 /
 /index.html
 /favicon.ico
-/logo.png
+/logo_1tok.jpg
+/logo_xhh.png
 /robots.txt
 ```
 
