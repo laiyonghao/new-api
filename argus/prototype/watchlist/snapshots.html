@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Watchlist · 价格底稿</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand"><span class="argus-mark argus-serif">A</span><span class="argus-brand-name argus-serif">Argus</span></a>
+        <nav class="argus-nav" aria-label="主导航"><a href="../index.html" class="argus-nav-link">首页</a><a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a><a href="../pricing/billing.html" class="argus-nav-link">定价方案</a></nav>
+      </div>
+      <div class="argus-actions"><a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a><a href="../account/account.html" class="argus-avatar">U</a><details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">定价方案</a></div></details></div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page">
+      <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
+        <div><nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><span>Watchlist</span></nav><h1 class="argus-tool-title argus-serif mt-3">价格底稿</h1></div>
+        <div class="flex flex-wrap gap-2"><a href="sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">站点</a><a href="comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">比价</a><a href="fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集</a><a href="snapshots.html" class="argus-btn argus-btn-dark argus-btn-compact">底稿</a><a href="rules.html" class="argus-btn argus-btn-secondary argus-btn-compact">规则</a></div>
+      </div>
+
+      <div class="mt-6 grid gap-3 sm:grid-cols-4">
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">可排名</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#2f6a3d]">3</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">表达式</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#8a5a1f]">1</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">站点</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">全部</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">查询</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">sonnet</p></div>
+      </div>
+
+      <form class="argus-card mt-5 p-4" data-static-form="#snapshot-loading">
+        <div class="grid gap-3 lg:grid-cols-[1fr_220px_220px_auto] lg:items-end"><div class="argus-field"><label for="snapshot-query">模型或站点</label><input id="snapshot-query" class="argus-input" value="sonnet"></div><div class="argus-field"><label for="snapshot-site">站点</label><select id="snapshot-site" class="argus-select"><option>全部站点</option><option>North Relay</option><option>Quiet Gateway</option></select></div><div class="argus-field"><label for="snapshot-billing">计费状态</label><select id="snapshot-billing" class="argus-select"><option>全部</option><option>可排名</option><option>动态不排名</option></select></div><button class="argus-btn argus-btn-primary rounded-[16px] min-h-[56px]" type="submit">筛选底稿</button></div>
+      </form>
+      <div id="snapshot-loading" class="argus-card mt-6 p-5 argus-hidden"><div class="h-16 rounded-2xl argus-shimmer"></div></div>
+    </section>
+
+    <section class="argus-shell pb-20">
+      <div class="argus-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-[1240px] w-full border-collapse text-left">
+            <thead><tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]"><th class="px-6 py-4">模型</th><th class="px-6 py-4">归一化模型</th><th class="px-6 py-4">供应商</th><th class="px-6 py-4">站点</th><th class="px-6 py-4">端点类型</th><th class="px-6 py-4 text-right">输入 / 1M</th><th class="px-6 py-4 text-right">输出 / 1M</th><th class="px-6 py-4 text-right">按次价格</th><th class="px-6 py-4">计费状态</th></tr></thead>
+            <tbody class="divide-y divide-slate-100 text-[14px]">
+              <tr class="argus-hidden text-center">
+                <td colspan="9" class="px-5 py-12">
+                  <p class="text-[15px] font-bold text-[#1a1a1a]">未找到符合条件的价格底稿</p>
+                  <p class="mt-2 text-[14px] text-[#737373]">当前筛选条件未匹配到任何归一化模型。请更换查询条件，或确认目标站点是否已成功采集过快照。</p>
+                </td>
+              </tr>
+              <tr><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">claude-sonnet-4-6-20260501</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">claude-sonnet-4-6</td><td class="px-6 py-5 font-semibold text-[#5e5e5e]">Anthropic</td><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="Quiet Gateway" data-site-url="https://quiet.example.ai" data-site-rate="7.08" data-site-note="按次模型多，手动刷新受冷却限制。" data-site-status="上次成功 58 分钟前，当前处于手动冷却。" data-site-models="207 个模型">Quiet Gateway</button></td><td class="px-6 py-5"><div class="flex flex-wrap gap-1"><span class="argus-chip text-[11px] py-1">openai</span><span class="argus-chip text-[11px] py-1">claude</span></div></td><td class="px-6 py-5 text-right font-mono font-bold text-[#D97757]">¥ 7.90000000</td><td class="px-6 py-5 text-right font-mono font-bold text-[#D97757]">¥ 42.00000000</td><td class="px-6 py-5 text-right text-[#a1a1a1]">-</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">可排名</span></td></tr>
+              <tr><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">claude-sonnet-4-6-20260501</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">claude-sonnet-4-6</td><td class="px-6 py-5 font-semibold text-[#5e5e5e]">Anthropic</td><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="North Relay" data-site-url="https://north.example.ai" data-site-rate="7.20" data-site-note="适合 Claude 系列测试。" data-site-status="上次成功 12 分钟前，当前快照可继续参与比价。" data-site-models="184 个模型">North Relay</button></td><td class="px-6 py-5"><div class="flex flex-wrap gap-1"><span class="argus-chip text-[11px] py-1">openai</span><span class="argus-chip text-[11px] py-1">claude</span></div></td><td class="px-6 py-5 text-right font-mono font-bold text-[#333333]">¥ 8.50000000</td><td class="px-6 py-5 text-right font-mono font-bold text-[#D97757]">¥ 40.00000000</td><td class="px-6 py-5 text-right text-[#a1a1a1]">-</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">可排名</span></td></tr>
+              <tr class="bg-[#fcfcfc]"><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">gemini-3-1-pro</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">gemini-3-1-pro</td><td class="px-6 py-5 font-semibold text-[#5e5e5e]">Google</td><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="Quiet Gateway" data-site-url="https://quiet.example.ai" data-site-rate="7.08" data-site-note="按次模型多，手动刷新受冷却限制。" data-site-status="上次成功 58 分钟前，当前处于手动冷却。" data-site-models="207 个模型">Quiet Gateway</button></td><td class="px-6 py-5"><div class="flex flex-wrap gap-1"><span class="argus-chip text-[11px] py-1">gemini</span></div></td><td class="px-6 py-5 text-right text-[#a1a1a1]">不排名</td><td class="px-6 py-5 text-right text-[#a1a1a1]">不排名</td><td class="px-6 py-5 text-right text-[#a1a1a1]">-</td><td class="px-6 py-5"><span class="argus-chip argus-chip-warning">billing_expr</span><p class="mt-2 max-w-sm text-[12px] leading-5 text-[#737373]">raw_model_ratio: 2.5 · raw_cache_ratio: 0.2 · 表达式已留档，方便回头算账。</p></td></tr>
+              <tr><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">mj-chat</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">mj-chat</td><td class="px-6 py-5 font-semibold text-[#5e5e5e]">Midjourney</td><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="Quiet Gateway" data-site-url="https://quiet.example.ai" data-site-rate="7.08" data-site-note="按次模型多，手动刷新受冷却限制。" data-site-status="上次成功 58 分钟前，当前处于手动冷却。" data-site-models="207 个模型">Quiet Gateway</button></td><td class="px-6 py-5"><div class="flex flex-wrap gap-1"><span class="argus-chip text-[11px] py-1">mj</span></div></td><td class="px-6 py-5 text-right text-[#a1a1a1]">-</td><td class="px-6 py-5 text-right text-[#a1a1a1]">-</td><td class="px-6 py-5 text-right font-mono font-bold text-[#D97757]">¥ 0.12000000</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">可排名</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

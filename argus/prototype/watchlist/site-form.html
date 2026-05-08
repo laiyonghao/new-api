@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Watchlist · 站点档案</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand"><span class="argus-mark argus-serif">A</span><span class="argus-brand-name argus-serif">Argus</span></a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="../index.html" class="argus-nav-link">首页</a>
+          <a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">定价方案</a>
+        </nav>
+      </div>
+      <div class="argus-actions">
+        <a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a>
+        <a href="../account/account.html" class="argus-avatar">U</a>
+        <details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">定价方案</a></div></details>
+      </div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page">
+      <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
+        <div><nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><a href="sites.html">Watchlist</a></nav><h1 class="argus-tool-title argus-serif mt-3">站点档案</h1></div>
+        <div class="flex flex-wrap gap-2"><a href="sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">站点</a><a href="fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集</a><a href="snapshots.html" class="argus-btn argus-btn-secondary argus-btn-compact">底稿</a></div>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-4">
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">站点</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#1a1a1a]">North</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">模型</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">184</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">上次成功</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#2f6a3d]">12m</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">自动巡价</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#2f6a3d]">开启</p></div>
+      </div>
+
+      <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+        <section class="argus-card argus-card-pad">
+          <form class="space-y-6" data-static-form="#save-success">
+            <div class="argus-field">
+              <label for="base-url">服务根地址</label>
+              <input id="base-url" type="url" class="argus-input" value="https://north.example.ai/v1/">
+              <p class="argus-help">保存时会整理成 canonical base URL，例如去掉尾部 `/v1` 或多余斜杠。</p>
+            </div>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="argus-field"><label for="display-name">站点名称</label><input id="display-name" class="argus-input" type="text" value="North Relay"></div>
+              <div class="argus-field"><label for="rate">USD 换算</label><input id="rate" class="argus-input" type="number" step="0.01" value="7.20"></div>
+            </div>
+            <div class="argus-field"><label for="note">内部备注</label><textarea id="note" class="argus-textarea">季度套餐，适合 Claude 系列测试。</textarea></div>
+            <label class="flex items-center justify-between gap-4 rounded-[18px] border border-[#e6e6e6] bg-[#fcfcfc] px-5 py-4">
+              <span><span class="block text-[15px] font-bold text-[#1a1a1a]">加入自动巡价</span><span class="mt-1 block text-[13px] text-[#737373]">关闭后会暂停后续采集，历史快照仍可追溯。</span></span>
+              <input type="checkbox" checked class="h-5 w-5 accent-[#D97757]">
+            </label>
+            <p id="save-success" class="argus-hidden rounded-[16px] bg-[#eef8f0] px-4 py-3 text-[13px] font-bold leading-6 text-[#2f6a3d]">已保存。标准地址为 https://north.example.ai，下一次采集会沿用这里的设置。</p>
+            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><a href="sites.html" class="argus-btn argus-btn-secondary">回站点页</a><button type="submit" class="argus-btn argus-btn-primary">保存站点档案</button></div>
+          </form>
+        </section>
+        <aside class="argus-card argus-card-pad">
+          <span class="argus-chip argus-chip-success">校验结果</span>
+          <dl class="mt-5 space-y-4 text-[14px]"><div class="flex justify-between gap-4"><dt class="text-[#737373]">标题</dt><dd class="font-bold text-[#1a1a1a]">North Relay</dd></div><div class="flex justify-between gap-4"><dt class="text-[#737373]">Pricing</dt><dd class="font-bold text-[#2f6a3d]">200 JSON</dd></div><div class="flex justify-between gap-4"><dt class="text-[#737373]">Token 模型</dt><dd class="font-mono font-bold text-[#1a1a1a]">184</dd></div><div class="flex justify-between gap-4"><dt class="text-[#737373]">Request 模型</dt><dd class="font-mono font-bold text-[#1a1a1a]">3</dd></div><div class="flex justify-between gap-4"><dt class="text-[#737373]">动态倍率</dt><dd class="font-mono font-bold text-[#8a5a1f]">1</dd></div></dl>
+          <div class="mt-6 grid gap-2"><a href="snapshots.html" class="argus-btn argus-btn-secondary w-full justify-center">看底稿</a><a href="fetch-runs.html" class="argus-btn argus-btn-secondary w-full justify-center">采集记录</a></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,775 @@
+:root {
+  --argus-bg: #fcfcfc;
+  --argus-surface: #ffffff;
+  --argus-border: #f0f0f0;
+  --argus-ink: #1a1a1a;
+  --argus-muted: #888888;
+  --argus-soft: #f6f6f6;
+  --argus-accent: #D97757;
+  --argus-accent-hover: #c8684a;
+  --argus-success-bg: rgba(47, 106, 61, 0.08);
+  --argus-success-text: #2f6a3d;
+  --argus-warning-bg: rgba(217, 119, 87, 0.1);
+  --argus-warning-text: #b35639;
+  --argus-danger-bg: rgba(229, 57, 53, 0.08);
+  --argus-danger-text: #8a3d2d;
+  --argus-info-bg: #e8efe9;
+  --argus-info-text: #35574a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--argus-bg);
+}
+
+body.argus-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background: var(--argus-bg);
+  color: var(--argus-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.argus-serif {
+  font-family: "Noto Serif SC", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+}
+
+.argus-shell {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.argus-shell-marketing {
+  max-width: 1240px;
+}
+
+.argus-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(250, 249, 248, 0.92);
+  backdrop-filter: blur(16px);
+}
+
+.argus-header-inner {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.argus-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--argus-ink);
+  text-decoration: none;
+}
+
+.argus-mark {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--argus-accent);
+  color: #fffaf5;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 8px 18px rgba(234, 88, 12, 0.18);
+}
+
+.argus-brand-name {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.argus-nav {
+  display: none;
+  align-items: center;
+  gap: 28px;
+}
+
+.argus-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 80px;
+  color: var(--argus-muted);
+  font-size: 15px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.argus-nav-link:hover,
+.argus-nav-link.is-active {
+  color: var(--argus-ink);
+}
+
+.argus-nav-link.is-active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--argus-ink);
+}
+
+.argus-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.argus-avatar {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 0 0 4px rgba(250, 249, 248, 0.9);
+}
+
+.argus-avatar.is-active {
+  border-color: #0f172a;
+  background: #0f172a;
+  color: #fff;
+}
+
+.argus-mobile-menu {
+  display: block;
+  position: relative;
+}
+
+.argus-mobile-menu summary {
+  list-style: none;
+  cursor: pointer;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.argus-mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.argus-mobile-panel {
+  position: absolute;
+  right: 0;
+  top: 38px;
+  min-width: 220px;
+  padding: 10px;
+  border: 1px solid var(--argus-border);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 22px 70px rgba(15, 23, 42, 0.12);
+}
+
+.argus-mobile-panel a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.argus-mobile-panel a:hover,
+.argus-mobile-panel a.is-active {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.argus-main {
+  flex: 1;
+}
+
+.argus-section {
+  padding-block: 72px;
+}
+
+.argus-page-title {
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.12;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.argus-tool-page {
+  padding-block: 20px 44px;
+}
+
+.argus-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.argus-breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.argus-breadcrumbs a:hover {
+  color: #0f172a;
+}
+
+.argus-breadcrumb-sep {
+  color: #cbd5e1;
+}
+
+.argus-tool-head {
+  display: grid;
+  gap: 16px;
+}
+
+.argus-tool-title {
+  font-size: clamp(28px, 3.2vw, 38px);
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.argus-tool-subtitle {
+  color: var(--argus-muted);
+  font-size: 14px;
+  line-height: 1.68;
+  font-weight: 520;
+}
+
+.argus-tool-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.argus-tool-meta-item {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.argus-section-title {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.16;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.argus-lead {
+  color: var(--argus-muted);
+  font-size: 17px;
+  line-height: 1.8;
+  font-weight: 520;
+}
+
+.argus-card {
+  border: 1px solid var(--argus-border);
+  border-radius: 28px;
+  background: var(--argus-surface);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.035);
+}
+
+.argus-card-soft {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.argus-card-pad {
+  padding: 28px;
+}
+
+.argus-choice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 118px;
+  padding: 16px;
+  border: 1px solid var(--argus-border);
+  border-radius: 20px;
+  background: #ffffff;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.argus-choice-card.is-selected {
+  border-color: rgba(234, 88, 12, 0.38);
+  background: #fff7ed;
+  box-shadow: inset 0 0 0 1px rgba(234, 88, 12, 0.12);
+}
+
+.argus-choice-card input {
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+  accent-color: var(--argus-accent);
+}
+
+.argus-choice-card input:disabled {
+  cursor: not-allowed;
+}
+
+.argus-site-table th,
+.argus-site-table td {
+  vertical-align: top;
+}
+
+.argus-site-row.is-selected {
+  background: #fff7ed;
+}
+
+.argus-inline-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.argus-inline-check input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--argus-accent);
+}
+
+.argus-table-primary {
+  display: grid;
+  gap: 6px;
+}
+
+.argus-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.argus-btn-compact {
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.argus-compare-cell {
+  min-width: 230px;
+  vertical-align: top;
+}
+
+.argus-compare-cell-best {
+  background: #fff7ed;
+  box-shadow: inset 0 0 0 2px rgba(234, 88, 12, 0.22);
+}
+
+.argus-price-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.argus-price-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.argus-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 780;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.argus-btn:hover {
+  transform: translateY(-1px);
+}
+
+.argus-btn:active {
+  transform: translateY(0);
+}
+
+.argus-btn-primary {
+  background: var(--argus-accent);
+  color: #fffaf5;
+  box-shadow: 0 14px 28px rgba(234, 88, 12, 0.18);
+}
+
+.argus-btn-primary:hover {
+  background: var(--argus-accent-hover);
+  box-shadow: 0 6px 20px rgba(217, 119, 87, 0.35);
+  transform: translateY(-1px);
+}
+
+.argus-btn-dark {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
+}
+
+.argus-btn-secondary {
+  border-color: var(--argus-border);
+  background: #ffffff;
+  color: #334155;
+}
+
+.argus-btn-secondary:hover {
+  background: #f8fafc;
+}
+
+.argus-btn-danger {
+  border-color: rgba(138, 61, 45, 0.22);
+  background: #fff;
+  color: var(--argus-danger-text);
+}
+
+.argus-field label {
+  display: block;
+  margin-bottom: 10px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.argus-input,
+.argus-select,
+.argus-textarea {
+  width: 100%;
+  border: 1px solid var(--argus-border);
+  border-radius: 16px;
+  background: #faf9f8;
+  color: var(--argus-ink);
+  font-size: 16px;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.argus-input,
+.argus-select {
+  min-height: 56px;
+  padding: 0 18px;
+}
+
+.argus-textarea {
+  min-height: 118px;
+  padding: 16px 18px;
+}
+
+.argus-input:focus,
+.argus-select:focus,
+.argus-textarea:focus {
+  border-color: var(--argus-accent);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.12);
+}
+
+.argus-help {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/*
+ * Status feedback components are intentionally kept even when static prototype
+ * hint strips are removed. Wire these to real async states later: form success,
+ * validation errors, payment callbacks, fetch results, and empty states.
+ */
+.argus-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: 13px;
+  line-height: 1.58;
+  font-weight: 620;
+}
+
+.argus-status-success {
+  background: var(--argus-success-bg);
+  color: var(--argus-success-text);
+  border-color: rgba(47, 106, 61, 0.14);
+}
+
+.argus-status-warning {
+  background: var(--argus-warning-bg);
+  color: var(--argus-warning-text);
+  border-color: rgba(138, 90, 31, 0.14);
+}
+
+.argus-status-danger {
+  background: var(--argus-danger-bg);
+  color: var(--argus-danger-text);
+  border-color: rgba(138, 61, 45, 0.15);
+}
+
+.argus-status-info {
+  background: var(--argus-info-bg);
+  color: var(--argus-info-text);
+  border-color: rgba(53, 87, 74, 0.14);
+}
+
+.argus-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.argus-chip-success {
+  background: var(--argus-success-bg);
+  color: var(--argus-success-text);
+}
+
+.argus-chip-warning {
+  background: var(--argus-warning-bg);
+  color: var(--argus-warning-text);
+}
+
+.argus-chip-danger {
+  background: var(--argus-danger-bg);
+  color: var(--argus-danger-text);
+}
+
+.argus-chip-info {
+  background: var(--argus-info-bg);
+  color: var(--argus-info-text);
+}
+
+.argus-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.argus-metric {
+  font-variant-numeric: tabular-nums;
+}
+
+.argus-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.argus-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.argus-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.argus-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+  background: #fff;
+  padding-block: 56px;
+}
+
+.argus-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.argus-footer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.argus-footer a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.argus-footer a:hover {
+  color: #0f172a;
+}
+
+.argus-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(14px);
+}
+
+.argus-dialog-backdrop.is-open {
+  display: flex;
+}
+
+.argus-dialog {
+  width: min(100%, 620px);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 30px 100px rgba(15, 23, 42, 0.24);
+}
+
+.argus-dialog-lg {
+  width: min(100%, 860px);
+}
+
+.argus-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 28px 0;
+}
+
+.argus-dialog-body {
+  padding: 28px;
+}
+
+.argus-icon-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--argus-border);
+  border-radius: 999px;
+  background: #fff;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.argus-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+.argus-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: argus-shimmer 1.6s infinite;
+}
+
+@keyframes argus-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.argus-hidden {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .argus-nav {
+    display: flex;
+  }
+
+  .argus-mobile-menu {
+    display: none;
+  }
+
+  .argus-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .argus-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .argus-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .argus-footer-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+@media (min-width: 1100px) {
+  .argus-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .argus-shell {
+    padding-inline: 18px;
+  }
+
+  .argus-header-inner {
+    min-height: 72px;
+  }
+
+  .argus-card-pad {
+    padding: 20px;
+  }
+
+  .argus-footer-links {
+    grid-template-columns: 1fr;
+  }
+}

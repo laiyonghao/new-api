@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · AI中转站价格监控台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/prototype.css">
+  <script src="assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-shell-marketing argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="index.html" class="argus-brand" aria-current="page">
+          <span class="argus-mark argus-serif">A</span>
+          <span class="argus-brand-name argus-serif">Argus</span>
+        </a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="index.html" class="argus-nav-link is-active" aria-current="page">首页</a>
+          <a href="watchlist/sites.html" class="argus-nav-link">Watchlist</a>
+          <a href="pricing/billing.html" class="argus-nav-link">定价方案</a>
+        </nav>
+      </div>
+      <div class="argus-actions">
+        <a href="#" data-dialog-open="login" data-login-title="注册/登入" data-login-summary="先验证邮箱，再进入 Watchlist。" data-login-next-href="watchlist/sites.html" data-login-next-label="进入 Watchlist" class="argus-btn argus-btn-primary">注册/登入</a>
+        <details class="argus-mobile-menu">
+          <summary>菜单</summary>
+          <div class="argus-mobile-panel">
+            <a href="index.html" class="is-active">首页</a>
+            <a href="watchlist/sites.html">Watchlist</a>
+            <a href="pricing/billing.html">定价方案</a>
+            <a href="#" data-dialog-open="login" data-login-title="注册/登入" data-login-summary="先验证邮箱，再进入 Watchlist。" data-login-next-href="watchlist/sites.html" data-login-next-label="进入 Watchlist">注册/登入</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-shell-marketing py-8 sm:py-12">
+      <div class="flex flex-col gap-5 border-b border-[#e6e6e6] pb-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-3xl">
+          <div class="flex flex-wrap items-center gap-2 text-[12px] font-bold uppercase tracking-[0.22em] text-[#a1a1a1]"><span class="argus-chip argus-chip-success normal-case tracking-normal"><span class="argus-dot"></span>08:03 已更新</span><span>AI Relay Price Ops</span></div>
+          <h1 class="argus-page-title argus-serif mt-4">AI中转站价格监控台</h1>
+          <p class="argus-lead mt-4 max-w-2xl">把候选站点、模型价格、倍率规则和采集状态放到同一张可操作的工作台里。</p>
+        </div>
+        <div class="flex flex-wrap gap-2"><a href="watchlist/sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">打开 Watchlist</a><a href="pricing/billing.html" class="argus-btn argus-btn-secondary argus-btn-compact">查看方案</a><a href="#" data-dialog-open="login" data-login-title="注册/登入" data-login-summary="验证邮箱后进入 Watchlist，继续维护候选中转站。" data-login-next-href="watchlist/sites.html" data-login-next-label="进入 Watchlist" class="argus-btn argus-btn-primary argus-btn-compact">开始使用</a></div>
+      </div>
+
+      <div class="mt-6 overflow-hidden rounded-[32px] border border-[#e6e6e6] bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
+        <div class="grid gap-4 border-b border-[#f0f0f0] bg-[#fcfcfc] p-4 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-center">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <label for="watchlist-url" class="sr-only">输入中转站地址</label>
+            <input id="watchlist-url" class="argus-input min-h-[48px] flex-1 rounded-[16px] bg-white px-4 text-[15px]" type="url" value="https://north.example.ai" aria-label="输入中转站地址">
+            <button type="button" data-dialog-open="login" data-login-title="加入 Watchlist" data-login-summary="先验证邮箱，再把中转站地址加入 Watchlist。" data-login-next-href="watchlist/sites.html" data-login-next-label="进入 Watchlist" class="argus-btn argus-btn-primary min-h-[48px] rounded-[16px] px-5">加入 Watchlist</button>
+          </div>
+          <div class="flex flex-wrap gap-2"><a href="watchlist/comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">已选比价</a><a href="watchlist/fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集记录</a><a href="watchlist/rules.html" class="argus-btn argus-btn-secondary argus-btn-compact">归一化规则</a></div>
+        </div>
+
+        <div class="grid gap-0 border-b border-[#f0f0f0] sm:grid-cols-2 md:grid-cols-4">
+          <div class="border-b border-[#f0f0f0] px-5 py-4 sm:border-r md:border-b-0"><p class="text-xs font-bold text-[#a1a1a1]">监控站点</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">4 / 10</p></div>
+          <div class="border-b border-[#f0f0f0] px-5 py-4 md:border-b-0 md:border-r"><p class="text-xs font-bold text-[#a1a1a1]">模型快照</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">1,248</p></div>
+          <div class="border-b border-[#f0f0f0] px-5 py-4 sm:border-r sm:border-b-0 md:border-r"><p class="text-xs font-bold text-[#a1a1a1]">今日价差</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#D97757]">18.2%</p></div>
+          <div class="px-5 py-4"><p class="text-xs font-bold text-[#a1a1a1]">异常队列</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#8a5a1f]">2</p></div>
+        </div>
+
+        <div class="grid gap-0 xl:grid-cols-[minmax(0,1fr)_340px]">
+          <div class="overflow-x-auto">
+            <table class="min-w-[820px] w-full border-collapse text-left">
+              <thead><tr class="border-b border-[#f0f0f0] text-[12px] uppercase text-[#a1a1a1]"><th class="px-6 py-4">候选站点</th><th class="px-6 py-4">模型</th><th class="px-6 py-4">输入 / 1M</th><th class="px-6 py-4">输出 / 1M</th><th class="px-6 py-4">状态</th><th class="px-6 py-4 text-right">操作</th></tr></thead>
+              <tbody class="divide-y divide-slate-100 text-[14px]">
+                <tr class="bg-[#fff7ed]"><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">Quiet Gateway</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">quiet.example.ai</p></td><td class="px-6 py-5 font-mono text-[#5e5e5e]">gpt-4-turbo</td><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">¥70.00</td><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">¥210.00</td><td class="px-6 py-5"><span class="argus-chip bg-white text-[#D97757] border-[#D97757]/30">今日最低</span></td><td class="px-6 py-5 text-right"><a href="watchlist/comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">查看</a></td></tr>
+                <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">Token River API</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">river.example.dev</p></td><td class="px-6 py-5 font-mono text-[#5e5e5e]">gpt-4-turbo</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">¥75.00</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">¥225.00</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">采集成功</span></td><td class="px-6 py-5 text-right"><a href="watchlist/snapshots.html" class="argus-btn argus-btn-secondary argus-btn-compact">底稿</a></td></tr>
+                <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">North Relay</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">north.example.ai</p></td><td class="px-6 py-5 font-mono text-[#5e5e5e]">gpt-4-turbo-preview</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">¥80.00</td><td class="px-6 py-5 font-mono text-[#5e5e5e]">¥240.00</td><td class="px-6 py-5"><span class="argus-chip argus-chip-warning">需复核</span></td><td class="px-6 py-5 text-right"><button type="button" class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="North Relay" data-site-url="https://north.example.ai" data-site-rate="7.20" data-site-note="适合 Claude 系列测试。" data-site-status="上次成功 12 分钟前，当前快照可继续参与比价。" data-site-models="184 个模型">编辑</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <aside class="border-t border-[#f0f0f0] bg-[#fcfcfc] p-5 xl:border-l xl:border-t-0">
+            <div class="flex items-center justify-between gap-3"><h2 class="text-[18px] font-bold text-[#1a1a1a]">今日巡价</h2><span class="argus-chip argus-chip-success">运行中</span></div>
+            <div class="mt-5 space-y-4">
+              <div><div class="flex justify-between text-[12px] font-bold text-[#737373]"><span>08:00 批次</span><span>100%</span></div><div class="mt-2 h-2 rounded-full bg-[#e6e6e6]"><span class="block h-2 w-full rounded-full bg-[#2f6a3d]"></span></div></div>
+              <div><div class="flex justify-between text-[12px] font-bold text-[#737373]"><span>16:00 批次</span><span>准备中</span></div><div class="mt-2 h-2 rounded-full bg-[#e6e6e6]"><span class="block h-2 w-[38%] rounded-full bg-[#D97757]"></span></div></div>
+            </div>
+            <div class="mt-6 grid gap-2 text-[13px]"><a href="watchlist/sites.html" class="flex items-center justify-between rounded-[16px] border border-[#e6e6e6] bg-white px-4 py-3 font-bold text-[#334155]">站点监控 <span>→</span></a><a href="watchlist/custom-comparison.html" class="flex items-center justify-between rounded-[16px] border border-[#e6e6e6] bg-white px-4 py-3 font-bold text-[#334155]">临时比价 <span>→</span></a><a href="account/account.html" class="flex items-center justify-between rounded-[16px] border border-[#e6e6e6] bg-white px-4 py-3 font-bold text-[#334155]">账户控制台 <span>→</span></a></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-[#e6e6e6] bg-white py-12">
+      <div class="argus-shell argus-shell-marketing grid gap-5 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
+        <div><span class="argus-chip argus-chip-info">Workflow</span><h2 class="argus-serif mt-4 text-[30px] font-bold text-[#1a1a1a]">从 URL 到决策，只保留三步</h2></div>
+        <div class="grid gap-3 md:grid-cols-3">
+          <a href="watchlist/site-form.html" class="rounded-[24px] border border-[#e6e6e6] bg-[#fcfcfc] p-5 text-[#1a1a1a] no-underline transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"><span class="font-mono text-[13px] font-bold text-[#D97757]">01</span><h3 class="mt-3 font-bold">录入站点</h3><p class="mt-2 text-[14px] leading-6 text-[#737373]">名称、根地址、汇率和自动巡价一次建好。</p></a>
+          <a href="watchlist/comparison.html" class="rounded-[24px] border border-[#e6e6e6] bg-[#fcfcfc] p-5 text-[#1a1a1a] no-underline transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"><span class="font-mono text-[13px] font-bold text-[#D97757]">02</span><h3 class="mt-3 font-bold">锁定最低价</h3><p class="mt-2 text-[14px] leading-6 text-[#737373]">按模型、输入价、输出价和动态倍率做横向比较。</p></a>
+          <a href="watchlist/fetch-runs.html" class="rounded-[24px] border border-[#e6e6e6] bg-[#fcfcfc] p-5 text-[#1a1a1a] no-underline transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"><span class="font-mono text-[13px] font-bold text-[#D97757]">03</span><h3 class="mt-3 font-bold">处理异常</h3><p class="mt-2 text-[14px] leading-6 text-[#737373]">采集失败、价格缺列和规则偏差集中排查。</p></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell argus-shell-marketing flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="pricing/billing.html">定价方案</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="account/account.html">账户</a></div></div>
+  </footer>
+</body>
+</html>

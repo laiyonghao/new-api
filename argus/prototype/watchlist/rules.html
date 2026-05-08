@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Watchlist · 规则 / 设置</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand"><span class="argus-mark argus-serif">A</span><span class="argus-brand-name argus-serif">Argus</span></a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="../index.html" class="argus-nav-link">首页</a>
+          <a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">定价方案</a>
+        </nav>
+      </div>
+      <div class="argus-actions"><a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a><a href="../account/account.html" class="argus-avatar">U</a><details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">定价方案</a></div></details></div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page">
+      <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
+        <div><nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><span>Watchlist</span></nav><h1 class="argus-tool-title argus-serif mt-3">归一化规则</h1></div>
+        <div class="flex flex-wrap gap-2"><a href="sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">站点</a><a href="comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">比价</a><a href="fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集</a><a href="snapshots.html" class="argus-btn argus-btn-secondary argus-btn-compact">底稿</a><a href="rules.html" class="argus-btn argus-btn-dark argus-btn-compact">规则</a></div>
+      </div>
+
+      <div class="mt-6 grid gap-3 sm:grid-cols-4">
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">默认汇率</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">7.20</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">别名</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">2</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">动态倍率</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#8a5a1f]">保留</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">状态</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#2f6a3d]">实时应用</p></div>
+      </div>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <section class="argus-card argus-card-pad space-y-8">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div class="argus-field"><label for="default-rate">默认 USD 汇率</label><input id="default-rate" class="argus-input" type="number" step="0.01" value="7.20"><p class="argus-help">单个站点未设置汇率时，使用这里的默认值换算人民币价格。</p></div>
+            <div class="argus-field"><label for="ranking-mode">最低价口径</label><select id="ranking-mode" class="argus-select"><option>分别标记输入价与输出价</option><option>只标记输入价</option><option>只标记输出价</option><option>仅展示价格，不自动标记</option></select><p class="argus-help">按次模型会自动使用单次价格参与比较。</p></div>
+          </div>
+          <div class="argus-card-soft p-5">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><h3 class="text-[17px] font-bold text-[#1a1a1a]">模型别名映射</h3><button type="button" class="argus-btn argus-btn-secondary argus-btn-compact">添加别名</button></div>
+            <div class="mt-5 grid gap-3">
+              <div class="rounded-[18px] border border-[#e6e6e6] bg-white px-4 py-3"><p class="font-mono text-[14px] font-bold text-[#1a1a1a]">gpt-4-turbo-preview → gpt-4-turbo</p><p class="mt-1 text-[13px] text-[#737373]">适用于 OpenAI 兼容站点。</p></div>
+              <div class="rounded-[18px] border border-[#e6e6e6] bg-white px-4 py-3"><p class="font-mono text-[14px] font-bold text-[#1a1a1a]">claude-3.5-sonnet → claude-sonnet-4-6</p><p class="mt-1 text-[13px] text-[#737373]">用于合并旧别名和新版命名。</p></div>
+            </div>
+          </div>
+          <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><button class="argus-btn argus-btn-secondary" type="button">恢复默认</button><button class="argus-btn argus-btn-primary" type="button">保存规则</button></div>
+        </section>
+        <aside>
+          <div class="argus-card argus-card-pad"><span class="argus-chip argus-chip-info">当前规则</span><dl class="mt-5 space-y-3 text-[14px]"><div class="flex justify-between gap-4"><dt class="text-[#737373]">默认汇率</dt><dd class="font-bold text-[#1a1a1a]">7.20</dd></div><div class="flex justify-between gap-4"><dt class="text-[#737373]">别名映射</dt><dd class="font-bold text-[#1a1a1a]">2 条</dd></div><div class="flex justify-between gap-4"><dt class="text-[#737373]">最低价口径</dt><dd class="font-bold text-[#1a1a1a]">输入 / 输出分别标记</dd></div></dl></div>
+        </aside>
+      </div>
+
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <div id="content-main">
+    <div class="module">
+      <h2>Cheapest Competitor Comparison</h2>
+      <p>Only enabled sites and each site's latest successful snapshot are included.</p>
+      <form method="get" style="margin: 1rem 0; display: flex; gap: 0.75rem; align-items: end; flex-wrap: wrap;">
+        <div>
+          <label for="id_quota_type"><strong>Quota Type</strong></label><br>
+          <select name="quota_type" id="id_quota_type">
+            {% for option in quota_type_choices %}
+              <option value="{{ option.value }}" {% if option.value == selected_quota_type %}selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label for="id_normalized_model_name"><strong>Model Contains</strong></label><br>
+          <input type="text" name="normalized_model_name" id="id_normalized_model_name" value="{{ normalized_model_name_query }}" placeholder="e.g. sonnet 4-6">
+        </div>
+        <div>
+          <label for="id_vendor_name"><strong>Vendor</strong></label><br>
+          <select name="vendor_name" id="id_vendor_name">
+            <option value="" {% if not selected_vendor_name %}selected{% endif %}>All</option>
+            {% for vendor in vendor_choices %}
+              <option value="{{ vendor.value }}" {% if vendor.value == selected_vendor_name %}selected{% endif %}>{{ vendor.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="button">Filter</button>
+          <a class="button" href="{% url 'admin:collector_competitorsite_comparison' %}">Reset</a>
+        </div>
+      </form>
+      <p>
+        <a class="button" href="{% url 'admin:collector_competitorsite_changelist' %}">Back to Sites</a>
+      </p>
+      <style>
+        .argus-comparison-table {
+          width: 100%;
+          table-layout: fixed;
+        }
+
+        .argus-comparison-table th,
+        .argus-comparison-table td {
+          vertical-align: top;
+        }
+
+        .argus-model-col {
+          width: 18%;
+          max-width: 18%;
+        }
+
+        .argus-model-name {
+          word-break: break-word;
+          white-space: normal;
+        }
+
+        .argus-link {
+          color: #0969da;
+          text-decoration: none;
+        }
+
+        .argus-link:hover {
+          text-decoration: underline;
+        }
+
+        .argus-site-cell {
+          min-width: 0;
+        }
+
+        .argus-site-links {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          flex-wrap: wrap;
+        }
+
+        .argus-external-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          color: #57606a;
+        }
+
+        .argus-external-link:hover {
+          color: #0969da;
+        }
+
+        .argus-external-link svg {
+          width: 0.9rem;
+          height: 0.9rem;
+          display: block;
+        }
+
+        .argus-tag-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.25rem;
+          margin-top: 0.35rem;
+        }
+
+        .argus-tag {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.1rem 0.45rem;
+          border: 1px solid #d0d7de;
+          border-radius: 999px;
+          background: #f6f8fa;
+          color: #24292f;
+          font-size: 11px;
+          line-height: 1.5;
+          white-space: nowrap;
+        }
+      </style>
+      <table class="argus-comparison-table">
+        <thead>
+          <tr>
+            <th class="argus-model-col">Model</th>
+            <th>Vendor</th>
+            <th>Quota Type</th>
+            <th>Cheapest Input Site</th>
+            <th>Actual Input Price / 1M</th>
+            <th>Cheapest Output Site</th>
+            <th>Actual Output Price / 1M</th>
+            <th>Cheapest Request Site</th>
+            <th>Actual Request Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr>
+              <td class="argus-model-name">
+                <a class="argus-link" href="{% url 'admin:collector_modelpricesnapshot_changelist' %}?q={{ row.model_name|urlencode }}">{{ row.model_name }}</a>
+              </td>
+              <td>{{ row.vendor_name }}</td>
+              <td>{{ row.quota_type }}</td>
+              <td class="argus-site-cell">
+                {% if row.input_site %}
+                  <div class="argus-site-links">
+                    <a class="argus-link" href="{% url 'admin:collector_competitorsite_change' row.input_site.id %}">{{ row.input_site }}</a>
+                    <a
+                      class="argus-external-link"
+                      href="{{ row.input_site.base_url }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Open {{ row.input_site }}"
+                      aria-label="Open {{ row.input_site }} in a new window"
+                    >
+                      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path fill="currentColor" d="M10.75 1a.75.75 0 0 0 0 1.5h1.69L8.22 6.72a.75.75 0 1 0 1.06 1.06l4.22-4.22v1.69a.75.75 0 0 0 1.5 0V1.75A.75.75 0 0 0 14.25 1z"></path>
+                        <path fill="currentColor" d="M3.5 2A1.5 1.5 0 0 0 2 3.5v9A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V8.75a.75.75 0 0 0-1.5 0v3.75H3.5v-9h3.75a.75.75 0 0 0 0-1.5z"></path>
+                      </svg>
+                    </a>
+                  </div>
+                  {% if row.input_supported_endpoint_types %}
+                    <div class="argus-tag-list">
+                      {% for endpoint_type in row.input_supported_endpoint_types %}
+                        <span class="argus-tag">{{ endpoint_type }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ row.input_price|default_if_none:'-' }}</td>
+              <td class="argus-site-cell">
+                {% if row.output_site %}
+                  <div class="argus-site-links">
+                    <a class="argus-link" href="{% url 'admin:collector_competitorsite_change' row.output_site.id %}">{{ row.output_site }}</a>
+                    <a
+                      class="argus-external-link"
+                      href="{{ row.output_site.base_url }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Open {{ row.output_site }}"
+                      aria-label="Open {{ row.output_site }} in a new window"
+                    >
+                      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path fill="currentColor" d="M10.75 1a.75.75 0 0 0 0 1.5h1.69L8.22 6.72a.75.75 0 1 0 1.06 1.06l4.22-4.22v1.69a.75.75 0 0 0 1.5 0V1.75A.75.75 0 0 0 14.25 1z"></path>
+                        <path fill="currentColor" d="M3.5 2A1.5 1.5 0 0 0 2 3.5v9A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V8.75a.75.75 0 0 0-1.5 0v3.75H3.5v-9h3.75a.75.75 0 0 0 0-1.5z"></path>
+                      </svg>
+                    </a>
+                  </div>
+                  {% if row.output_supported_endpoint_types %}
+                    <div class="argus-tag-list">
+                      {% for endpoint_type in row.output_supported_endpoint_types %}
+                        <span class="argus-tag">{{ endpoint_type }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ row.output_price|default_if_none:'-' }}</td>
+              <td class="argus-site-cell">
+                {% if row.request_site %}
+                  <div class="argus-site-links">
+                    <a class="argus-link" href="{% url 'admin:collector_competitorsite_change' row.request_site.id %}">{{ row.request_site }}</a>
+                    <a
+                      class="argus-external-link"
+                      href="{{ row.request_site.base_url }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Open {{ row.request_site }}"
+                      aria-label="Open {{ row.request_site }} in a new window"
+                    >
+                      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path fill="currentColor" d="M10.75 1a.75.75 0 0 0 0 1.5h1.69L8.22 6.72a.75.75 0 1 0 1.06 1.06l4.22-4.22v1.69a.75.75 0 0 0 1.5 0V1.75A.75.75 0 0 0 14.25 1z"></path>
+                        <path fill="currentColor" d="M3.5 2A1.5 1.5 0 0 0 2 3.5v9A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V8.75a.75.75 0 0 0-1.5 0v3.75H3.5v-9h3.75a.75.75 0 0 0 0-1.5z"></path>
+                      </svg>
+                    </a>
+                  </div>
+                  {% if row.request_supported_endpoint_types %}
+                    <div class="argus-tag-list">
+                      {% for endpoint_type in row.request_supported_endpoint_types %}
+                        <span class="argus-tag">{{ endpoint_type }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ row.request_price|default_if_none:'-' }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="9">No comparison data is available yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

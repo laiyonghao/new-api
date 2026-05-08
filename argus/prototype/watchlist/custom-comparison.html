@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Watchlist · 临时比价</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand"><span class="argus-mark argus-serif">A</span><span class="argus-brand-name argus-serif">Argus</span></a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="../index.html" class="argus-nav-link">首页</a>
+          <a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">定价方案</a>
+        </nav>
+      </div>
+      <div class="argus-actions"><a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a><a href="../account/account.html" class="argus-avatar">U</a><details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">定价方案</a></div></details></div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page">
+      <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
+        <div><nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><span>Watchlist</span></nav><h1 class="argus-tool-title argus-serif mt-3">临时比价</h1></div>
+        <div class="flex flex-wrap gap-2"><a href="sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">站点</a><a href="comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">已选</a><a href="fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集</a><a href="snapshots.html" class="argus-btn argus-btn-secondary argus-btn-compact">底稿</a><span class="argus-btn argus-btn-dark argus-btn-compact cursor-default">临时</span></div>
+      </div>
+
+      <div class="mt-6 grid gap-3 sm:grid-cols-4">
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">本次站点</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]" data-custom-selected-count>3</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">可横比</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">126</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">快照</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">08:03</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">状态</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#8a5a1f]">未保存</p></div>
+      </div>
+
+      <form class="argus-card mt-5 p-4" data-static-form="#custom-comparison-loading">
+        <div class="grid gap-3 lg:grid-cols-[1fr_190px_190px_auto] lg:items-end">
+          <div class="argus-field"><label for="custom-model-query">模型关键词</label><input id="custom-model-query" class="argus-input" value="sonnet codex mj" placeholder="例如 gpt、sonnet、embedding"></div>
+          <div class="argus-field"><label for="custom-quota-type">计费类型</label><select id="custom-quota-type" class="argus-select"><option>全部</option><option>Token</option><option>Request</option></select></div>
+          <div class="argus-field"><label for="custom-price-view">高亮口径</label><select id="custom-price-view" class="argus-select"><option>自动</option><option>输入价</option><option>输出价</option><option>按次价格</option></select></div>
+          <button class="argus-btn argus-btn-primary rounded-[16px] min-h-[56px]" type="submit">刷新这张表</button>
+        </div>
+      </form>
+
+      <div id="custom-comparison-loading" class="argus-card mt-6 p-5 argus-hidden">
+        <div class="space-y-3"><div class="h-5 w-1/3 rounded argus-shimmer"></div><div class="h-20 rounded-2xl argus-shimmer"></div><div class="h-20 rounded-2xl argus-shimmer"></div></div>
+      </div>
+    </section>
+
+    <section class="argus-shell pb-20">
+      <div class="argus-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-[1220px] w-full border-collapse text-left">
+            <thead>
+              <tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]">
+                <th class="px-6 py-4 font-bold">模型</th>
+                <th class="px-6 py-4 font-bold">计费</th>
+                <th class="px-6 py-4 font-bold" data-compare-column="north">North Relay</th>
+                <th class="px-6 py-4 font-bold" data-compare-column="quiet">Quiet Gateway</th>
+                <th class="px-6 py-4 font-bold" data-compare-column="west">West Meter</th>
+                <th class="px-6 py-4 font-bold" data-compare-column="south">South Bridge</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-[14px]">
+              <tr>
+                <td class="px-6 py-5 align-top"><a href="snapshots.html" class="font-mono font-bold text-[#1a1a1a] hover:text-[#D97757]">claude-sonnet-4-6</a><p class="mt-2 text-[13px] text-[#737373]">Anthropic</p></td>
+                <td class="px-6 py-5 align-top"><span class="argus-chip argus-chip-info">Token</span></td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="north">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#1a1a1a]">¥ 8.50000000</strong></div><div class="argus-price-line"><span class="text-[#D97757] font-bold">输出 / 1M</span><strong class="font-mono text-[#D97757]">¥ 40.00000000</strong></div><span class="argus-chip argus-chip-success w-fit">输出最低</span></div>
+                </td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="quiet">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#D97757] font-bold">输入 / 1M</span><strong class="font-mono text-[#D97757]">¥ 7.90000000</strong></div><div class="argus-price-line"><span class="text-[#737373]">输出 / 1M</span><strong class="font-mono text-[#1a1a1a]">¥ 42.00000000</strong></div><span class="argus-chip argus-chip-success w-fit">输入最低</span></div>
+                </td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="west">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 9.10000000</strong></div><div class="argus-price-line"><span class="text-[#737373]">输出 / 1M</span><strong class="font-mono text-[#333333]">¥ 44.50000000</strong></div></div>
+                </td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="south">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 8.30000000</strong></div><div class="argus-price-line"><span class="text-[#D97757] font-bold">输出 / 1M</span><strong class="font-mono text-[#D97757]">¥ 39.80000000</strong></div><span class="argus-chip argus-chip-success w-fit">输出最低</span></div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-5 align-top"><a href="snapshots.html" class="font-mono font-bold text-[#1a1a1a] hover:text-[#D97757]">gpt-5-3-codex</a><p class="mt-2 text-[13px] text-[#737373]">OpenAI</p></td>
+                <td class="px-6 py-5 align-top"><span class="argus-chip argus-chip-info">Token</span></td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="north">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#D97757] font-bold">输入 / 1M</span><strong class="font-mono text-[#D97757]">¥ 3.75000000</strong></div><div class="argus-price-line"><span class="text-[#D97757] font-bold">输出 / 1M</span><strong class="font-mono text-[#D97757]">¥ 3.75000000</strong></div><span class="argus-chip argus-chip-success w-fit">本行最低</span></div>
+                </td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="quiet">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 4.20000000</strong></div><div class="argus-price-line"><span class="text-[#737373]">输出 / 1M</span><strong class="font-mono text-[#333333]">¥ 5.10000000</strong></div></div>
+                </td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="west">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 4.00000000</strong></div><div class="argus-price-line"><span class="text-[#737373]">输出 / 1M</span><strong class="font-mono text-[#333333]">¥ 4.80000000</strong></div></div>
+                </td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="south">
+                  <div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#D97757] font-bold">输入 / 1M</span><strong class="font-mono text-[#D97757]">¥ 3.69000000</strong></div><div class="argus-price-line"><span class="text-[#D97757] font-bold">输出 / 1M</span><strong class="font-mono text-[#D97757]">¥ 3.69000000</strong></div><span class="argus-chip argus-chip-success w-fit">本行最低</span></div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-5 align-top"><a href="snapshots.html" class="font-mono font-bold text-[#1a1a1a] hover:text-[#D97757]">text-embedding-4-large</a><p class="mt-2 text-[13px] text-[#737373]">OpenAI</p></td>
+                <td class="px-6 py-5 align-top"><span class="argus-chip argus-chip-info">Token</span></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="north"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 0.92000000</strong></div></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="quiet"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 0.84000000</strong></div></td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="west"><div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#D97757] font-bold">输入 / 1M</span><strong class="font-mono text-[#D97757]">¥ 0.76000000</strong></div><span class="argus-chip argus-chip-success w-fit">本行最低</span></div></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="south"><div class="argus-price-line"><span class="text-[#737373]">输入 / 1M</span><strong class="font-mono text-[#333333]">¥ 0.79000000</strong></div></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-5 align-top"><a href="snapshots.html" class="font-mono font-bold text-[#1a1a1a] hover:text-[#D97757]">mj-chat</a><p class="mt-2 text-[13px] text-[#737373]">Midjourney</p></td>
+                <td class="px-6 py-5 align-top"><span class="argus-chip argus-chip-success">Request</span></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="north"><div class="argus-price-line"><span class="text-[#737373]">按次</span><strong class="font-mono text-[#333333]">¥ 0.18000000</strong></div></td>
+                <td class="argus-compare-cell argus-compare-cell-best px-6 py-5" data-compare-cell="quiet"><div class="argus-price-stack"><div class="argus-price-line"><span class="text-[#D97757] font-bold">按次</span><strong class="font-mono text-[#D97757]">¥ 0.12000000</strong></div><span class="argus-chip argus-chip-success w-fit">本行最低</span></div></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="west"><span class="argus-chip argus-chip-warning">未开放该端点</span><p class="mt-2 text-[13px] leading-6 text-[#737373]">这家暂时没有 Midjourney 报价。</p></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="south"><div class="argus-price-line"><span class="text-[#737373]">按次</span><strong class="font-mono text-[#333333]">¥ 0.14000000</strong></div></td>
+              </tr>
+              <tr class="bg-[#fcfcfc]">
+                <td class="px-6 py-5 align-top"><a href="snapshots.html" class="font-mono font-bold text-[#1a1a1a] hover:text-[#D97757]">gemini-3-1-pro</a><p class="mt-2 text-[13px] text-[#737373]">Google</p></td>
+                <td class="px-6 py-5 align-top"><span class="argus-chip argus-chip-info">Token</span></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="north"><span class="argus-chip argus-chip-warning">动态倍率</span><p class="mt-2 text-[13px] leading-6 text-[#737373]">已留档，但不参与本页最低价高亮。</p></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="quiet"><span class="argus-chip argus-chip-warning">动态倍率</span><p class="mt-2 text-[13px] leading-6 text-[#737373]">需要表达式结算，当前不参与最低价标记。</p></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="west"><span class="text-[#a1a1a1]">暂无最新成功快照</span><p class="mt-2 text-[13px] leading-6 text-[#737373]">等待下一轮巡价后再参与比较。</p></td>
+                <td class="argus-compare-cell px-6 py-5" data-compare-cell="south"><span class="argus-chip argus-chip-warning">动态倍率</span><p class="mt-2 text-[13px] leading-6 text-[#737373]">表达式已留档，当前不参与最低价标记。</p></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

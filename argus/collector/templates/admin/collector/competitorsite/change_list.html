@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools-items %}
+  <li>
+    <a href="{{ collect_all_url }}">Collect All Enabled</a>
+  </li>
+  <li>
+    <a href="{{ comparison_url }}">Cheapest Comparison</a>
+  </li>
+  {{ block.super }}
+{% endblock %}
