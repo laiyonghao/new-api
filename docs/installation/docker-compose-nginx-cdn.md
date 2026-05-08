@@ -6,8 +6,8 @@
 - 应用部署：Docker Compose 启动 new-api、PostgreSQL、Redis。
 - 反向代理：宿主机 Nginx 监听 80/443，反代到本机 `127.0.0.1:3000`。
 - 源站域名：`1tok-origin.xhh.club`，解析到 ECS 公网 IP，只给 CDN 回源使用。
-- 公开域名：`1tok.xhh.club`、`1tok.cn`、`1tok.ai`，全部接 CDN。
-- CDN：`1tok.xhh.club` 和 `1tok.cn` 使用阿里云 CDN，`1tok.ai` 使用 Akamai/Linode CDN。
+- 公开域名：`1tok.xhh.club`，当前接 CDN。
+- CDN：当前 `1tok.xhh.club` 使用阿里云 CDN；后续如需解决流式透传问题，可切到阿里云 ESA。
 
 这套结构和你以前熟悉的 `uWSGI + Nginx` 很像：区别只是应用进程不再由宿主机直接启动，而是由 Docker Compose 管理。宿主机 Nginx 仍然负责 TLS、反代、WebSocket/SSE 透传、源站保护和统一日志。
 
@@ -63,8 +63,6 @@
 
 ```text
 1tok.xhh.club  CNAME  <阿里云 CDN 分配的 CNAME>
-1tok.cn        CNAME  <阿里云 CDN 分配的 CNAME>
-1tok.ai        CNAME  <Akamai/Linode CDN 分配的 CNAME>
 ```
 
 不要把公开域名直接 A 到 ECS。这样用户永远访问 CDN，源站只承担回源。
@@ -371,7 +369,7 @@ curl -i http://127.0.0.1:3000/api/status
 
 ## 7. 配置源站 Nginx 与 HTTPS
 
-如果 `1tok.xhh.club`、`1tok.cn`、`1tok.ai` 的 CDN 证书也准备由源站 certbot 续签，然后再用脚本同步到阿里云 CDN 或 Akamai/Linode，那么这三个公开域名也要写进 Nginx 的 `server_name`。这是因为 Let's Encrypt 的 HTTP-01 验证会访问公开域名的 `/.well-known/acme-challenge/*`，请求先到 CDN，再由 CDN 回源到 ECS；源站 Nginx 必须能按这些 Host 接住验证文件。
+如果 `1tok.xhh.club` 的 CDN 证书也准备由源站 certbot 续签，然后再同步到 CDN，那么公开域名也要写进 Nginx 的 `server_name`。这是因为 Let's Encrypt 的 HTTP-01 验证会访问公开域名的 `/.well-known/acme-challenge/*`，请求先到 CDN，再由 CDN 回源到 ECS；源站 Nginx 必须能按这个 Host 接住验证文件。
 
 先写入只用于签证书的 HTTP 配置：
 
@@ -382,7 +380,7 @@ sudo tee /etc/nginx/sites-available/1tok-origin.conf > /dev/null <<'EOF'
 server {
     listen 80;
     listen [::]:80;
-    server_name 1tok-origin.xhh.club 1tok.xhh.club 1tok.cn 1tok.ai;
+  server_name 1tok-origin.xhh.club 1tok.xhh.club;
 
     location ^~ /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -401,12 +399,10 @@ sudo systemctl reload nginx
 sudo certbot certonly --webroot -w /var/www/certbot \
   --cert-name 1tok \
   -d 1tok-origin.xhh.club \
-  -d 1tok.xhh.club \
-  -d 1tok.cn \
-  -d 1tok.ai
+  -d 1tok.xhh.club
 ```
 
-前提是三个公开域名已经接入 CDN，并且 CDN 对 `/.well-known/acme-challenge/*` 配置为不缓存、不过滤参数、直接回源；首次签发证书前，不要让 CDN 在这个路径上强制跳 HTTPS。续签脚本同步证书时，证书文件路径使用：
+前提是 `1tok.xhh.club` 已经接入 CDN，并且 CDN 对 `/.well-known/acme-challenge/*` 配置为不缓存、不过滤参数、直接回源；首次签发证书前，不要让 CDN 在这个路径上强制跳 HTTPS。续签脚本同步证书时，证书文件路径使用：
 
 ```text
 /etc/letsencrypt/live/1tok/fullchain.pem
@@ -455,7 +451,7 @@ upstream 1tok_app {
 server {
     listen 80;
     listen [::]:80;
-    server_name 1tok-origin.xhh.club 1tok.xhh.club 1tok.cn 1tok.ai;
+  server_name 1tok-origin.xhh.club 1tok.xhh.club;
 
     location ^~ /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -469,7 +465,7 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name 1tok-origin.xhh.club 1tok.xhh.club 1tok.cn 1tok.ai;
+  server_name 1tok-origin.xhh.club 1tok.xhh.club;
 
     ssl_certificate /etc/letsencrypt/live/1tok/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/1tok/privkey.pem;
@@ -554,13 +550,15 @@ curl -i -H "X-1tok-Origin-Secret: $ORIGIN_SECRET" https://1tok-origin.xhh.club/a
 
 ## 8. CDN 配置
 
-三个公开域名都按同一组原则配置。差别只是控制台名称不同。
+当前只对 `1tok.xhh.club` 配置这组 CDN 规则。
+
+如果普通 CDN 下的 `/v1/*`、`/v1beta/*` 流式响应出现明显缓冲、固定 100 秒以上延迟或 `client_gone`，优先参考 [阿里云 ESA 替代普通 CDN 迁移方案](aliyun-esa-migration-plan.md)，将 API/stream 域名迁移到 ESA 或直连源站验证。
 
 ### 8.1 基础回源
 
 | 项 | 值 |
 | --- | --- |
-| 加速域名 | `1tok.xhh.club`、`1tok.cn`、`1tok.ai` |
+| 加速域名 | `1tok.xhh.club` |
 | 源站类型 | 域名源站 |
 | 源站地址 | `1tok-origin.xhh.club` |
 | 回源协议 | HTTPS |
@@ -596,7 +594,7 @@ curl -i -H "X-1tok-Origin-Secret: $ORIGIN_SECRET" https://1tok-origin.xhh.club/a
 
 在阿里云 CDN 控制台中：
 
-1. 添加加速域名 `1tok.xhh.club`、`1tok.cn`。
+1. 添加加速域名 `1tok.xhh.club`。
 2. 源站填写 `1tok-origin.xhh.club`，回源协议选 HTTPS。
 3. 回源 Host 设置为 `1tok-origin.xhh.club`。
 4. 配置 HTTPS 证书，用户侧强制 HTTPS。
@@ -605,33 +603,21 @@ curl -i -H "X-1tok-Origin-Secret: $ORIGIN_SECRET" https://1tok-origin.xhh.club/a
 7. 在“缓存配置/缓存过期时间”按上表添加目录、文件后缀和默认规则。
 8. 在“参数过滤”中保持不过滤参数，尤其是 `/api/*`、`/v1/*`、`/v1beta/*`。
 
-### 8.4 Akamai/Linode CDN 建议
-
-在 Akamai Property Manager 或 Linode CDN 对应控制台中：
-
-1. Hostname 添加 `1tok.ai`。
-2. Origin hostname 设置为 `1tok-origin.xhh.club`。
-3. Forward Host Header/Origin Hostname 选择 `1tok-origin.xhh.club`，并启用 SNI。
-4. Origin Custom Header 添加 `X-1tok-Origin-Secret`。
-5. 对 API 路径建立 bypass cache 行为。
-6. 对 `/assets/*` 和静态后缀建立 cache 行为。
-7. 对 WebSocket/Upgrade 开启透传，至少覆盖 `/v1/realtime`。
-
 ## 9. 应用首次初始化
 
 CDN 生效后，访问公开域名完成初始化。建议选择一个主域名作为 canonical，例如：
 
 ```text
-https://1tok.cn
+https://1tok.xhh.club
 ```
 
 进入后台后，建议设置：
 
-- 系统访问地址/服务器地址：`https://1tok.cn`
+- 系统访问地址/服务器地址：`https://1tok.xhh.club`
 - 支付回调、OAuth callback、邮件重置链接都使用同一个主域名。
-- 另外两个域名可以作为访问入口，但涉及 OAuth、支付、Passkey/WebAuthn 时，尽量统一引导到主域名。
+- 当前 beta 期间建议只保留这一个公开域名，避免切域名后再处理 CORS、回调地址和前端配置。
 
-特别注意 Passkey/WebAuthn：凭据和域名强绑定。用户在 `1tok.cn` 注册的 Passkey，不能天然在 `1tok.ai` 复用。若你计划公开三个域名，最好在 CDN 或前端入口层把登录、支付、控制台统一到主域名，其他域名更多作为访问和 API 入口。
+特别注意 Passkey/WebAuthn：凭据和域名强绑定。当前只用 `1tok.xhh.club` 反而更简单，后续如果再新增域名，需要把登录、支付、控制台统一引导回主域名，避免不同域名间的 Passkey、Cookie 和 OAuth 回调不一致。
 
 ## 10. 日常更新
 
