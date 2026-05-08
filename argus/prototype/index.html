@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Argus · AI中转站价格监控台</title>
+  <title>Argus · AI中转站比价监控</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +45,7 @@
       <div class="flex flex-col gap-5 border-b border-[#e6e6e6] pb-6 lg:flex-row lg:items-end lg:justify-between">
         <div class="max-w-3xl">
           <div class="flex flex-wrap items-center gap-2 text-[12px] font-bold uppercase tracking-[0.22em] text-[#a1a1a1]"><span class="argus-chip argus-chip-success normal-case tracking-normal"><span class="argus-dot"></span>08:03 已更新</span><span>AI Relay Price Ops</span></div>
-          <h1 class="argus-page-title argus-serif mt-4">AI中转站价格监控台</h1>
+          <h1 class="argus-page-title argus-serif mt-4">AI中转站<span class="text-[#D97757]">比价</span>监控</h1>
           <p class="argus-lead mt-4 max-w-2xl">把候选站点、模型价格、倍率规则和采集状态放到同一张可操作的工作台里。</p>
         </div>
         <div class="flex flex-wrap gap-2"><a href="watchlist/sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">打开 Watchlist</a><a href="pricing/billing.html" class="argus-btn argus-btn-secondary argus-btn-compact">查看方案</a><a href="#" data-dialog-open="login" data-login-title="注册/登入" data-login-summary="验证邮箱后进入 Watchlist，继续维护候选中转站。" data-login-next-href="watchlist/sites.html" data-login-next-label="进入 Watchlist" class="argus-btn argus-btn-primary argus-btn-compact">开始使用</a></div>
@@ -98,6 +98,21 @@
           <a href="watchlist/site-form.html" class="rounded-[24px] border border-[#e6e6e6] bg-[#fcfcfc] p-5 text-[#1a1a1a] no-underline transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"><span class="font-mono text-[13px] font-bold text-[#D97757]">01</span><h3 class="mt-3 font-bold">录入站点</h3><p class="mt-2 text-[14px] leading-6 text-[#737373]">名称、根地址、汇率和自动巡价一次建好。</p></a>
           <a href="watchlist/comparison.html" class="rounded-[24px] border border-[#e6e6e6] bg-[#fcfcfc] p-5 text-[#1a1a1a] no-underline transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"><span class="font-mono text-[13px] font-bold text-[#D97757]">02</span><h3 class="mt-3 font-bold">锁定最低价</h3><p class="mt-2 text-[14px] leading-6 text-[#737373]">按模型、输入价、输出价和动态倍率做横向比较。</p></a>
           <a href="watchlist/fetch-runs.html" class="rounded-[24px] border border-[#e6e6e6] bg-[#fcfcfc] p-5 text-[#1a1a1a] no-underline transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"><span class="font-mono text-[13px] font-bold text-[#D97757]">03</span><h3 class="mt-3 font-bold">处理异常</h3><p class="mt-2 text-[14px] leading-6 text-[#737373]">采集失败、价格缺列和规则偏差集中排查。</p></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="argus-shell argus-shell-marketing py-8">
+      <div class="rounded-[24px] border border-[#e6e6e6] bg-white px-5 py-5 shadow-sm sm:px-6 lg:flex lg:items-center lg:justify-between lg:gap-8">
+        <div class="max-w-3xl">
+          <div class="flex flex-wrap items-center gap-2"><span class="argus-chip bg-[#fcf8f7] text-[#D97757] border-[#D97757]/30">Brand Story</span><span class="text-[12px] font-bold uppercase tracking-[0.2em] text-[#a1a1a1]">Argus Panoptes</span></div>
+          <h2 class="argus-serif mt-3 text-[24px] font-bold text-[#1a1a1a]">名字来自希腊神话里的“百眼守望者”</h2>
+          <p class="mt-3 text-[15px] leading-7 text-[#5e5e5e]">Argus 取自 Argus Panoptes。传说中的他拥有许多双眼，总有一部分保持清醒。用在 AI 中转站比价上，它代表一种持续守望：不只是偶尔查一次价格，而是长期盯住价格、倍率、模型别名和采集状态的细小变化。</p>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-2 lg:mt-0 lg:max-w-[320px] lg:justify-end">
+          <span class="rounded-full border border-[#f0f0f0] bg-[#fcfcfc] px-3 py-2 text-[13px] font-bold text-[#737373]">看价格</span>
+          <span class="rounded-full border border-[#f0f0f0] bg-[#fcfcfc] px-3 py-2 text-[13px] font-bold text-[#737373]">看变化</span>
+          <span class="rounded-full border border-[#f0f0f0] bg-[#fcfcfc] px-3 py-2 text-[13px] font-bold text-[#737373]">看异常</span>
         </div>
       </div>
     </section>
