@@ -22,7 +22,7 @@
         <nav class="argus-nav" aria-label="主导航">
           <a href="../index.html" class="argus-nav-link">首页</a>
           <a href="../watchlist/sites.html" class="argus-nav-link">Watchlist</a>
-          <a href="../pricing/billing.html" class="argus-nav-link">定价方案</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">会员套餐</a>
         </nav>
       </div>
       <div class="argus-actions">
@@ -33,7 +33,7 @@
           <div class="argus-mobile-panel">
             <a href="../index.html">首页</a>
             <a href="../watchlist/sites.html">Watchlist</a>
-            <a href="../pricing/billing.html">定价方案</a>
+            <a href="../pricing/billing.html">会员套餐</a>
           </div>
         </details>
       </div>
@@ -44,17 +44,17 @@
     <section class="argus-shell argus-tool-page">
       <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
         <div><nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><span>Account</span></nav><h1 class="argus-tool-title argus-serif mt-3">账户控制台</h1></div>
-        <div class="flex flex-wrap gap-2"><a href="../watchlist/sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">Watchlist</a><a href="../pricing/billing.html" class="argus-btn argus-btn-secondary argus-btn-compact">方案</a><button type="button" class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="session-replaced">会话预览</button><button type="button" class="argus-btn argus-btn-primary argus-btn-compact" data-dialog-open="logout">退出</button></div>
+        <div class="flex flex-wrap gap-2"><a href="../watchlist/sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">Watchlist</a><a href="../pricing/billing.html" class="argus-btn argus-btn-secondary argus-btn-compact">会员套餐</a><button type="button" class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="session-replaced">会话预览</button></div>
       </div>
 
       <div class="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-[minmax(220px,2fr)_1fr_1fr_1fr]">
         <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">邮箱</p><p class="mt-1 truncate font-mono text-[16px] font-bold text-[#1a1a1a]">hello@example.com</p></div>
-        <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">方案</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]">Pro</p></div>
+        <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">会员套餐</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]">Pro</p></div>
         <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">容量</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]">4/10</p></div>
         <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">会话</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#2f6a3d]">在线</p></div>
       </div>
 
-      <div class="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start">
+      <div class="mt-6">
         <section class="argus-card overflow-hidden">
           <div class="overflow-x-auto">
             <table class="min-w-[760px] w-full border-collapse text-left">
@@ -64,21 +64,18 @@
                 <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">Watchlist 容量</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">sites / compare columns</p></td><td class="px-6 py-5"><div class="w-48 max-w-full"><div class="flex justify-between text-[12px] font-bold text-[#737373]"><span>4 / 10 站点</span><span>40%</span></div><div class="mt-2 h-2 rounded-full bg-[#f0f0f0]"><span class="block h-2 w-[40%] rounded-full bg-[#D97757]"></span></div></div></td><td class="px-6 py-5"><span class="argus-chip argus-chip-info">3 列比价</span></td><td class="px-6 py-5 text-right"><a href="../watchlist/sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">管理站点</a></td></tr>
                 <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">自动采集</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">daily runs</p></td><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">3 / day</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">下一轮 16:00</span></td><td class="px-6 py-5 text-right"><a href="../watchlist/fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集记录</a></td></tr>
                 <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">08:00 早报</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">email_digest</p></td><td class="px-6 py-5 font-bold text-[#1a1a1a]">已开启</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">明早发送</span></td><td class="px-6 py-5 text-right"><label class="inline-flex items-center gap-2 text-[13px] font-bold text-[#737373]"><input type="checkbox" checked class="h-4 w-4 accent-[#D97757]">启用</label></td></tr>
-                <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">当前会话</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">single active session</p></td><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">本设备</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success"><span class="argus-dot"></span>在线</span></td><td class="px-6 py-5 text-right"><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="session-replaced">预览失效</button></td></tr>
+                <tr><td class="px-6 py-5"><p class="font-bold text-[#1a1a1a]">当前会话</p><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">single active session</p></td><td class="px-6 py-5 font-mono font-bold text-[#1a1a1a]">本设备</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success"><span class="argus-dot"></span>在线</span></td><td class="px-6 py-5 text-right"><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="logout">退出</button></td></tr>
               </tbody>
             </table>
           </div>
         </section>
-
-        <aside class="space-y-5">
-          <section class="argus-card argus-card-pad">
-            <span class="argus-chip argus-chip-info">账户操作</span>
-            <div class="mt-5 grid gap-3"><button class="argus-btn argus-btn-secondary w-full justify-center rounded-[16px]" data-dialog-open="logout">退出当前设备</button><a href="#" class="argus-btn argus-btn-secondary w-full justify-center rounded-[16px]" data-dialog-open="login" data-login-title="邮箱登录" data-login-summary="输入邮箱和验证码后进入当前账户的个人中心，再决定要不要回 Watchlist。" data-login-next-href="account.html" data-login-next-label="回到个人中心">邮箱登录</a></div>
-          </section>
-        </aside>
       </div>
     </section>
   </main>
+
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../pricing/billing.html">会员套餐</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../account/account.html">账户</a></div></div>
+  </footer>
 
   <div class="argus-dialog-backdrop" data-dialog="logout" aria-hidden="true">
     <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="logout-title">
@@ -112,23 +109,5 @@
     </section>
   </div>
 
-  <div class="argus-dialog-backdrop" data-dialog="destroy-account" aria-hidden="true">
-    <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="destroy-title">
-      <div class="argus-dialog-head">
-        <div>
-          <h2 id="destroy-title" class="argus-serif text-[24px] font-bold text-[#8a3d2d]">确认清理账户数据</h2>
-          <p class="mt-2 text-[15px] leading-7 text-[#737373]">继续前，请确认当前账户与清理范围。</p>
-        </div>
-        <button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button>
-      </div>
-      <div class="argus-dialog-body space-y-4">
-        <p class="text-[14px] font-bold leading-7 text-[#8a3d2d]">将移除账户、Watchlist 记录和账户内快照。订阅流水会按支付审计要求保留必要记录。</p>
-        <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
-          <button class="argus-btn argus-btn-secondary" data-dialog-close>取消</button>
-          <button class="argus-btn argus-btn-danger">确认提交清理申请</button>
-        </div>
-      </div>
-    </section>
-  </div>
 </body>
 </html>

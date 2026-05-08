@@ -1,5 +1,0 @@
-/* All styles rely on Tailwind CSS now. Minimal overrides here. */
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}

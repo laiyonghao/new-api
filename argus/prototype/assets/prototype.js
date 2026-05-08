@@ -99,7 +99,7 @@
     if (!dialog) return;
 
     var mode = trigger.getAttribute('data-site-mode') || 'edit';
-    var isCreate = mode === 'create';
+    var isCreate = mode === 'create' || mode === 'add';
     var title = isCreate ? '添加候选AI中转站' : '编辑候选AI中转站';
     var summary = isCreate
       ? '录入 Base URL、名称和汇率。保存后会立即做一次端点校验。'
@@ -125,6 +125,9 @@
   function populateLoginDialog(trigger) {
     var dialog = findDialog('login');
     if (!dialog) return;
+    var defaultNextHref = window.location.pathname.indexOf('/watchlist/') !== -1
+      ? 'sites.html'
+      : (window.location.pathname.indexOf('/account/') !== -1 || window.location.pathname.indexOf('/pricing/') !== -1 ? '../watchlist/sites.html' : 'watchlist/sites.html');
 
     setFieldValue(dialog, '[data-login-heading]', trigger.getAttribute('data-login-title') || '邮箱登录');
     setFieldValue(dialog, '[data-login-summary]', trigger.getAttribute('data-login-summary') || '输入邮箱和验证码后进入当前账户的工作台。这里只做轻量验证，不再切到独立登录页。');
@@ -135,7 +138,7 @@
     var nextLink = dialog.querySelector('[data-login-next]');
     if (nextLink) {
       nextLink.textContent = trigger.getAttribute('data-login-next-label') || '进入候选AI中转站清单';
-      nextLink.setAttribute('href', trigger.getAttribute('data-login-next-href') || 'sites.html');
+      nextLink.setAttribute('href', trigger.getAttribute('data-login-next-href') || defaultNextHref);
     }
 
     var codeSent = dialog.querySelector('[data-login-code-sent]');

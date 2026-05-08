@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Argus · Pricing · 定价方案</title>
+  <title>Argus · Pricing · 会员套餐</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
         <nav class="argus-nav" aria-label="主导航">
           <a href="../index.html" class="argus-nav-link">首页</a>
           <a href="../watchlist/sites.html" class="argus-nav-link">Watchlist</a>
-          <a href="billing.html" class="argus-nav-link is-active" aria-current="page">定价方案</a>
+          <a href="billing.html" class="argus-nav-link is-active" aria-current="page">会员套餐</a>
         </nav>
       </div>
       <div class="argus-actions">
@@ -33,7 +33,7 @@
           <div class="argus-mobile-panel">
             <a href="../index.html">首页</a>
             <a href="../watchlist/sites.html">Watchlist</a>
-            <a href="billing.html" class="is-active">定价方案</a>
+            <a href="billing.html" class="is-active">会员套餐</a>
           </div>
         </details>
       </div>
@@ -139,29 +139,8 @@
     </section>
   </main>
 
-  <footer class="argus-footer">
-    <div class="argus-shell argus-footer-grid">
-      <div>
-        <a href="../index.html" class="argus-brand">
-          <span class="argus-mark argus-serif">A</span>
-          <span class="argus-brand-name argus-serif">Argus</span>
-        </a>
-        <p class="mt-5 max-w-md text-[14px] leading-7 text-[#737373]">© 2026 Argus. 定价方案围绕 Watchlist 容量、采集频率和支付回执设计。</p>
-      </div>
-      <div class="argus-footer-links">
-        <div class="flex flex-col gap-3 text-[14px] font-semibold">
-          <strong class="mb-1 text-xs uppercase text-[#1a1a1a]">产品</strong>
-          <a href="../watchlist/sites.html">Watchlist</a>
-          <a href="billing.html">定价方案</a>
-        </div>
-        <div class="flex flex-col gap-3 text-[14px] font-semibold">
-          <strong class="mb-1 text-xs uppercase text-[#1a1a1a]">支付流程</strong>
-          <button type="button" class="text-left text-[#737373] hover:text-[#1a1a1a]" data-dialog-open="checkout">购买 Pro</button>
-          <a href="#" data-dialog-open="login" data-login-title="邮箱登录" data-login-summary="输入邮箱和验证码后进入当前账户，再决定要不要续费或升级。">邮箱登录</a>
-          <span class="text-[#1a1a1a]">Epay 回调自动入账</span>
-        </div>
-      </div>
-    </div>
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../pricing/billing.html">会员套餐</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../account/account.html">账户</a></div></div>
   </footer>
 
   <div class="argus-dialog-backdrop" data-dialog="checkout" aria-hidden="true">

@@ -19,10 +19,10 @@
         <nav class="argus-nav" aria-label="主导航">
           <a href="../index.html" class="argus-nav-link">首页</a>
           <a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a>
-          <a href="../pricing/billing.html" class="argus-nav-link">定价方案</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">会员套餐</a>
         </nav>
       </div>
-      <div class="argus-actions"><a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a><a href="../account/account.html" class="argus-avatar">U</a><details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">定价方案</a></div></details></div>
+      <div class="argus-actions"><a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a><a href="../account/account.html" class="argus-avatar">U</a><details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">会员套餐</a></div></details></div>
     </div>
   </header>
 
@@ -70,9 +70,13 @@
     </section>
   </main>
 
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../pricing/billing.html">会员套餐</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../account/account.html">账户</a></div></div>
+  </footer>
+
   <div class="argus-dialog-backdrop" data-dialog="collect-all" aria-hidden="true">
     <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="collect-all-title">
-      <div class="argus-dialog-head"><div><h2 id="collect-all-title" class="argus-serif text-[24px] font-bold text-[#1a1a1a]">采集全部启用站点</h2><p class="mt-2 text-[15px] leading-7 text-[#737373]">系统会为所有启用站点创建一次手动采集；受冷却时间和当前方案频率控制，提交后回采集记录看结果。</p></div><button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button></div>
+      <div class="argus-dialog-head"><div><h2 id="collect-all-title" class="argus-serif text-[24px] font-bold text-[#1a1a1a]">采集全部启用站点</h2><p class="mt-2 text-[15px] leading-7 text-[#737373]">系统会为所有启用站点创建一次手动采集；受冷却时间和当前会员套餐频率控制，提交后回采集记录看结果。</p></div><button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button></div>
       <div class="argus-dialog-body space-y-4"><p class="text-[14px] font-bold leading-7 text-[#35574a]">即将为 4 个启用站点创建采集任务。</p><div class="flex justify-end gap-3"><button class="argus-btn argus-btn-secondary" data-dialog-close>取消</button><button class="argus-btn argus-btn-primary">开始采集</button></div></div>
     </section>
   </div>

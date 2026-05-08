@@ -46,7 +46,6 @@ Current prototype pages should be understood as belonging to these areas:
 ### Account
 
 - account.html
-- login.html
 
 ## Core Decision About Watchlist
 
@@ -153,7 +152,7 @@ To avoid drifting back into scattered standalone tools, use these interaction ru
 1. Home is the only page allowed to spend large vertical space on a hero section.
 2. All secondary pages should surface data, controls, or operational context near the top.
 3. Login and station add/edit flows should prefer dialogs or lightweight overlays.
-4. Standalone pages such as login.html or site-form.html are fallback surfaces, not the preferred daily path.
+4. Standalone pages such as site-form.html are fallback surfaces, not the preferred daily path.
 5. When a task can stay inside Watchlist without losing context, keep it inside Watchlist.
 
 ## Directory Strategy
