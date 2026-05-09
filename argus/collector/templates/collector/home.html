@@ -1,0 +1,60 @@
+{% extends "collector/base.html" %}
+
+{% block title %}AI中转站比价监控，自动追踪模型价格与倍率{% endblock %}
+{% block meta_description %}CheapToken 是面向 AI 中转站用户的比价监控工具，输入站点网址即可采集模型价格、倍率规则和可用状态，持续追踪 token 成本变化。{% endblock %}
+{% block meta_keywords %}CheapToken,AI中转站比价,AI中转站监控,模型价格监控,token价格监控,API价格比较{% endblock %}
+{% block extra_head %}<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>{% endblock %}
+
+{% block content %}
+    <section class="argus-shell argus-home-hero">
+      <div class="mx-auto max-w-4xl text-center">
+        <span class="argus-kicker-line">AI Price Monitor</span>
+        <h1 class="argus-page-title argus-serif mt-6">AI 中转站比价和监测</h1>
+        <p class="argus-lead mx-auto mt-8 max-w-2xl">Cheap<span class="argus-token-highlight">Token</span> 帮你采集 AI 中转站价格、对比模型费用，并持续监测倍率规则和可用状态。</p>
+      </div>
+
+      <form class="mx-auto mt-8 max-w-[720px]" method="post" action="{% url 'home_site_submit' %}" data-home-watchlist-form>
+        {% csrf_token %}
+        <div class="argus-search-card px-5 py-3 transition-shadow focus-within:shadow-[0_26px_90px_rgba(64,43,30,0.14)] sm:px-6" data-home-watchlist-shell>
+          <label for="watchlist-url" class="sr-only">输入中转站地址</label>
+          <input id="watchlist-url" name="base_url" class="argus-search-input h-12 w-full border-0 bg-transparent text-center text-[16px] font-semibold outline-none sm:text-[18px]" type="url" placeholder="输入中转站网址，例如 https://example.ai" aria-label="输入中转站地址" required data-home-watchlist-url>
+        </div>
+        {% if home_submit_error %}<p class="mx-auto mt-3 max-w-xl rounded-[16px] bg-[#fff1f0] px-4 py-3 text-center text-[13px] font-bold leading-6 text-[#8a3d2d]">{{ home_submit_error }}</p>{% endif %}
+        <div class="mt-5 flex justify-center">
+          <button type="submit" class="argus-btn argus-btn-primary min-h-[48px] px-7" data-home-watchlist-submit><span class="argus-spinner argus-hidden" aria-hidden="true" data-home-watchlist-spinner></span><span data-home-watchlist-label>加入 Watchlist</span></button>
+        </div>
+      </form>
+    </section>
+
+    <section class="argus-home-band py-12">
+      <div class="argus-shell grid gap-5 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
+        <div><span class="argus-chip argus-chip-info">Workflow</span><h2 class="argus-serif mt-4 text-[30px] font-bold text-[#231f1a]">输入网址，开始比价监测</h2></div>
+        <div class="grid gap-3 md:grid-cols-3">
+          <a href="{% url 'watchlist_sites' %}" class="argus-step-card"><span class="argus-step-number">01</span><h3 class="mt-3 font-bold">录入站点</h3><p class="mt-2 text-[14px] leading-6 text-[#7a7065]">名称、根地址、汇率和自动巡价一次建好。</p></a>
+          <a href="{% url 'watchlist_comparison' %}" class="argus-step-card"><span class="argus-step-number">02</span><h3 class="mt-3 font-bold">价格比对</h3><p class="mt-2 text-[14px] leading-6 text-[#7a7065]">按模型、输入价、输出价和动态倍率做同屏比较。</p></a>
+          <a href="{% url 'watchlist_fetch_runs' %}" class="argus-step-card"><span class="argus-step-number">03</span><h3 class="mt-3 font-bold">持续监测</h3><p class="mt-2 text-[14px] leading-6 text-[#7a7065]">自动采集价格变化，集中查看失败、缺列和异常状态。</p></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="argus-shell py-8">
+      <div class="grid gap-4 md:grid-cols-2 md:items-stretch">
+        <article class="argus-story-card px-5 py-5 sm:px-6">
+          <div class="flex flex-wrap items-center gap-2"><span class="argus-chip bg-[#f4e1d6] text-[#a9563c] border-[#c96f4f]/30">Brand Story</span><span class="argus-home-eyebrow">CheapToken</span></div>
+          <h2 class="argus-serif mt-3 text-[24px] font-bold text-[#231f1a]">把中转站价格放到一起比</h2>
+          <p class="mt-3 text-[15px] leading-7 text-[#6f665c]">CheapToken 把公开价格、倍率规则、模型别名和采集状态放到同一张表里。你可以快速看出哪个站点更便宜、哪些模型价格有变化。</p>
+        </article>
+        <article class="argus-story-card px-5 py-5 sm:px-6" aria-label="微信扫码加入 CheapToken联盟">
+          <div class="flex flex-wrap items-center gap-2"><span class="argus-chip bg-[#f4e1d6] text-[#a9563c] border-[#c96f4f]/30">Community</span><span class="argus-home-eyebrow">WeChat</span></div>
+          <div class="argus-wechat-qr mt-5">
+            <div class="argus-wechat-qr-code" data-wechat-qr data-qr-url="https://weixin.qq.com/g/AQYAADGdUbUjr8ly1WI-PrEElpodFZypCFqHNB0qVAL1aQchb-saV8WdbyQDDeYR"></div>
+            <div class="min-w-0">
+              <h2 class="argus-serif text-[24px] font-bold leading-tight text-[#231f1a]">微信扫码加入</h2>
+              <p class="mt-3 text-[15px] leading-7 text-[#6f665c]">和同样在做 AI 中转站比价、模型价格监控的人一起交流站点、价格和倍率变化。</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+{% endblock %}

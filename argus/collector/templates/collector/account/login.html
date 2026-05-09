@@ -1,0 +1,38 @@
+{% extends "collector/base.html" %}
+
+{% block title %}注册登录，保存 AI 中转站比价监控 Watchlist{% endblock %}
+{% block meta_description %}注册或登录 CheapToken，保存你的 AI 中转站 Watchlist，保留历史价格快照，并持续比较模型输入、输出和按次价格。{% endblock %}
+{% block meta_keywords %}CheapToken登录,CheapToken注册,AI中转站Watchlist,AI价格监控登录,模型比价账户{% endblock %}
+
+{% block content %}
+    <section class="argus-shell min-h-[calc(100vh-220px)] py-10 sm:py-16">
+      <div class="mx-auto max-w-[520px]">
+        <section class="argus-dialog relative block w-full max-w-none opacity-100 shadow-[0_24px_90px_rgba(26,26,26,0.12)]" aria-labelledby="login-page-title">
+          <div class="argus-dialog-head">
+            <div>
+              <h1 id="login-page-title" class="argus-serif text-[26px] font-bold text-slate-900">注册/登入</h1>
+              <p class="mt-2 text-[15px] leading-7 text-slate-500">无需注册，验证邮箱即可使用全部功能。</p>
+            </div>
+          </div>
+          <div class="argus-dialog-body">
+            <form class="space-y-5" data-login-form>
+              <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+                <div class="argus-field">
+                  <label for="login-email">邮箱地址</label>
+                  <input id="login-email" name="email" data-login-email-input class="argus-input" type="email" autocomplete="email">
+                </div>
+                <button class="argus-btn argus-btn-secondary min-h-[56px] rounded-[16px]" type="button" data-login-send-code data-reveal-target="#login-code-sent">发送验证码</button>
+              </div>
+              <p id="login-code-sent" data-login-code-sent class="argus-hidden rounded-[16px] bg-[#eef8f0] px-4 py-3 text-[13px] font-bold leading-6 text-[#2f6a3d]">验证码已发送到当前邮箱，10 分钟内有效。</p>
+              <div class="argus-field">
+                <label for="login-code">验证码</label>
+                <input id="login-code" data-login-code-input class="argus-input" type="text" inputmode="numeric" autocomplete="one-time-code">
+              </div>
+              <button class="argus-btn argus-btn-primary w-full rounded-[16px]" data-login-submit type="submit">验证并进入</button>
+              <a data-login-next href="{{ login_next_url }}" class="argus-hidden">继续前往</a>
+            </form>
+          </div>
+        </section>
+      </div>
+    </section>
+{% endblock %}

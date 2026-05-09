@@ -1,0 +1,67 @@
+{% extends "collector/base.html" %}
+
+{% block title %}站点能力预览{% endblock %}
+
+{% block content %}
+  <section class="argus-shell py-8 sm:py-12">
+    <div class="mx-auto max-w-4xl text-center">
+      <span class="argus-chip argus-chip-success"><span class="argus-dot"></span>已完成数据采集</span>
+      <h1 class="argus-page-title argus-serif mt-4">这个站点已完成价格采集</h1>
+      <p class="argus-lead mx-auto mt-4 max-w-2xl">注册后即可把它加入 Watchlist，持续监测价格变化，并和其它 AI 中转站做长期比价。</p>
+      <div class="mt-6 flex flex-wrap justify-center gap-2">
+        <a href="{% url 'login' %}?next={{ login_next_url|urlencode }}" class="argus-btn argus-btn-primary min-h-[52px] rounded-[14px] px-7">注册/登入并保存</a>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+      <aside class="argus-card p-5">
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-[#a1a1a1]">Site Profile</p>
+        <div class="mt-4 flex items-start gap-3">
+          {% if preview_site.icon_url %}<img src="{{ preview_site.icon_url }}" alt="" class="h-10 w-10 rounded-[12px] border border-[#e6e6e6] object-cover">{% endif %}
+          <div class="min-w-0">
+            <h2 class="break-words text-[20px] font-bold text-[#1a1a1a]">{{ preview_site.name|default:preview_site.base_url }}</h2>
+            <a href="{{ preview_site.base_url }}" target="_blank" rel="noopener noreferrer" class="mt-1 block break-all font-mono text-[13px] font-bold text-[#737373] hover:text-[#1a1a1a]">{{ preview_site.base_url }}</a>
+          </div>
+        </div>
+        <dl class="mt-5 grid gap-3 text-[14px]">
+          <div class="rounded-[16px] bg-[#fcfcfc] px-4 py-3"><dt class="font-bold text-[#a1a1a1]">系统版本</dt><dd class="mt-1 font-mono font-bold text-[#1a1a1a]">{{ preview_site.system_version|default:'-' }}</dd></div>
+          <div class="rounded-[16px] bg-[#fcfcfc] px-4 py-3"><dt class="font-bold text-[#a1a1a1]">USD 汇率</dt><dd class="mt-1 font-mono font-bold text-[#1a1a1a]">{{ preview_site.usd_exchange_rate }}</dd></div>
+          <div class="rounded-[16px] bg-[#fcfcfc] px-4 py-3"><dt class="font-bold text-[#a1a1a1]">模型数量</dt><dd class="mt-1 font-mono font-bold text-[#1a1a1a]">{{ pricing_preview.created_count }} 个模型</dd></div>
+        </dl>
+        {% if status_errors or pricing_preview.error_message %}
+          <div class="mt-4 rounded-[16px] bg-[#fff7ed] px-4 py-3 text-[13px] font-semibold leading-6 text-[#8a5a1f]">
+            {% for error in status_errors %}<p>{{ error }}</p>{% endfor %}
+            {% if pricing_preview.error_message %}<p>{{ pricing_preview.error_message }}</p>{% endif %}
+          </div>
+        {% endif %}
+      </aside>
+
+      <div class="argus-card overflow-hidden">
+        <div class="flex flex-col gap-2 border-b border-[#f0f0f0] bg-[#fcfcfc] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div><h2 class="text-[18px] font-bold text-[#1a1a1a]">价格预览</h2><p class="mt-1 text-[13px] font-semibold text-[#737373]">发现 {{ pricing_preview.created_count }} 个模型，展示前 {% if pricing_preview.created_count < 20 %}{{ pricing_preview.created_count }}{% else %}20{% endif %} 个模型价格信息，登入即可比价监控</p></div>
+        </div>
+        {% if preview_rows %}
+          <div class="overflow-x-auto">
+            <table class="min-w-[760px] w-full border-collapse text-left text-[14px]">
+              <thead><tr class="border-b border-[#f0f0f0] text-[12px] uppercase text-[#a1a1a1]"><th class="px-5 py-4">模型</th><th class="px-5 py-4">供应商</th><th class="px-5 py-4">计费</th><th class="px-5 py-4 text-right">输入 / 1M</th><th class="px-5 py-4 text-right">输出 / 1M</th><th class="px-5 py-4 text-right">按次</th></tr></thead>
+              <tbody class="divide-y divide-slate-100">
+                {% for row in preview_rows %}
+                  <tr>
+                    <td class="px-5 py-4"><div class="max-w-[260px] break-words font-mono font-bold text-[#1a1a1a]">{{ row.normalized_model_name }}</div><p class="mt-1 max-w-[260px] break-words font-mono text-[12px] text-[#a1a1a1]">{{ row.model_name }}</p></td>
+                    <td class="px-5 py-4 text-[#737373]">{{ row.vendor_name|default:'-' }}</td>
+                    <td class="px-5 py-4 text-[#737373]">{{ row.get_quota_type_display }}</td>
+                    <td class="px-5 py-4 text-right font-mono font-bold text-[#1a1a1a]">{% if row.input_price_converted_per_1m is not None %}¥ {{ row.input_price_converted_per_1m|floatformat:4 }}{% else %}-{% endif %}</td>
+                    <td class="px-5 py-4 text-right font-mono font-bold text-[#1a1a1a]">{% if row.output_price_converted_per_1m is not None %}¥ {{ row.output_price_converted_per_1m|floatformat:4 }}{% else %}-{% endif %}</td>
+                    <td class="px-5 py-4 text-right font-mono font-bold text-[#1a1a1a]">{% if row.request_price_converted is not None %}¥ {{ row.request_price_converted|floatformat:4 }}{% else %}-{% endif %}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="px-5 py-12 text-center"><p class="font-bold text-[#1a1a1a]">暂时没有可展示的价格行</p><p class="mt-2 text-[14px] text-[#737373]">站点状态已读取，但价格接口没有返回可归一化模型。</p></div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

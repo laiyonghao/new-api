@@ -1,0 +1,119 @@
+{% extends "collector/base.html" %}
+
+{% block title %}实时比价{% endblock %}
+
+{% block content %}
+  <div class="argus-shell">
+    <section class="argus-hero">
+      <span class="argus-kicker">最新成功快照 · 每个模型一行</span>
+      <h1 class="argus-title">找出每个模型当前最便宜的站点。</h1>
+      <p class="argus-lead">这个页面使用与运营后台一致的最低价规则：按模型归并各站点最新成功快照，分别列出输入价、输出价和按次价的最低站点。Token 价格按每 1M tokens 展示，按次模型展示单次请求价格。</p>
+    </section>
+
+    <form class="argus-card argus-filter" method="get">
+      <div class="argus-filter-grid">
+        <div class="argus-field">
+          <label for="id_normalized_model_name">模型关键词</label>
+          <input class="argus-input" type="text" name="normalized_model_name" id="id_normalized_model_name" value="{{ normalized_model_name_query }}" placeholder="例如 sonnet 4-6">
+        </div>
+        <div class="argus-field">
+          <label for="id_quota_type">计费类型</label>
+          <select class="argus-select" name="quota_type" id="id_quota_type">
+            {% for option in quota_type_choices %}
+              <option value="{{ option.value }}" {% if option.value == selected_quota_type %}selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="argus-field">
+          <label for="id_vendor_name">供应商</label>
+          <select class="argus-select" name="vendor_name" id="id_vendor_name">
+            <option value="" {% if not selected_vendor_name %}selected{% endif %}>全部</option>
+            {% for vendor in vendor_choices %}
+              <option value="{{ vendor.value }}" {% if vendor.value == selected_vendor_name %}selected{% endif %}>{{ vendor.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="argus-filter-actions">
+          <button class="argus-button" type="submit">筛选</button>
+          <a class="argus-reset" href="{% url 'comparison' %}">重置</a>
+        </div>
+      </div>
+    </form>
+
+    <div class="argus-summary" aria-label="结果摘要">
+      <span class="argus-chip argus-chip-strong">{{ row_count }} 个可精确排名模型</span>
+      <span class="argus-chip">最低价口径：{{ ranking_mode_label }}</span>
+      {% if normalized_model_name_query %}<span class="argus-chip">关键词：{{ normalized_model_name_query }}</span>{% endif %}
+      {% if selected_vendor_name %}<span class="argus-chip">供应商：{{ selected_vendor_name }}</span>{% endif %}
+    </div>
+
+    {% if rows %}
+      <section class="argus-card argus-table-wrap" aria-label="最低价模型列表">
+        <div class="argus-table-scroll">
+          <table class="argus-table">
+            <thead>
+              <tr>
+                <th>模型</th>
+                <th>供应商</th>
+                <th>计费类型</th>
+                <th>最低输入价</th>
+                <th>最低输出价</th>
+                <th>最低按次价</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+                <tr>
+                  <td><div class="argus-model">{{ row.model_name }}</div></td>
+                  <td class="argus-muted">{{ row.vendor_name }}</td>
+                  <td class="argus-muted">{{ row.quota_type }}</td>
+                  <td>
+                    {% if row.input_site %}
+                      <a class="argus-site" href="{{ row.input_site.base_url }}" target="_blank" rel="noopener noreferrer">{{ row.input_site }} ↗</a>
+                      <span class="argus-price">¥ {{ row.input_price }}</span>
+                      {% if row.input_supported_endpoint_types %}
+                        <div class="argus-endpoints">
+                          {% for endpoint_type in row.input_supported_endpoint_types %}<span class="argus-endpoint">{{ endpoint_type }}</span>{% endfor %}
+                        </div>
+                      {% endif %}
+                    {% else %}
+                      <span class="argus-muted">-</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if row.output_site %}
+                      <a class="argus-site" href="{{ row.output_site.base_url }}" target="_blank" rel="noopener noreferrer">{{ row.output_site }} ↗</a>
+                      <span class="argus-price">¥ {{ row.output_price }}</span>
+                      {% if row.output_supported_endpoint_types %}
+                        <div class="argus-endpoints">
+                          {% for endpoint_type in row.output_supported_endpoint_types %}<span class="argus-endpoint">{{ endpoint_type }}</span>{% endfor %}
+                        </div>
+                      {% endif %}
+                    {% else %}
+                      <span class="argus-muted">-</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if row.request_site %}
+                      <a class="argus-site" href="{{ row.request_site.base_url }}" target="_blank" rel="noopener noreferrer">{{ row.request_site }} ↗</a>
+                      <span class="argus-price">¥ {{ row.request_price }}</span>
+                      {% if row.request_supported_endpoint_types %}
+                        <div class="argus-endpoints">
+                          {% for endpoint_type in row.request_supported_endpoint_types %}<span class="argus-endpoint">{{ endpoint_type }}</span>{% endfor %}
+                        </div>
+                      {% endif %}
+                    {% else %}
+                      <span class="argus-muted">-</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    {% else %}
+      <div class="argus-empty">还没有可排名的比较结果。请先在 Admin 中添加站点并完成一次成功采集，或放宽当前筛选条件。</div>
+    {% endif %}
+  </div>
+{% endblock %}

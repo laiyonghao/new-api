@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Watchlist · 采集记录</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand"><span class="argus-mark argus-serif">A</span><span class="argus-brand-name argus-serif">Argus</span></a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="../index.html" class="argus-nav-link">首页</a>
+          <a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">会员套餐</a>
+        </nav>
+      </div>
+      <div class="argus-actions"><a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a><a href="../account/account.html" class="argus-avatar">U</a><details class="argus-mobile-menu"><summary>菜单</summary><div class="argus-mobile-panel"><a href="../index.html">首页</a><a href="sites.html" class="is-active">Watchlist</a><a href="../pricing/billing.html">会员套餐</a></div></details></div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page">
+      <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
+        <div><nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><span>Watchlist</span></nav><h1 class="argus-tool-title argus-serif mt-3">采集记录</h1></div>
+        <div class="flex flex-wrap gap-2"><a href="sites.html" class="argus-btn argus-btn-secondary argus-btn-compact">站点</a><a href="comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">比价</a><a href="fetch-runs.html" class="argus-btn argus-btn-dark argus-btn-compact">采集</a><a href="snapshots.html" class="argus-btn argus-btn-secondary argus-btn-compact">底稿</a><a href="rules.html" class="argus-btn argus-btn-secondary argus-btn-compact">规则</a></div>
+      </div>
+
+      <div class="mt-6 grid gap-4 xl:grid-cols-[1fr_1fr_auto] xl:items-stretch">
+        <div class="grid gap-3 sm:grid-cols-3 xl:col-span-2">
+          <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">今日成功</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#2f6a3d]">2</p></div>
+          <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">最新失败</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#8a3d2d]">1</p></div>
+          <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">下轮自动</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">16:00</p></div>
+        </div>
+        <div class="flex flex-wrap gap-2 xl:justify-end"><button class="argus-btn argus-btn-primary" data-dialog-open="collect-all">采集全部</button><a class="argus-btn argus-btn-secondary" href="snapshots.html">价格底稿</a></div>
+      </div>
+
+      <div class="argus-card mt-5 p-5">
+        <p class="text-xs font-bold text-[#a1a1a1]">今日采集节奏</p>
+        <div class="mt-4 grid gap-3 sm:grid-cols-4"><div><p class="font-mono text-[13px] font-bold text-[#2f6a3d]">08:02</p><div class="mt-2 h-2 rounded-full bg-[#2f6a3d]"></div><p class="mt-2 text-xs text-[#737373]">North 成功</p></div><div><p class="font-mono text-[13px] font-bold text-[#2f6a3d]">07:58</p><div class="mt-2 h-2 rounded-full bg-[#2f6a3d]"></div><p class="mt-2 text-xs text-[#737373]">Quiet 成功</p></div><div><p class="font-mono text-[13px] font-bold text-[#8a3d2d]">07:52</p><div class="mt-2 h-2 rounded-full bg-[#8a3d2d]"></div><p class="mt-2 text-xs text-[#737373]">East 失败</p></div><div><p class="font-mono text-[13px] font-bold text-[#a1a1a1]">16:00</p><div class="mt-2 h-2 rounded-full bg-[#e6e6e6]"></div><p class="mt-2 text-xs text-[#737373]">自动巡价</p></div></div>
+      </div>
+    </section>
+
+    <section class="argus-shell pb-20">
+      <div class="argus-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-[980px] w-full border-collapse text-left">
+            <thead><tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]"><th class="px-6 py-4">站点</th><th class="px-6 py-4">开始时间</th><th class="px-6 py-4">完成时间</th><th class="px-6 py-4">状态</th><th class="px-6 py-4 text-right">HTTP</th><th class="px-6 py-4 text-right">新增快照</th><th class="px-6 py-4">结果摘要</th></tr></thead>
+            <tbody class="divide-y divide-slate-100 text-[14px]">
+              <tr class="argus-hidden text-center">
+                <td colspan="7" class="px-5 py-12">
+                  <p class="text-[15px] font-bold text-[#1a1a1a]">暂无采集记录</p>
+                  <p class="mt-2 text-[14px] text-[#737373]">自动巡价或手动采集完成后，状态、HTTP 结果和快照数量会显示在这里。</p>
+                </td>
+              </tr>
+              <tr><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold text-[#1a1a1a] hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="North Relay" data-site-url="https://north.example.ai" data-site-rate="7.20" data-site-note="适合 Claude 系列测试。" data-site-status="上次成功 12 分钟前，当前快照可继续参与比价。" data-site-models="184 个模型">North Relay</button><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">/api/pricing</p></td><td class="px-6 py-5 font-mono text-[#737373]">08:02:11</td><td class="px-6 py-5 font-mono text-[#737373]">08:02:17</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">成功</span></td><td class="px-6 py-5 text-right font-mono">200</td><td class="px-6 py-5 text-right font-mono font-bold text-[#1a1a1a]">184</td><td class="px-6 py-5 text-[#5e5e5e]">最新快照已刷新，可以放心回已选比价。</td></tr>
+              <tr><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold text-[#1a1a1a] hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="Quiet Gateway" data-site-url="https://quiet.example.ai" data-site-rate="7.08" data-site-note="按次模型多，手动刷新受冷却限制。" data-site-status="上次成功 58 分钟前，当前处于手动冷却。" data-site-models="207 个模型">Quiet Gateway</button><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">/api/pricing</p></td><td class="px-6 py-5 font-mono text-[#737373]">07:58:02</td><td class="px-6 py-5 font-mono text-[#737373]">07:58:09</td><td class="px-6 py-5"><span class="argus-chip argus-chip-success">成功</span></td><td class="px-6 py-5 text-right font-mono">200</td><td class="px-6 py-5 text-right font-mono font-bold text-[#1a1a1a]">207</td><td class="px-6 py-5 text-[#5e5e5e]">发现动态倍率模型：已写入底稿，最低价比较会自动跳过。</td></tr>
+              <tr><td class="px-6 py-5"><button type="button" class="border-0 bg-transparent p-0 text-left font-bold text-[#1a1a1a] hover:text-[#D97757]" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="East Trial" data-site-url="https://east.example.ai" data-site-rate="7.05" data-site-note="最近一轮返回非 JSON，需要继续观察。" data-site-status="最近一次采集 502，当前已选比价仍沿用上一轮成功快照。" data-site-models="91 个模型">East Trial</button><p class="mt-1 font-mono text-[12px] text-[#a1a1a1]">/api/pricing</p></td><td class="px-6 py-5 font-mono text-[#737373]">07:52:40</td><td class="px-6 py-5 font-mono text-[#737373]">07:52:50</td><td class="px-6 py-5"><span class="argus-chip argus-chip-danger">失败</span></td><td class="px-6 py-5 text-right font-mono">502</td><td class="px-6 py-5 text-right font-mono text-[#a1a1a1]">0</td><td class="px-6 py-5 text-[#8a3d2d]">返回非 JSON 响应；已选比价暂用上一次成功快照顶上。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../pricing/billing.html">会员套餐</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../account/account.html">账户</a></div></div>
+  </footer>
+
+  <div class="argus-dialog-backdrop" data-dialog="collect-all" aria-hidden="true">
+    <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="collect-all-title">
+      <div class="argus-dialog-head"><div><h2 id="collect-all-title" class="argus-serif text-[24px] font-bold text-[#1a1a1a]">采集全部启用站点</h2><p class="mt-2 text-[15px] leading-7 text-[#737373]">系统会为所有启用站点创建一次手动采集；受冷却时间和当前会员套餐频率控制，提交后回采集记录看结果。</p></div><button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button></div>
+      <div class="argus-dialog-body space-y-4"><p class="text-[14px] font-bold leading-7 text-[#35574a]">即将为 4 个启用站点创建采集任务。</p><div class="flex justify-end gap-3"><button class="argus-btn argus-btn-secondary" data-dialog-close>取消</button><button class="argus-btn argus-btn-primary">开始采集</button></div></div>
+    </section>
+  </div>
+</body>
+</html>

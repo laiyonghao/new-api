@@ -1,0 +1,67 @@
+{% extends "collector/base.html" %}
+
+{% block title %}Watchlist · 临时比价{% endblock %}
+
+{% block content %}
+    <section class="argus-shell argus-tool-page">
+      {% include "collector/includes/watchlist_header.html" with page_heading="临时比价" active_item="custom" %}
+
+      <details class="argus-mobile-collapse mt-6" data-mobile-collapse open>
+        <summary><span>临时比价概览</span><span>{{ row_count }} 可横比</span></summary>
+        <div class="grid gap-3 sm:grid-cols-4">
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">启用站点</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">{{ enabled_site_count }}</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">可横比</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">{{ row_count }}</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">命中价格</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#D97757]">{{ best_hit_count }}</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">状态</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#8a5a1f]">临时</p></div>
+        </div>
+      </details>
+
+      <details class="argus-mobile-collapse mt-5" data-mobile-collapse open>
+        <summary><span>筛选临时比价</span><span>模型、计费、供应商</span></summary>
+        <form class="argus-card p-4" method="get">
+          <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_130px_150px_auto_auto] md:items-end xl:grid-cols-[1fr_190px_220px_auto_auto]">
+          <div class="argus-field"><label for="custom-model-query">模型关键词</label><input id="custom-model-query" name="normalized_model_name" class="argus-input" value="{{ normalized_model_name_query }}" placeholder="例如 gpt、sonnet、embedding"></div>
+          <div class="argus-field"><label for="custom-quota-type">计费类型</label><select id="custom-quota-type" name="quota_type" class="argus-select">{% for option in quota_type_choices %}<option value="{{ option.value }}" {% if option.value == selected_quota_type %}selected{% endif %}>{{ option.label }}</option>{% endfor %}</select></div>
+          <div class="argus-field"><label for="custom-provider">供应商</label><select id="custom-provider" name="vendor_name" class="argus-select"><option value="" {% if not selected_vendor_name %}selected{% endif %}>全部供应商</option>{% for vendor in vendor_choices %}<option value="{{ vendor.value }}" {% if vendor.value == selected_vendor_name %}selected{% endif %}>{{ vendor.label }}</option>{% endfor %}</select></div>
+          <button class="argus-btn argus-btn-primary rounded-[16px] min-h-[56px]" type="submit">刷新这张表</button>
+          <a class="argus-btn argus-btn-secondary rounded-[16px] min-h-[56px]" href="{% url 'watchlist_custom_comparison' %}">清空</a>
+          </div>
+        </form>
+      </details>
+    </section>
+
+    <section class="argus-shell pb-20">
+      {% if rows %}
+        <div class="argus-card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="min-w-[1180px] w-full border-collapse text-left">
+              <thead>
+                <tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]">
+                  <th class="px-6 py-4 font-bold">模型</th>
+                  <th class="px-6 py-4 font-bold">供应商</th>
+                  <th class="px-6 py-4 font-bold">计费</th>
+                  <th class="px-6 py-4 font-bold">输入最低</th>
+                  <th class="px-6 py-4 font-bold">输出最低</th>
+                  <th class="px-6 py-4 font-bold">按次最低</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-[14px]">
+                {% for row in rows %}
+                  <tr>
+                    <td class="px-6 py-5 align-top"><span class="font-mono font-bold text-[#1a1a1a]">{{ row.model_name }}</span></td>
+                    <td class="px-6 py-5 align-top text-[#5e5e5e]">{{ row.vendor_name }}</td>
+                    <td class="px-6 py-5 align-top"><span class="argus-chip argus-chip-info">{{ row.quota_type }}</span></td>
+                    <td class="px-6 py-5 align-top">{% if row.input_site %}<a href="{{ row.input_site.base_url }}" target="_blank" rel="noopener noreferrer" class="font-bold text-[#1a1a1a] hover:text-[#D97757]">{{ row.input_site }}</a><p class="mt-2 font-mono font-bold text-[#D97757]">¥ {{ row.input_price }}</p>{% else %}<span class="text-[#a1a1a1]">-</span>{% endif %}</td>
+                    <td class="px-6 py-5 align-top">{% if row.output_site %}<a href="{{ row.output_site.base_url }}" target="_blank" rel="noopener noreferrer" class="font-bold text-[#1a1a1a] hover:text-[#D97757]">{{ row.output_site }}</a><p class="mt-2 font-mono font-bold text-[#D97757]">¥ {{ row.output_price }}</p>{% else %}<span class="text-[#a1a1a1]">-</span>{% endif %}</td>
+                    <td class="px-6 py-5 align-top">{% if row.request_site %}<a href="{{ row.request_site.base_url }}" target="_blank" rel="noopener noreferrer" class="font-bold text-[#1a1a1a] hover:text-[#D97757]">{{ row.request_site }}</a><p class="mt-2 font-mono font-bold text-[#D97757]">¥ {{ row.request_price }}</p>{% else %}<span class="text-[#a1a1a1]">-</span>{% endif %}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {% else %}
+        <div class="argus-card-soft p-6 text-[14px] font-bold leading-7 text-[#35574a]">当前条件没有可比较结果。换一个模型关键词，或先完成站点采集。</div>
+      {% endif %}
+    </section>
+{% endblock %}

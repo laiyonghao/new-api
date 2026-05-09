@@ -33,15 +33,11 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     statusState,
     isMobile,
     collapsed,
-    logoLoaded,
     currentLang,
     isLoading,
-    systemName,
-    logo,
     isNewYear,
     isSelfUseMode,
     docsLink,
-    isDemoSiteMode,
     isConsoleRoute,
     theme,
     headerNavModules,
@@ -65,7 +61,9 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const { mainNavLinks } = useNavigation(t, docsLink, headerNavModules);
 
   return (
-    <header className='text-semi-color-text-0 sticky top-0 z-50 transition-colors duration-300 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-lg'>
+    <header
+      className='text-semi-color-text-0 sticky top-0 z-50 transition-colors duration-300 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-lg landing-site-header'
+    >
       <NoticeModal
         visible={noticeVisible}
         onClose={handleNoticeClose}
@@ -74,8 +72,8 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
         unreadKeys={getUnreadKeys()}
       />
 
-      <div className='w-full px-2'>
-        <div className='flex items-center justify-between h-16'>
+      <div className='w-full px-2 landing-site-header-wrap'>
+        <div className='flex items-center justify-between h-16 landing-site-header-inner'>
           <div className='flex items-center'>
             <MobileMenuButton
               isConsoleRoute={isConsoleRoute}
@@ -89,16 +87,11 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
             <HeaderLogo
               isMobile={isMobile}
               isConsoleRoute={isConsoleRoute}
-              logo={logo}
-              logoLoaded={logoLoaded}
               isLoading={isLoading}
-              systemName={systemName}
-              isSelfUseMode={isSelfUseMode}
-              isDemoSiteMode={isDemoSiteMode}
-              t={t}
             />
           </div>
 
+          {/* 顶部菜单暂时隐藏，保留代码以便需要时恢复。
           <Navigation
             mainNavLinks={mainNavLinks}
             isMobile={isMobile}
@@ -106,6 +99,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
             userState={userState}
             pricingRequireAuth={pricingRequireAuth}
           />
+          */}
 
           <ActionButtons
             isNewYear={isNewYear}

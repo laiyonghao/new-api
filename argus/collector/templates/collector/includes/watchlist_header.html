@@ -1,0 +1,15 @@
+<div class="overflow-x-auto border-b border-[#e6e6e6] pb-5">
+  <nav class="argus-breadcrumbs" aria-label="面包屑">
+    <a href="{% url 'home' %}">首页</a>
+    <span class="argus-breadcrumb-sep">/</span>
+    <span>Watchlist</span>
+  </nav>
+  <div class="mt-3 flex flex-nowrap items-end justify-between gap-4">
+    <h1 class="argus-tool-title argus-serif shrink-0 whitespace-nowrap">{{ page_heading }}</h1>
+    <div class="argus-watchlist-nav flex shrink-0 flex-nowrap gap-2">
+      {% if active_item == 'sites' %}<span class="argus-btn argus-btn-dark argus-btn-compact shrink-0 cursor-default whitespace-nowrap">站点</span>{% else %}<a href="{% url 'watchlist_sites' %}" class="argus-btn argus-btn-secondary argus-btn-compact shrink-0 whitespace-nowrap">站点</a>{% endif %}
+      {% if active_item == 'comparison' %}<span class="argus-btn argus-btn-dark argus-btn-compact shrink-0 cursor-default whitespace-nowrap">比价</span>{% else %}<a href="{% url 'watchlist_comparison' %}" class="argus-btn argus-btn-secondary argus-btn-compact shrink-0 whitespace-nowrap">比价</a>{% endif %}
+      {% if active_item == 'fetch-runs' %}<span class="argus-btn argus-btn-dark argus-btn-compact shrink-0 cursor-default whitespace-nowrap">采集</span>{% else %}<a href="{% url 'watchlist_fetch_runs' %}" class="argus-btn argus-btn-secondary argus-btn-compact shrink-0 whitespace-nowrap">采集</a>{% endif %}
+    </div>
+  </div>
+</div>

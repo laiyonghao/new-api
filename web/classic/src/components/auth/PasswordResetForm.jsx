@@ -20,17 +20,16 @@ For commercial licensing, please contact support@quantumnous.com
 import React, { useEffect, useState } from 'react';
 import {
   API,
-  getLogo,
   showError,
   showInfo,
   showSuccess,
-  getSystemName,
 } from '../../helpers';
 import Turnstile from 'react-turnstile';
 import { Button, Card, Form, Typography } from '@douyinfe/semi-ui';
 import { IconMail } from '@douyinfe/semi-icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import AuthBrandHeader from './AuthBrandHeader';
 
 const { Text, Title } = Typography;
 
@@ -47,9 +46,6 @@ const PasswordResetForm = () => {
   const [turnstileToken, setTurnstileToken] = useState('');
   const [disableButton, setDisableButton] = useState(false);
   const [countdown, setCountdown] = useState(30);
-
-  const logo = getLogo();
-  const systemName = getSystemName();
 
   useEffect(() => {
     let status = localStorage.getItem('status');
@@ -117,12 +113,7 @@ const PasswordResetForm = () => {
       <div className='w-full max-w-sm mt-[60px]'>
         <div className='flex flex-col items-center'>
           <div className='w-full max-w-md'>
-            <div className='flex items-center justify-center mb-6 gap-2'>
-              <img src={logo} alt='Logo' className='h-10 rounded-full' />
-              <Title heading={3} className='!text-gray-800'>
-                {systemName}
-              </Title>
-            </div>
+            <AuthBrandHeader />
 
             <Card className='border-0 !rounded-2xl overflow-hidden'>
               <div className='flex justify-center pt-6 pb-2'>

@@ -22,6 +22,18 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+const jsonResponseContentType = "application/json; charset=utf-8"
+
+func normalizeJSONResponseContentType(resp *http.Response) {
+	if resp == nil {
+		return
+	}
+	if resp.Header == nil {
+		resp.Header = make(http.Header)
+	}
+	resp.Header.Set("Content-Type", jsonResponseContentType)
+}
+
 func sendStreamData(c *gin.Context, info *relaycommon.RelayInfo, data string, forceFormat bool, thinkToContent bool) error {
 	if data == "" {
 		return nil
@@ -294,6 +306,7 @@ func OpenaiHandler(c *gin.Context, info *relaycommon.RelayInfo, resp *http.Respo
 		responseBody = geminiRespStr
 	}
 
+	normalizeJSONResponseContentType(resp)
 	service.IOCopyBytesGracefully(c, resp, responseBody)
 
 	return &simpleResponse.Usage, nil

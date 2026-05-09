@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Pricing · 会员套餐</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand">
+          <span class="argus-mark argus-serif">A</span>
+          <span class="argus-brand-name argus-serif">Argus</span>
+        </a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="../index.html" class="argus-nav-link">首页</a>
+          <a href="../watchlist/sites.html" class="argus-nav-link">Watchlist</a>
+          <a href="billing.html" class="argus-nav-link is-active" aria-current="page">会员套餐</a>
+        </nav>
+      </div>
+      <div class="argus-actions">
+        <a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a>
+        <a href="../account/account.html" class="argus-avatar">U</a>
+        <details class="argus-mobile-menu">
+          <summary>菜单</summary>
+          <div class="argus-mobile-panel">
+            <a href="../index.html">首页</a>
+            <a href="../watchlist/sites.html">Watchlist</a>
+            <a href="billing.html" class="is-active">会员套餐</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page">
+      <div class="flex flex-wrap justify-end gap-3">
+        <a href="../account/account.html" class="argus-btn argus-btn-secondary">查看账户</a>
+        <button class="argus-btn argus-btn-primary" data-dialog-open="checkout">购买 Pro</button>
+      </div>
+    </section>
+
+    <section class="argus-shell pb-20">
+      <div class="argus-grid-4 items-stretch">
+        <article class="argus-card argus-card-pad flex h-full flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_26px_82px_rgba(0,0,0,0.08)]">
+          <div class="min-h-[150px]">
+            <span class="argus-chip argus-chip-info w-fit">Free</span>
+            <h2 class="argus-serif mt-5 text-[28px] font-bold text-[#1a1a1a]">试用</h2>
+            <p class="mt-3 text-[15px] leading-7 text-[#737373]">适合刚开始整理候选站点，先验证价格追踪是否适合你的工作流。</p>
+          </div>
+          <div class="mt-6 min-h-[112px] border-y border-[#f0f0f0] py-6">
+            <span class="argus-serif text-[44px] font-bold text-[#1a1a1a]">¥ 0</span>
+            <span class="ml-2 text-[14px] font-semibold text-[#737373]">永久</span>
+            <p class="mt-2 text-[13px] font-bold text-[#a1a1a1]">功能有限，适合试试看</p>
+          </div>
+          <ul class="mt-6 flex-1 space-y-3 text-[15px] font-semibold text-[#5e5e5e]">
+            <li>2 个候选站点</li>
+            <li>3 列已选比价</li>
+            <li>每日自动采集 1 次</li>
+            <li>手动采集冷却 60 分钟</li>
+            <li class="text-[#a1a1a1]">不含 08:00 邮件早报</li>
+          </ul>
+          <button class="argus-btn mt-8 w-full rounded-[16px] border border-[#e6e6e6] bg-slate-100 text-[#a1a1a1] cursor-not-allowed">当前可用</button>
+        </article>
+
+        <article class="argus-card argus-card-pad relative flex h-full flex-col border-[#D97757]/50 bg-[#fffaf8] shadow-[0_30px_96px_rgba(217,119,87,0.18)] ring-2 ring-[#D97757]/20 transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_34px_110px_rgba(217,119,87,0.24)]">
+          <div class="pointer-events-none absolute inset-x-6 -top-px h-[3px] rounded-full bg-[#D97757] shadow-[0_0_26px_rgba(217,119,87,0.48)]"></div>
+          <div class="min-h-[150px]">
+            <span class="argus-chip bg-[#fcf8f7] text-[#D97757] border-[#D97757]/30 w-fit">Pro</span>
+            <h2 class="argus-serif mt-5 text-[28px] font-bold text-[#1a1a1a]">日常首选</h2>
+            <p class="mt-3 text-[15px] leading-7 text-[#5e5e5e]">适合大多数个人和独立开发者：站点容量够用，自动采集更稳，还能每天收到价格早报。</p>
+          </div>
+          <div class="mt-6 min-h-[112px] border-y border-orange-100 py-6">
+            <span class="argus-serif text-[44px] font-bold text-[#1a1a1a]">¥ 100</span>
+            <span class="ml-2 text-[14px] font-semibold text-[#737373]">每年</span>
+            <p class="mt-2 text-[13px] font-black text-[#D97757]">折合 ¥8.4 / 月 · 支持 ¥50 / 季度</p>
+          </div>
+          <ul class="mt-6 flex-1 space-y-3 text-[15px] font-bold text-[#333333]">
+            <li>10 个候选站点</li>
+            <li>3 列已选比价</li>
+            <li>每日自动采集 3 次</li>
+            <li>每日 08:00 邮件早报</li>
+            <li>适合持续跟踪常用模型价格</li>
+          </ul>
+          <button class="argus-btn argus-btn-primary mt-8 w-full rounded-[16px] shadow-[0_14px_38px_rgba(217,119,87,0.24)]" data-dialog-open="checkout">购买 Pro</button>
+        </article>
+
+        <article class="argus-card argus-card-pad flex h-full flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_26px_82px_rgba(0,0,0,0.08)]">
+          <div class="min-h-[150px]">
+            <span class="argus-chip argus-chip-success w-fit">Plus</span>
+            <h2 class="argus-serif mt-5 text-[28px] font-bold text-[#1a1a1a]">更多候选</h2>
+            <p class="mt-3 text-[15px] leading-7 text-[#737373]">适合已经把 Pro 用满、需要长期观察更多新站点和更多比价列的人。</p>
+          </div>
+          <div class="mt-6 min-h-[112px] border-y border-[#f0f0f0] py-6">
+            <span class="argus-serif text-[44px] font-bold text-[#1a1a1a]">¥ 300</span>
+            <span class="ml-2 text-[14px] font-semibold text-[#737373]">每年</span>
+            <p class="mt-2 text-[13px] font-bold text-[#737373]">或 ¥50 / 月 · 从 Pro 满载后再升级</p>
+          </div>
+          <ul class="mt-6 flex-1 space-y-3 text-[15px] font-semibold text-[#5e5e5e]">
+            <li>50 个候选站点</li>
+            <li>5 列已选比价</li>
+            <li>每日自动采集 3 次</li>
+            <li>每日 08:00 邮件早报</li>
+            <li>适合横向观察更多站点</li>
+          </ul>
+          <button class="argus-btn argus-btn-secondary mt-8 w-full rounded-[16px]" data-dialog-open="checkout">选择 Plus</button>
+        </article>
+
+        <article class="argus-card argus-card-pad flex h-full flex-col bg-slate-900 text-white transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_28px_88px_rgba(26,26,26,0.22)]">
+          <div class="min-h-[150px]">
+            <span class="argus-chip border-slate-700 bg-slate-800 text-slate-200 w-fit">Max</span>
+            <h2 class="argus-serif mt-5 text-[28px] font-bold text-white">大规模监测</h2>
+            <p class="mt-3 text-[15px] leading-7 text-[#a1a1a1]">适合已经有大量候选站点、需要保留长期底稿和历史对照的重度用户。</p>
+          </div>
+          <div class="mt-6 min-h-[112px] border-y border-slate-800 py-6">
+            <span class="argus-serif text-[44px] font-bold">¥ 1000</span>
+            <span class="ml-2 text-[14px] font-semibold text-[#a1a1a1]">每年</span>
+            <p class="mt-2 text-[13px] font-bold text-[#a1a1a1]">先用 Pro 验证流程，再扩到 Max</p>
+          </div>
+          <ul class="mt-6 flex-1 space-y-3 text-[15px] font-semibold text-[#cccccc]">
+            <li>300 个候选站点</li>
+            <li>5 列已选比价</li>
+            <li>每日自动采集 3 次</li>
+            <li>每日 08:00 邮件早报</li>
+            <li>适合长期保留大体量底稿</li>
+          </ul>
+          <button class="argus-btn mt-8 w-full rounded-[16px] bg-white text-[#1a1a1a] hover:bg-slate-100" data-dialog-open="checkout">选择 Max</button>
+        </article>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../pricing/billing.html">会员套餐</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../account/account.html">账户</a></div></div>
+  </footer>
+
+  <div class="argus-dialog-backdrop" data-dialog="checkout" aria-hidden="true">
+    <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+      <div class="argus-dialog-head">
+        <div>
+          <h2 id="checkout-title" class="argus-serif text-[26px] font-bold text-[#1a1a1a]">购买 Pro</h2>
+          <p class="mt-2 text-[15px] leading-7 text-[#737373]">选择 Pro 订阅周期后会生成订单并打开 Epay 支付链接。付款前会确认价格、周期和生效时间。</p>
+        </div>
+        <button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button>
+      </div>
+      <div class="argus-dialog-body">
+        <form class="space-y-5" data-static-form="#order-created">
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="argus-card-soft flex cursor-pointer items-center justify-between p-4">
+              <span>
+                <strong class="block text-[#1a1a1a]">Pro 年付</strong>
+                <span class="text-[13px] text-[#737373]">¥100 / 12 个月</span>
+              </span>
+              <input type="radio" checked name="plan" class="accent-[#D97757]">
+            </label>
+            <label class="argus-card-soft flex cursor-pointer items-center justify-between p-4">
+              <span>
+                <strong class="block text-[#1a1a1a]">Pro 季付</strong>
+                <span class="text-[13px] text-[#737373]">¥50 / 3 个月</span>
+              </span>
+              <input type="radio" name="plan" class="accent-[#D97757]">
+            </label>
+          </div>
+          <button class="argus-btn argus-btn-primary w-full rounded-[16px]" type="submit">生成 Epay 支付链接</button>
+          <div id="order-created" class="argus-hidden space-y-4">
+            <p class="rounded-[16px] bg-[#eef8f0] px-4 py-3 text-[13px] font-bold leading-6 text-[#2f6a3d]">订单已创建：ARGUS-20260507-0008。支付链接准备好了。</p>
+            <a href="#" class="argus-btn argus-btn-dark w-full rounded-[16px]">打开 Epay 支付页</a>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <p class="text-[13px] font-bold leading-6 text-[#2f6a3d]">返回成功：订阅延长至 2027-05-07。</p>
+              <p class="text-[13px] font-bold leading-6 text-[#8a3d2d]">返回失败：交易状态未确认，请先保留订单号。</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

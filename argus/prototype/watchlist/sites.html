@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Argus · Watchlist · 站点</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/prototype.css">
+  <script src="../assets/prototype.js" defer></script>
+</head>
+<body class="argus-page">
+  <header class="argus-header">
+    <div class="argus-shell argus-header-inner">
+      <div class="flex items-center gap-10">
+        <a href="../index.html" class="argus-brand">
+          <span class="argus-mark argus-serif">A</span>
+          <span class="argus-brand-name argus-serif">Argus</span>
+        </a>
+        <nav class="argus-nav" aria-label="主导航">
+          <a href="../index.html" class="argus-nav-link">首页</a>
+          <a href="sites.html" class="argus-nav-link is-active" aria-current="page">Watchlist</a>
+          <a href="../pricing/billing.html" class="argus-nav-link">会员套餐</a>
+        </nav>
+      </div>
+      <div class="argus-actions">
+        <a href="../account/account.html" class="hidden lg:inline text-[14px] font-bold text-[#737373] hover:text-[#1a1a1a] transition-colors">hello@example.com · Pro</a>
+        <a href="../account/account.html" class="argus-avatar">U</a>
+        <details class="argus-mobile-menu">
+          <summary>菜单</summary>
+          <div class="argus-mobile-panel">
+            <a href="../index.html">首页</a>
+            <a href="sites.html" class="is-active">Watchlist</a>
+            <a href="../pricing/billing.html">会员套餐</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main class="argus-main">
+    <section class="argus-shell argus-tool-page" data-site-directory data-plan-limit="3">
+      <div class="flex flex-col gap-4 border-b border-[#e6e6e6] pb-5 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <nav class="argus-breadcrumbs" aria-label="面包屑"><a href="../index.html">首页</a><span class="argus-breadcrumb-sep">/</span><span>Watchlist</span></nav>
+          <h1 class="argus-tool-title argus-serif mt-3">站点监控</h1>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <a href="sites.html" class="argus-btn argus-btn-dark argus-btn-compact">站点</a>
+          <a href="comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">比价</a>
+          <a href="fetch-runs.html" class="argus-btn argus-btn-secondary argus-btn-compact">采集</a>
+          <a href="snapshots.html" class="argus-btn argus-btn-secondary argus-btn-compact">底稿</a>
+          <a href="rules.html" class="argus-btn argus-btn-secondary argus-btn-compact">规则</a>
+        </div>
+      </div>
+
+      <div class="mt-5 grid gap-3 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-center">
+        <div class="grid gap-3 sm:grid-cols-4">
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">显示</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]"><span data-site-visible-count>4</span>/<span data-site-total-count>4</span></p></div>
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">已选</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]"><span data-inline-compare-count>3</span>/<span data-inline-compare-limit>3</span></p></div>
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">健康</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#2f6a3d]">2</p></div>
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">待处理</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#8a5a1f]">2</p></div>
+        </div>
+        <div class="flex flex-wrap gap-2 xl:justify-end"><a href="comparison.html" class="argus-btn argus-btn-secondary argus-btn-compact">打开比价</a><button type="button" class="argus-btn argus-btn-secondary argus-btn-compact" data-clear-compare>清空选择</button><button type="button" class="argus-btn argus-btn-primary argus-btn-compact" data-dialog-open="add-site">添加站点</button></div>
+      </div>
+
+      <div class="argus-card mt-4 p-3 sm:p-4">
+        <div class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_150px_150px] sm:items-end">
+          <div class="argus-field"><label for="site-search">查找</label><input id="site-search" data-site-search class="argus-input min-h-[46px] rounded-[14px] px-4 py-2 text-[14px]" type="search" placeholder="north、quiet 或 example.ai"></div>
+          <div class="argus-field"><label for="site-health">状态</label><select id="site-health" class="argus-select min-h-[46px] rounded-[14px] px-4 py-2 text-[14px]"><option>全部</option><option>健康</option><option>冷却</option><option>观察</option><option>静默</option></select></div>
+          <div class="argus-field"><label for="site-sort">排序</label><select id="site-sort" class="argus-select min-h-[46px] rounded-[14px] px-4 py-2 text-[14px]"><option>站名 A-Z</option><option>最新采集优先</option><option>模型数最多</option></select></div>
+        </div>
+      </div>
+
+      <div class="argus-card mt-6 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="argus-site-table min-w-[1260px] w-full border-collapse text-left">
+            <thead>
+              <tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]">
+                <th class="px-5 py-4">比价</th>
+                <th class="px-5 py-4">站点</th>
+                <th class="px-5 py-4">网址</th>
+                <th class="px-5 py-4">状态</th>
+                <th class="px-5 py-4">上次成功</th>
+                <th class="px-5 py-4 text-right">快照模型</th>
+                <th class="px-5 py-4">手动采集</th>
+                <th class="px-5 py-4">备注</th>
+                <th class="px-5 py-4">操作</th>
+              </tr>
+            </thead>
+            <tbody data-site-list class="divide-y divide-slate-100 text-[14px]">
+              <tr id="site-empty-state" class="argus-hidden text-center">
+                <td colspan="9" class="px-5 py-12">
+                  <p class="text-[15px] font-bold text-[#1a1a1a]">还未添加任何监控站点</p>
+                  <p class="mt-2 text-[14px] text-[#737373]">添加常用中转站后，Argus 会自动采集公开价格并生成可比较的快照。</p>
+                  <button type="button" class="argus-btn argus-btn-primary mt-6 rounded-xl" data-dialog-open="site-editor" data-site-mode="add">立即添加站点</button>
+                </td>
+              </tr>
+              <tr class="argus-site-row is-selected" data-site-row data-site-name="North Relay" data-site-search="north relay https://north.example.ai">
+                <td class="px-5 py-4 align-top"><label class="argus-inline-check"><input type="checkbox" value="north" data-compare-station data-station-label="North Relay" checked><span>加入比价</span></label></td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-primary"><strong class="text-[15px] text-[#1a1a1a]">North Relay</strong><span class="text-[12px] font-semibold text-[#2f6a3d]">字母序第 1 位</span></div></td>
+                <td class="px-5 py-4 align-top font-mono text-[13px] text-[#737373]">https://north.example.ai</td>
+                <td class="px-5 py-4 align-top"><span class="argus-chip argus-chip-success"><span class="argus-dot"></span>健康</span></td>
+                <td class="px-5 py-4 align-top font-mono text-[#5e5e5e]">12 分钟前</td>
+                <td class="px-5 py-4 align-top text-right font-mono font-bold text-[#1a1a1a]">184</td>
+                <td class="px-5 py-4 align-top font-semibold text-[#2f6a3d]">可立即执行</td>
+                <td class="px-5 py-4 align-top text-[#737373]">适合 Claude 系列测试。</td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-actions"><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="manual-fetch">采集</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="North Relay" data-site-url="https://north.example.ai" data-site-rate="7.20" data-site-note="适合 Claude 系列测试。" data-site-status="上次成功 12 分钟前，当前快照可继续参与比价。" data-site-models="184 个模型">编辑</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="delete-site">移除</button></div></td>
+              </tr>
+              <tr class="argus-site-row is-selected" data-site-row data-site-name="Quiet Gateway" data-site-search="quiet gateway https://quiet.example.ai">
+                <td class="px-5 py-4 align-top"><label class="argus-inline-check"><input type="checkbox" value="quiet" data-compare-station data-station-label="Quiet Gateway" checked><span>加入比价</span></label></td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-primary"><strong class="text-[15px] text-[#1a1a1a]">Quiet Gateway</strong><span class="text-[12px] font-semibold text-[#8a5a1f]">按次模型较多</span></div></td>
+                <td class="px-5 py-4 align-top font-mono text-[13px] text-[#737373]">https://quiet.example.ai</td>
+                <td class="px-5 py-4 align-top"><span class="argus-chip argus-chip-warning"><span class="argus-dot"></span>冷却</span></td>
+                <td class="px-5 py-4 align-top font-mono text-[#5e5e5e]">58 分钟前</td>
+                <td class="px-5 py-4 align-top text-right font-mono font-bold text-[#1a1a1a]">207</td>
+                <td class="px-5 py-4 align-top font-semibold text-[#8a5a1f]">2 分钟后</td>
+                <td class="px-5 py-4 align-top text-[#737373]">按次模型多，手动刷新受冷却限制。</td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-actions"><button class="argus-btn argus-btn-secondary argus-btn-compact cursor-not-allowed opacity-60" type="button">冷却中</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="Quiet Gateway" data-site-url="https://quiet.example.ai" data-site-rate="7.08" data-site-note="按次模型多，手动刷新受冷却限制。" data-site-status="上次成功 58 分钟前，当前处于手动冷却。" data-site-models="207 个模型">编辑</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="delete-site">移除</button></div></td>
+              </tr>
+              <tr class="argus-site-row" data-site-row data-site-name="South Bridge" data-site-search="south bridge https://south.example.ai">
+                <td class="px-5 py-4 align-top"><label class="argus-inline-check"><input type="checkbox" value="south" data-compare-station data-station-label="South Bridge"><span>加入比价</span></label></td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-primary"><strong class="text-[15px] text-[#1a1a1a]">South Bridge</strong><span class="text-[12px] font-semibold text-[#737373]">观察中</span></div></td>
+                <td class="px-5 py-4 align-top font-mono text-[13px] text-[#737373]">https://south.example.ai</td>
+                <td class="px-5 py-4 align-top"><span class="argus-chip argus-chip-info"><span class="argus-dot"></span>观察</span></td>
+                <td class="px-5 py-4 align-top font-mono text-[#5e5e5e]">48 分钟前</td>
+                <td class="px-5 py-4 align-top text-right font-mono font-bold text-[#1a1a1a]">173</td>
+                <td class="px-5 py-4 align-top font-semibold text-[#8a5a1f]">建议稍后</td>
+                <td class="px-5 py-4 align-top text-[#737373]">快照稳定后再决定是否长期保留。</td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-actions"><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="manual-fetch">采集</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="South Bridge" data-site-url="https://south.example.ai" data-site-rate="7.12" data-site-note="观察中，快照稳定后再决定是否长期保留。" data-site-status="上次成功 48 分钟前，建议下一轮巡价后再手动刷新。" data-site-models="173 个模型">编辑</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="delete-site">移除</button></div></td>
+              </tr>
+              <tr class="argus-site-row is-selected" data-site-row data-site-name="West Meter" data-site-search="west meter https://west.example.ai">
+                <td class="px-5 py-4 align-top"><label class="argus-inline-check"><input type="checkbox" value="west" data-compare-station data-station-label="West Meter" checked><span>加入比价</span></label></td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-primary"><strong class="text-[15px] text-[#1a1a1a]">West Meter</strong><span class="text-[12px] font-semibold text-[#2f6a3d]">刷新速度快</span></div></td>
+                <td class="px-5 py-4 align-top font-mono text-[13px] text-[#737373]">https://west.example.ai</td>
+                <td class="px-5 py-4 align-top"><span class="argus-chip argus-chip-success"><span class="argus-dot"></span>健康</span></td>
+                <td class="px-5 py-4 align-top font-mono text-[#5e5e5e]">30 分钟前</td>
+                <td class="px-5 py-4 align-top text-right font-mono font-bold text-[#1a1a1a]">166</td>
+                <td class="px-5 py-4 align-top font-semibold text-[#2f6a3d]">可立即执行</td>
+                <td class="px-5 py-4 align-top text-[#737373]">价格更新快，适合放进已选站点比价。</td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-actions"><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="manual-fetch">采集</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="West Meter" data-site-url="https://west.example.ai" data-site-rate="7.16" data-site-note="价格更新快，适合放进已选站点比价。" data-site-status="上次成功 30 分钟前，价格刚刷新。" data-site-models="166 个模型">编辑</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="delete-site">移除</button></div></td>
+              </tr>
+              <tr class="argus-site-row" data-site-row data-site-name="Archive Hub" data-site-search="archive hub https://archive.example.ai" data-site-disabled="true">
+                <td class="px-5 py-4 align-top"><label class="argus-inline-check"><input type="checkbox" disabled value="archive" data-compare-station data-station-label="Archive Hub"><span>不可比价</span></label></td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-primary"><strong class="text-[15px] text-[#a1a1a1]">Archive Hub</strong><span class="text-[12px] font-semibold text-[#a1a1a1]">已暂停</span></div></td>
+                <td class="px-5 py-4 align-top font-mono text-[13px] text-[#a1a1a1]">https://archive.example.ai</td>
+                <td class="px-5 py-4 align-top"><span class="argus-chip border-[#e6e6e6] bg-slate-100 text-[#737373]"><span class="argus-dot bg-slate-400"></span>静默</span></td>
+                <td class="px-5 py-4 align-top font-mono text-[#a1a1a1]">3 天前</td>
+                <td class="px-5 py-4 align-top text-right font-mono font-bold text-[#a1a1a1]">120</td>
+                <td class="px-5 py-4 align-top font-semibold text-[#a1a1a1]">已关闭自动巡价</td>
+                <td class="px-5 py-4 align-top text-[#a1a1a1]">已暂停采集，历史快照仍可追溯。</td>
+                <td class="px-5 py-4 align-top"><div class="argus-table-actions"><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-name="Archive Hub" data-site-url="https://archive.example.ai" data-site-rate="7.10" data-site-note="已暂停采集，历史快照仍可追溯。" data-site-status="已暂停自动巡价，历史快照不参与当前比价。" data-site-models="120 个模型">恢复</button><button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="delete-site">移除</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="border-t border-[#e6e6e6] bg-[#fcfcfc] py-6">
+    <div class="argus-shell flex flex-col gap-3 text-[13px] font-bold text-[#737373] sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Argus</span><div class="flex flex-wrap gap-4"><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../watchlist/sites.html">Watchlist</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../pricing/billing.html">会员套餐</a><a class="text-[#737373] no-underline hover:text-[#1a1a1a]" href="../account/account.html">账户</a></div></div>
+  </footer>
+
+  <div class="argus-dialog-backdrop" data-dialog="add-site" aria-hidden="true">
+    <section class="argus-dialog argus-dialog-lg" role="dialog" aria-modal="true" aria-labelledby="add-site-title">
+      <div class="argus-dialog-head"><div><h2 id="add-site-title" class="argus-serif text-[26px] font-bold text-[#1a1a1a]">添加一个站点</h2><p class="mt-2 text-[15px] leading-7 text-[#737373]">输入 Base URL，Argus 会整理地址并验证公开价格端点，校验通过后加入站点列表。</p></div><button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button></div>
+      <div class="argus-dialog-body">
+        <form class="grid gap-5" data-static-form="#add-site-success">
+          <div class="argus-field"><label for="site-url">Base URL</label><input id="site-url" class="argus-input" type="url" value="https://new.example.ai/"></div>
+          <div class="grid gap-5 sm:grid-cols-2"><div class="argus-field"><label for="site-name">站点昵称</label><input id="site-name" class="argus-input" type="text" value="New Relay"></div><div class="argus-field"><label for="exchange">USD 汇率</label><input id="exchange" class="argus-input" type="number" step="0.01" value="7.20"></div></div>
+          <p id="add-site-success" class="argus-hidden rounded-[16px] bg-[#eef8f0] px-4 py-3 text-[13px] font-bold leading-6 text-[#2f6a3d]">添加成功。New Relay 已进入站点列表，首次采集已经排上队。</p>
+          <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><button class="argus-btn argus-btn-secondary" type="button" data-dialog-close>取消</button><button class="argus-btn argus-btn-primary" type="submit">保存并开始采集</button></div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <div class="argus-dialog-backdrop" data-dialog="manual-fetch" aria-hidden="true">
+    <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="manual-fetch-title">
+      <div class="argus-dialog-head"><div><h2 id="manual-fetch-title" class="argus-serif text-[24px] font-bold text-[#1a1a1a]">立即采集 North Relay</h2><p class="mt-2 text-[15px] leading-7 text-[#737373]">这次只刷新当前站点卡片，不打扰整页。</p></div><button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button></div>
+      <div class="argus-dialog-body space-y-4"><div class="h-16 rounded-2xl argus-shimmer"></div><p class="text-[14px] font-bold leading-7 text-[#2f6a3d]">采集成功：184 个模型价格已写入最新快照。下一次手动采集 60 分钟后见。</p></div>
+    </section>
+  </div>
+
+  <div class="argus-dialog-backdrop" data-dialog="delete-site" aria-hidden="true">
+    <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-site-title">
+      <div class="argus-dialog-head"><div><h2 id="delete-site-title" class="argus-serif text-[24px] font-bold text-[#8a3d2d]">移除这个站点</h2><p class="mt-2 text-[15px] leading-7 text-[#737373]">移除后会停止后续采集；历史快照仍会保留在账户记录中，方便之后追溯。</p></div><button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button></div>
+      <div class="argus-dialog-body flex flex-col gap-3 sm:flex-row sm:justify-end"><button class="argus-btn argus-btn-secondary" data-dialog-close>先留着</button><button class="argus-btn argus-btn-danger">确认移除</button></div>
+    </section>
+  </div>
+</body>
+</html>

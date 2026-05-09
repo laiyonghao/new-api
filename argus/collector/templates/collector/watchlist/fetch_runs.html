@@ -1,0 +1,53 @@
+{% extends "collector/base.html" %}
+
+{% block title %}Watchlist · 采集记录{% endblock %}
+
+{% block content %}
+    <section class="argus-shell argus-tool-page">
+      {% include "collector/includes/watchlist_header.html" with page_heading="采集记录" active_item="fetch-runs" %}
+
+      <details class="argus-mobile-collapse mt-6" data-mobile-collapse open>
+        <summary><span>概览与操作</span><span>{{ today_success_count }} 成功</span></summary>
+        <div class="grid gap-4 md:items-stretch">
+          <div class="grid gap-3 sm:grid-cols-3">
+          <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">今日成功</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#2f6a3d]">{{ today_success_count }}</p></div>
+          <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">失败记录</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#8a3d2d]">{{ latest_failed_count }}</p></div>
+          <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">启用站点</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">{{ enabled_site_count }}</p></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="argus-shell pb-20">
+      <div class="argus-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-[980px] w-full border-collapse text-left">
+            <thead><tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]"><th class="px-6 py-4">站点</th><th class="px-6 py-4">开始时间</th><th class="px-6 py-4">完成时间</th><th class="px-6 py-4">状态</th><th class="px-6 py-4 text-right">HTTP</th><th class="px-6 py-4 text-right">新增快照</th><th class="px-6 py-4">结果摘要</th></tr></thead>
+            <tbody class="divide-y divide-slate-100 text-[14px]">
+              {% if fetch_runs %}
+                {% for fetch_run in fetch_runs %}
+                  <tr>
+                    <td class="px-6 py-5"><span class="font-bold text-[#1a1a1a]">{{ fetch_run.site.name|default:fetch_run.site.base_url }}</span></td>
+                    <td class="px-6 py-5 font-mono text-[#737373]">{{ fetch_run.started_label }}</td>
+                    <td class="px-6 py-5 font-mono text-[#737373]">{{ fetch_run.finished_label }}</td>
+                    <td class="px-6 py-5"><span class="argus-chip {{ fetch_run.status_chip_class }}">{{ fetch_run.get_status_display }}</span></td>
+                    <td class="px-6 py-5 text-right font-mono">{{ fetch_run.http_status_code|default:'-' }}</td>
+                    <td class="px-6 py-5 text-right font-mono font-bold text-[#1a1a1a]">{{ fetch_run.created_count }}</td>
+                    <td class="px-6 py-5 {% if fetch_run.status == 'failed' %}text-[#8a3d2d]{% else %}text-[#5e5e5e]{% endif %}">{% if fetch_run.error_message %}{{ fetch_run.error_message }}{% else %}采集完成，价格数据已更新。{% endif %}</td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr class="text-center">
+                  <td colspan="7" class="px-5 py-12">
+                    <p class="text-[15px] font-bold text-[#1a1a1a]">暂无采集记录</p>
+                    <p class="mt-2 text-[14px] text-[#737373]">自动巡价或手动采集完成后，状态、HTTP 结果和快照数量会显示在这里。</p>
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+{% endblock %}

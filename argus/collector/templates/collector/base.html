@@ -1,0 +1,57 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CheapToken · {% block title %}AI中转站比价监控{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}CheapToken 帮你持续监控 AI 中转站价格、倍率规则和模型可用性，自动生成可比较的价格快照。{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}CheapToken,AI中转站比价,AI价格监控,模型价格监控,token价格,API中转站{% endblock %}">
+  <link rel="icon" href="{% static 'collector/assets/favicon.svg' %}" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'collector/assets/app.css' %}">
+  <script src="{% static 'collector/assets/app.js' %}" defer></script>
+  <style>
+    .argus-hero { display: grid; gap: 22px; margin-bottom: 30px; }
+    .argus-kicker { width: fit-content; display: inline-flex; align-items: center; border: 1px solid #d8dfd2; border-radius: 7px; background: #e6ece2; color: #435f4c; padding: 7px 12px; font-size: 13px; font-weight: 800; }
+    .argus-title { margin: 0; max-width: 860px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(36px, 6vw, 70px); line-height: 1.02; letter-spacing: 0; }
+    .argus-filter { padding: 20px; margin: 34px 0 22px; }
+    .argus-filter-grid { display: grid; grid-template-columns: minmax(220px, 1fr) 180px 220px auto; gap: 14px; align-items: end; }
+    .argus-filter-actions { display: flex; gap: 8px; align-items: center; }
+    .argus-button { height: 48px; border: 0; border-radius: 8px; background: #c96f4f; color: #fffaf3; cursor: pointer; font: inherit; font-size: 14px; font-weight: 900; padding: 0 20px; white-space: nowrap; }
+    .argus-button:hover { background: #a9563c; }
+    .argus-reset { display: inline-flex; align-items: center; height: 48px; border-radius: 8px; padding: 0 14px; color: #7a7065; font-size: 14px; font-weight: 800; }
+    .argus-reset:hover { background: #eee5da; color: #231f1a; }
+    .argus-summary { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; color: #6f6761; font-size: 14px; font-weight: 700; }
+    .argus-chip-strong { border-color: #e8c7b8; background: #f4e1d6; color: #a9563c; }
+    .argus-table-wrap { overflow: hidden; }
+    .argus-table-scroll { overflow-x: auto; }
+    .argus-table { width: 100%; min-width: 1120px; border-collapse: collapse; }
+    .argus-table th { background: #eee5da; color: #7a7065; font-size: 12px; font-weight: 900; text-align: left; text-transform: uppercase; padding: 16px 18px; border-bottom: 1px solid #e2d8cb; }
+    .argus-table td { vertical-align: top; padding: 18px; border-bottom: 1px solid #e7ddd1; }
+    .argus-table tbody tr:last-child td { border-bottom: 0; }
+    .argus-model { max-width: 230px; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 14px; font-weight: 900; }
+    .argus-muted { color: #6f6761; }
+    .argus-price { display: block; margin-top: 8px; color: #a9563c; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; font-weight: 900; }
+    .argus-site { display: inline-flex; align-items: center; gap: 8px; color: #241f1c; font-weight: 900; }
+    .argus-site:hover { color: #a9563c; }
+    .argus-endpoints { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .argus-endpoint { border: 1px solid #d8dfd2; border-radius: 7px; background: #e6ece2; color: #435f4c; padding: 3px 8px; font-size: 12px; font-weight: 800; }
+    .argus-empty { padding: 34px; color: #7a4f26; background: #efe0c9; border-radius: 10px; font-weight: 800; }
+    @media (max-width: 640px) { .argus-filter-grid { grid-template-columns: 1fr; } .argus-filter-actions { flex-wrap: wrap; } }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}argus-page{% endblock %}" data-authenticated="{% if request.user.is_authenticated %}true{% else %}false{% endif %}" data-login-url="{% url 'login' %}" data-login-send-url="{% url 'login_send_code' %}" data-login-verify-url="{% url 'login_verify_code' %}" data-logout-url="{% url 'logout' %}" data-checkout-url="{% url 'pricing_checkout' %}" {% block body_data %}{% endblock %}>
+  {% include "collector/includes/site_header.html" %}
+  <main class="argus-main">
+    {% block content %}{% endblock %}
+  </main>
+  {% include "collector/includes/site_footer.html" %}
+  {% block dialogs %}{% endblock %}
+  {% block extra_body %}{% endblock %}
+</body>
+</html>

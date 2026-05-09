@@ -52,6 +52,54 @@ services:
       timeout: 10s
       retries: 3
 
+  argus:
+    build:
+      context: .
+      dockerfile: argus/Dockerfile
+    image: cheaptoken-argus:local
+    container_name: argus
+    restart: always
+    expose:
+      - "8000"
+    environment:
+      - DJANGO_DEBUG=0
+      - DJANGO_SECRET_KEY=${ARGUS_DJANGO_SECRET_KEY:?set ARGUS_DJANGO_SECRET_KEY before starting argus}
+      - ARGUS_ALLOWED_HOSTS=ct.xhh.club,cheaptoken.io,www.cheaptoken.io
+      - ARGUS_CSRF_TRUSTED_ORIGINS=https://ct.xhh.club,https://cheaptoken.io,https://www.cheaptoken.io
+      - ARGUS_SECURE_SSL_REDIRECT=1
+      - ARGUS_SESSION_COOKIE_SECURE=1
+      - ARGUS_CSRF_COOKIE_SECURE=1
+      - ARGUS_SECURE_HSTS_SECONDS=31536000
+      - ARGUS_DATABASE_URL=${ARGUS_DATABASE_URL:-postgresql://root:123456@postgres:5432/argus}
+      - ARGUS_DB_SCHEMA=${ARGUS_DB_SCHEMA:-}
+      - ARGUS_REDIS_URL=${ARGUS_REDIS_URL:-redis://:123456@redis:6379/2}
+      - ARGUS_CACHE_KEY_PREFIX=${ARGUS_CACHE_KEY_PREFIX:-argus}
+      - ARGUS_STATIC_URL=/static/
+      - ARGUS_EMAIL_BACKEND=${ARGUS_EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      - ARGUS_EMAIL_HOST=${ARGUS_EMAIL_HOST:-}
+      - ARGUS_EMAIL_PORT=${ARGUS_EMAIL_PORT:-587}
+      - ARGUS_EMAIL_USE_TLS=${ARGUS_EMAIL_USE_TLS:-1}
+      - ARGUS_EMAIL_HOST_USER=${ARGUS_EMAIL_HOST_USER:-}
+      - ARGUS_EMAIL_HOST_PASSWORD=${ARGUS_EMAIL_HOST_PASSWORD:-}
+      - ARGUS_EMAIL_FROM=${ARGUS_EMAIL_FROM:-noreply@cheaptoken.io}
+      - ARGUS_EPAY_ENABLED=${ARGUS_EPAY_ENABLED:-0}
+      - ARGUS_EPAY_URL=${ARGUS_EPAY_URL:-}
+      - ARGUS_EPAY_PID=${ARGUS_EPAY_PID:-}
+      - ARGUS_EPAY_KEY=${ARGUS_EPAY_KEY:-}
+      - ARGUS_EPAY_NOTIFY_URL=${ARGUS_EPAY_NOTIFY_URL:-}
+      - ARGUS_EPAY_RETURN_URL=${ARGUS_EPAY_RETURN_URL:-}
+      - TZ=Asia/Shanghai
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - new-api-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; request = urllib.request.Request('http://127.0.0.1:8000/', headers={'Host': 'ct.xhh.club', 'X-Forwarded-Proto': 'https'}); urllib.request.urlopen(request, timeout=5).read()\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   redis:
     image: redis:latest
     container_name: redis

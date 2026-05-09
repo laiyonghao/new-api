@@ -86,6 +86,7 @@ func OaiResponsesToChatHandler(c *gin.Context, info *relaycommon.RelayInfo, resp
 		return nil, types.NewOpenAIError(err, types.ErrorCodeJsonMarshalFailed, http.StatusInternalServerError)
 	}
 
+	normalizeJSONResponseContentType(resp)
 	service.IOCopyBytesGracefully(c, resp, responseBody)
 	return usage, nil
 }

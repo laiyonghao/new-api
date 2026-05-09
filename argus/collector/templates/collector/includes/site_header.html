@@ -1,0 +1,36 @@
+{% load static %}
+<header class="argus-header">
+  <div class="argus-shell argus-header-inner">
+    <div class="flex items-center gap-10">
+      <a href="{% url 'home' %}" class="argus-brand" {% if active_nav == 'home' %}aria-current="page"{% endif %}>
+        <span class="argus-brand-name argus-serif">Cheap<span class="argus-token-highlight argus-token-highlight-brand">Token</span></span>
+      </a>
+      <nav class="argus-nav" aria-label="主导航">
+        <a href="{% url 'home' %}" class="argus-nav-link{% if active_nav == 'home' %} is-active{% endif %}" {% if active_nav == 'home' %}aria-current="page"{% endif %}>首页</a>
+        <a href="{% url 'watchlist_sites' %}" class="argus-nav-link{% if active_nav == 'watchlist' %} is-active{% endif %}" {% if active_nav == 'watchlist' %}aria-current="page"{% endif %}>Watchlist</a>
+        <a href="{% url 'pricing_billing' %}" class="argus-nav-link{% if active_nav == 'pricing' %} is-active{% endif %}" {% if active_nav == 'pricing' %}aria-current="page"{% endif %}>会员套餐</a>
+      </nav>
+    </div>
+    <div class="argus-actions">
+      {% if not request.user.is_authenticated %}
+        <a href="{% url 'login' %}?next={% url 'watchlist_sites' %}" class="argus-btn argus-btn-primary">注册/登入</a>
+      {% else %}
+        <a href="{% url 'account' %}" class="hidden lg:inline text-[14px] font-bold text-[#7a7065] hover:text-[#231f1a] transition-colors">{% if request.user.is_authenticated %}{{ request.user.email|default:request.user.username }}{% else %}未登录{% endif %} · {{ navigation_account_plan.label }}</a>
+        <a href="{% url 'account' %}" class="argus-avatar{% if active_nav == 'account' %} is-active{% endif %}" {% if active_nav == 'account' %}aria-current="page"{% endif %}>{% if request.user.is_authenticated %}{{ request.user.email|default:request.user.username|first|upper }}{% else %}U{% endif %}</a>
+      {% endif %}
+      <details class="argus-mobile-menu">
+        <summary>菜单</summary>
+        <div class="argus-mobile-panel">
+          <a href="{% url 'home' %}"{% if active_nav == 'home' %} class="is-active"{% endif %}>首页</a>
+          <a href="{% url 'watchlist_sites' %}"{% if active_nav == 'watchlist' %} class="is-active"{% endif %}>Watchlist</a>
+          <a href="{% url 'pricing_billing' %}"{% if active_nav == 'pricing' %} class="is-active"{% endif %}>会员套餐</a>
+          {% if not request.user.is_authenticated %}
+            <a href="{% url 'login' %}?next={% url 'watchlist_sites' %}">注册/登入</a>
+          {% else %}
+            <a href="{% url 'account' %}"{% if active_nav == 'account' %} class="is-active"{% endif %}>账户</a>
+          {% endif %}
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,94 @@
+{% extends "collector/base.html" %}
+
+{% block title %}Watchlist · 站点{% endblock %}
+
+{% block body_data %}data-site-save-url="{% url 'site_save' %}" data-site-deactivate-url="{% url 'site_deactivate' %}" data-site-fetch-url="{% url 'site_fetch' %}"{% endblock %}
+
+{% block content %}
+    <section class="argus-shell argus-tool-page" data-site-directory data-plan-limit="{{ compare_limit }}">
+      {% include "collector/includes/watchlist_header.html" with page_heading="站点监控" active_item="sites" %}
+
+      <details class="argus-mobile-collapse mt-5" data-mobile-collapse open>
+        <summary><span>概览与操作</span><span><span data-site-visible-count>{{ site_total_count }}</span>/<span data-site-total-count>{{ site_total_count }}</span></span></summary>
+        <div class="grid gap-3 md:items-center">
+          <div class="grid gap-3 sm:grid-cols-4">
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">显示</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]"><span data-site-visible-count>{{ site_total_count }}</span>/<span data-site-total-count>{{ site_total_count }}</span></p></div>
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">已选</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#1a1a1a]"><span data-inline-compare-count>0</span>/<span data-inline-compare-limit>{{ compare_limit }}</span></p></div>
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">健康</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#2f6a3d]">{{ site_healthy_count }}</p></div>
+          <div class="argus-card-soft px-4 py-3"><p class="text-xs font-bold text-[#a1a1a1]">待处理</p><p class="argus-metric mt-1 font-mono text-[22px] font-bold text-[#8a5a1f]">{{ site_attention_count }}</p></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="argus-mobile-collapse mt-4" data-mobile-collapse open>
+        <summary><span>查找筛选</span><span>站名、状态、排序</span></summary>
+        <div class="argus-card p-3 sm:p-4">
+          <div class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_150px_150px] sm:items-end">
+            <div class="argus-field"><label for="site-search">查找</label><input id="site-search" data-site-search class="argus-input min-h-[46px] rounded-[14px] px-4 py-2 text-[14px]" type="search" placeholder="站名、网址或备注"></div>
+            <div class="argus-field"><label for="site-health">状态</label><select id="site-health" class="argus-select min-h-[46px] rounded-[14px] px-4 py-2 text-[14px]"><option>全部</option><option>健康</option><option>失败</option><option>待采集</option><option>静默</option></select></div>
+            <div class="argus-field"><label for="site-sort">排序</label><select id="site-sort" class="argus-select min-h-[46px] rounded-[14px] px-4 py-2 text-[14px]"><option>站名 A-Z</option><option>最新采集优先</option><option>模型数最多</option></select></div>
+          </div>
+        </div>
+      </details>
+
+      <div class="argus-card mt-6 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="argus-site-table min-w-[1260px] w-full border-collapse text-left">
+            <thead>
+              <tr class="border-b border-[#f0f0f0] bg-[#fcfcfc] text-[12px] uppercase text-[#a1a1a1]">
+                <th class="px-5 py-4"><label class="argus-inline-check"><input type="checkbox" data-compare-toggle aria-label="全选或清空比价站点"><span>比价</span></label></th>
+                <th class="px-5 py-4">站点</th>
+                <th class="px-5 py-4">网址</th>
+                <th class="px-5 py-4">状态</th>
+                <th class="px-5 py-4">上次采集</th>
+                <th class="px-5 py-4 text-right">快照模型</th>
+                <th class="px-5 py-4">手动采集</th>
+                <th class="px-5 py-4">备注</th>
+                <th class="px-5 py-4">操作</th>
+              </tr>
+            </thead>
+            <tbody data-site-list class="divide-y divide-slate-100 text-[14px]">
+              {% if sites %}
+                {% for site in sites %}
+                  <tr class="argus-site-row" data-site-row data-site-name="{{ site.name|default:site.base_url }}" data-site-search="{{ site.search_text }}" {% if not site.enabled %}data-site-disabled="true"{% endif %}>
+                    <td class="px-5 py-4 align-top"><label class="argus-inline-check"><input type="checkbox" value="site-{{ site.id }}" data-compare-station data-station-label="{{ site.name|default:site.base_url }}" {% if not site.enabled %}data-compare-unavailable disabled{% endif %}><span>{% if site.enabled %}加入比价{% else %}不可比价{% endif %}</span></label></td>
+                    <td class="px-5 py-4 align-top"><div class="argus-table-primary"><strong class="text-[15px] {% if site.enabled %}text-[#1a1a1a]{% else %}text-[#a1a1a1]{% endif %}">{{ site.name|default:site.base_url }}</strong><span class="text-[12px] font-semibold text-[#737373]">{% if site.enabled %}已启用{% else %}已暂停{% endif %}</span></div></td>
+                    <td class="px-5 py-4 align-top font-mono text-[13px] text-[#737373]">{{ site.base_url }}</td>
+                    <td class="px-5 py-4 align-top"><span class="argus-chip {{ site.status_chip_class }}"><span class="argus-dot"></span>{{ site.status_label }}</span></td>
+                    <td class="px-5 py-4 align-top font-mono text-[#5e5e5e]">{{ site.last_fetch_label }}</td>
+                    <td class="px-5 py-4 align-top text-right font-mono font-bold text-[#1a1a1a]">{{ site.snapshot_count }}</td>
+                    <td class="px-5 py-4 align-top font-semibold {% if not site.enabled %}text-[#a1a1a1]{% elif site.manual_fetch_cooldown_active %}text-[#8a5a1f]{% else %}text-[#2f6a3d]{% endif %}">{% if site.enabled %}{{ site.manual_fetch_label }}{% else %}已关闭自动巡价{% endif %}</td>
+                    <td class="px-5 py-4 align-top text-[#737373]">{{ site.note|default:'-' }}</td>
+                    <td class="px-5 py-4 align-top">
+                      <div class="argus-table-actions">
+                        {% if site.enabled %}<button class="argus-btn argus-btn-secondary argus-btn-compact" data-site-fetch data-site-id="{{ site.id }}" type="button" {% if site.manual_fetch_cooldown_active %}disabled title="{{ site.manual_fetch_label }}"{% endif %}>{% if site.manual_fetch_cooldown_active %}冷却中{% else %}采集{% endif %}</button>{% endif %}
+                        <button class="argus-btn argus-btn-secondary argus-btn-compact" data-dialog-open="site-editor" data-site-mode="edit" data-site-id="{{ site.id }}" data-site-name="{{ site.name }}" data-site-url="{{ site.base_url }}" data-site-rate="{{ site.usd_exchange_rate }}">编辑</button>
+                        <button class="argus-btn argus-btn-secondary argus-btn-compact" data-site-deactivate data-site-id="{{ site.id }}" type="button">移除</button>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr class="text-center">
+                  <td colspan="9" class="px-5 py-12">
+                    <p class="text-[15px] font-bold text-[#1a1a1a]">还未添加任何监控站点</p>
+                    <p class="mt-2 text-[14px] text-[#737373]">添加常用中转站后，CheapToken 会自动采集公开价格并生成可比较的快照。</p>
+                    <button type="button" class="argus-btn argus-btn-primary mt-6 rounded-xl" data-dialog-open="site-editor" data-site-mode="add">立即添加站点</button>
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mt-4 flex flex-wrap justify-start gap-2">
+        <a href="{% url 'watchlist_comparison' %}" class="argus-btn argus-btn-primary min-h-[56px] rounded-[16px] px-6" data-compare-open data-min-selected="2" aria-disabled="true" tabindex="-1">打开比价</a>
+        <button type="button" class="argus-btn argus-btn-primary min-h-[56px] rounded-[16px] px-6" data-dialog-open="site-editor" data-site-mode="add">添加站点</button>
+      </div>
+    </section>
+
+{% endblock %}
+
+{% block dialogs %}
+{% include "collector/includes/dialogs/delete_site.html" %}
+{% endblock %}

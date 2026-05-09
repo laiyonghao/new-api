@@ -1,0 +1,15 @@
+<div class="argus-dialog-backdrop" data-dialog="delete-site" aria-hidden="true">
+  <section class="argus-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-site-title">
+    <div class="argus-dialog-head">
+      <div>
+        <h2 id="delete-site-title" class="argus-serif text-[24px] font-bold text-[#8a3d2d]">移除这个站点</h2>
+        <p class="mt-2 text-[15px] leading-7 text-[#737373]">移除后会停止后续采集；历史快照仍会保留在账户记录中，方便之后追溯。</p>
+      </div>
+      <button class="argus-icon-btn" data-dialog-close aria-label="关闭">×</button>
+    </div>
+    <div class="argus-dialog-body flex flex-col gap-3 sm:flex-row sm:justify-end">
+      <button class="argus-btn argus-btn-secondary" data-dialog-close>先留着</button>
+      <button class="argus-btn argus-btn-danger" data-site-deactivate-confirm>确认移除</button>
+    </div>
+  </section>
+</div>

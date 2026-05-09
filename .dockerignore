@@ -8,3 +8,9 @@ docs
 .eslintcache
 .gocache
 /web/node_modules
+argus/.cache
+argus/.venv
+argus/db.sqlite3
+argus/staticfiles
+argus/**/__pycache__
+argus/**/*.pyc
