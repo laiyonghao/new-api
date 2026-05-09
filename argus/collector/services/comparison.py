@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from collector.models import CompetitorSite, FetchRun, ModelPriceSnapshot
+from collector.models import CompetitorSite, FetchRun, ModelPriceSnapshot, NormalizationSettings
 
 
 def _read_query_value(query_params, key):
@@ -17,14 +17,45 @@ def _apply_normalized_model_name_filter(snapshots_queryset, normalized_model_nam
     return snapshots_queryset
 
 
-def _get_latest_snapshots_queryset(quota_type=None):
-    enabled_sites = list(CompetitorSite.objects.filter(enabled=True).only('id'))
+def _ranking_mode_label(ranking_mode):
+    labels = {
+        NormalizationSettings.RankingMode.INPUT_OUTPUT: '输入 + 输出',
+        NormalizationSettings.RankingMode.INPUT_ONLY: '仅输入',
+        NormalizationSettings.RankingMode.OUTPUT_ONLY: '仅输出',
+        NormalizationSettings.RankingMode.DISPLAY_ONLY: '仅展示',
+    }
+    return labels.get(ranking_mode, labels[NormalizationSettings.RankingMode.INPUT_OUTPUT])
+
+
+def _should_rank_input_price(ranking_mode):
+    return ranking_mode in {
+        NormalizationSettings.RankingMode.INPUT_OUTPUT,
+        NormalizationSettings.RankingMode.INPUT_ONLY,
+    }
+
+
+def _should_rank_output_price(ranking_mode):
+    return ranking_mode in {
+        NormalizationSettings.RankingMode.INPUT_OUTPUT,
+        NormalizationSettings.RankingMode.OUTPUT_ONLY,
+    }
+
+
+def _site_filter_for_user(user=None):
+    if user is not None and getattr(user, 'is_authenticated', False):
+        return {'owner': user}
+    return {'owner__isnull': True}
+
+
+def _get_latest_snapshots_queryset(quota_type=None, user=None):
+    site_filter = _site_filter_for_user(user)
+    enabled_sites = list(CompetitorSite.objects.filter(enabled=True, **site_filter).only('id'))
     if not enabled_sites:
         return ModelPriceSnapshot.objects.none()
 
     latest_runs = {}
     for fetch_run in (
-        FetchRun.objects.filter(site__enabled=True, status=FetchRun.Status.SUCCESS)
+        FetchRun.objects.filter(site__enabled=True, status=FetchRun.Status.SUCCESS, **{f'site__{key}': value for key, value in site_filter.items()})
         .select_related('site')
         .order_by('site_id', '-finished_at', '-id')
     ):
@@ -36,6 +67,7 @@ def _get_latest_snapshots_queryset(quota_type=None):
     snapshots_queryset = ModelPriceSnapshot.objects.filter(
         fetch_run_id__in=latest_runs.values(),
         site__enabled=True,
+        **{f'site__{key}': value for key, value in site_filter.items()},
     )
     if quota_type is not None:
         snapshots_queryset = snapshots_queryset.filter(quota_type=quota_type)
@@ -43,8 +75,8 @@ def _get_latest_snapshots_queryset(quota_type=None):
     return snapshots_queryset
 
 
-def get_vendor_choices(quota_type=None, normalized_model_name_query=None):
-    snapshots = _get_latest_snapshots_queryset(quota_type=quota_type)
+def get_vendor_choices(quota_type=None, normalized_model_name_query=None, user=None):
+    snapshots = _get_latest_snapshots_queryset(quota_type=quota_type, user=user)
     snapshots = _apply_normalized_model_name_filter(
         snapshots,
         normalized_model_name_query=normalized_model_name_query,
@@ -63,7 +95,9 @@ def get_vendor_choices(quota_type=None, normalized_model_name_query=None):
     ]
 
 
-def build_comparison_context(query_params, all_label='全部'):
+def build_comparison_context(query_params, all_label='全部', user=None):
+    normalization_settings = NormalizationSettings.current()
+    ranking_mode = normalization_settings.ranking_mode
     quota_type_value = _read_query_value(query_params, 'quota_type')
     vendor_name_value = _read_query_value(query_params, 'vendor_name')
     normalized_model_name_query = _read_query_value(query_params, 'normalized_model_name')
@@ -81,6 +115,7 @@ def build_comparison_context(query_params, all_label='全部'):
     vendor_choices = get_vendor_choices(
         quota_type=quota_type,
         normalized_model_name_query=normalized_model_name_query or None,
+        user=user,
     )
     valid_vendor_values = {choice['value'] for choice in vendor_choices}
     if vendor_name_value in valid_vendor_values:
@@ -92,6 +127,8 @@ def build_comparison_context(query_params, all_label='全部'):
         quota_type=quota_type,
         vendor_name=vendor_name or None,
         normalized_model_name_query=normalized_model_name_query or None,
+        user=user,
+        ranking_mode=ranking_mode,
     )
 
     return {
@@ -106,11 +143,14 @@ def build_comparison_context(query_params, all_label='全部'):
         'selected_quota_type': selected_quota_type,
         'selected_vendor_name': vendor_name_value,
         'normalized_model_name_query': normalized_model_name_query,
+        'ranking_mode': ranking_mode,
+        'ranking_mode_label': _ranking_mode_label(ranking_mode),
     }
 
 
-def build_comparison_rows(quota_type=None, vendor_name=None, normalized_model_name_query=None):
-    snapshots_queryset = _get_latest_snapshots_queryset(quota_type=quota_type)
+def build_comparison_rows(quota_type=None, vendor_name=None, normalized_model_name_query=None, user=None, ranking_mode=None):
+    ranking_mode = ranking_mode or NormalizationSettings.current().ranking_mode
+    snapshots_queryset = _get_latest_snapshots_queryset(quota_type=quota_type, user=user)
     if vendor_name:
         snapshots_queryset = snapshots_queryset.filter(vendor_name=vendor_name)
     snapshots_queryset = _apply_normalized_model_name_filter(
@@ -135,6 +175,7 @@ def build_comparison_rows(quota_type=None, vendor_name=None, normalized_model_na
             'model_name': normalized_model_name,
             'vendor_name': ' / '.join(vendor_names) if vendor_names else '-',
             'quota_type': items[0].get_quota_type_display(),
+            'quota_type_value': str(items[0].quota_type),
             'input_site': None,
             'input_price': None,
             'input_supported_endpoint_types': [],
@@ -150,13 +191,13 @@ def build_comparison_rows(quota_type=None, vendor_name=None, normalized_model_na
             if item.is_dynamic:
                 continue
             if item.quota_type == ModelPriceSnapshot.QuotaType.TOKEN:
-                if item.input_price_converted_per_1m is not None and (
+                if _should_rank_input_price(ranking_mode) and item.input_price_converted_per_1m is not None and (
                     row['input_price'] is None or item.input_price_converted_per_1m < row['input_price']
                 ):
                     row['input_price'] = item.input_price_converted_per_1m
                     row['input_site'] = item.site
                     row['input_supported_endpoint_types'] = item.supported_endpoint_types
-                if item.output_price_converted_per_1m is not None and (
+                if _should_rank_output_price(ranking_mode) and item.output_price_converted_per_1m is not None and (
                     row['output_price'] is None or item.output_price_converted_per_1m < row['output_price']
                 ):
                     row['output_price'] = item.output_price_converted_per_1m

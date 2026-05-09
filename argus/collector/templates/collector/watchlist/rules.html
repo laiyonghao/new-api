@@ -1,0 +1,81 @@
+{% extends "collector/base.html" %}
+
+{% block title %}Watchlist · 规则 / 设置{% endblock %}
+
+{% block body_data %}data-rules-save-url="{% url 'rules_save' %}"{% endblock %}
+
+{% block content %}
+    <section class="argus-shell argus-tool-page">
+      {% include "collector/includes/watchlist_header.html" with page_heading="归一化规则" active_item="rules" %}
+
+      <details class="argus-mobile-collapse mt-6" data-mobile-collapse open>
+        <summary><span>规则概览</span><span>{{ alias_count }} 条别名</span></summary>
+        <div class="grid gap-3 sm:grid-cols-4">
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">默认汇率</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">{{ default_exchange_rate }}</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">启用别名</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#1a1a1a]">{{ alias_count }}</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">动态倍率</p><p class="argus-metric mt-1 font-mono text-[24px] font-bold text-[#8a5a1f]">保留</p></div>
+        <div class="argus-card-soft p-4"><p class="text-xs font-bold text-[#a1a1a1]">状态</p><p class="argus-metric mt-1 text-[22px] font-bold text-[#2f6a3d]">实时应用</p></div>
+        </div>
+      </details>
+
+      <details class="argus-mobile-collapse mt-8" data-mobile-collapse open>
+        <summary><span>规则设置</span><span>汇率、口径、别名</span></summary>
+        <form class="grid gap-6 md:grid-cols-[1.1fr_0.9fr]" data-rules-form>
+          {% csrf_token %}
+          <section class="argus-card argus-card-pad space-y-8">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div class="argus-field">
+              <label for="default-rate">默认 USD 汇率</label>
+              <input id="default-rate" name="default_usd_exchange_rate" class="argus-input" type="number" step="0.000001" min="0.000001" value="{{ default_exchange_rate }}">
+              <p class="argus-help">新建站点未填写汇率时，使用这里的默认值换算人民币价格。</p>
+            </div>
+            <div class="argus-field">
+              <label for="ranking-mode">最低价口径</label>
+              <select id="ranking-mode" name="ranking_mode" class="argus-select">
+                {% for value, label in ranking_mode_choices %}
+                  <option value="{{ value }}" {% if value == ranking_mode %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+              <p class="argus-help">按次模型会自动使用单次价格参与比较。</p>
+            </div>
+          </div>
+
+          <div class="argus-card-soft p-5">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <h3 class="text-[17px] font-bold text-[#1a1a1a]">模型别名映射</h3>
+              <button type="button" class="argus-btn argus-btn-secondary argus-btn-compact" data-add-alias-row>添加别名</button>
+            </div>
+            <div class="mt-5 grid gap-3" data-alias-list>
+              {% for alias in model_aliases %}
+                <div class="grid gap-3 rounded-[18px] border border-[#e6e6e6] bg-white p-4 sm:grid-cols-[1fr_1fr]">
+                  <div class="argus-field"><label>来源模型</label><input name="alias_source" class="argus-input" value="{{ alias.source_model_name }}"></div>
+                  <div class="argus-field"><label>目标模型</label><input name="alias_target" class="argus-input" value="{{ alias.target_model_name }}"></div>
+                  <div class="argus-field sm:col-span-2"><label>备注</label><input name="alias_note" class="argus-input" value="{{ alias.note }}"></div>
+                </div>
+              {% empty %}
+                <div class="grid gap-3 rounded-[18px] border border-[#e6e6e6] bg-white p-4 sm:grid-cols-[1fr_1fr]">
+                  <div class="argus-field"><label>来源模型</label><input name="alias_source" class="argus-input" placeholder="claude-3-5-sonnet"></div>
+                  <div class="argus-field"><label>目标模型</label><input name="alias_target" class="argus-input" placeholder="claude-sonnet"></div>
+                  <div class="argus-field sm:col-span-2"><label>备注</label><input name="alias_note" class="argus-input" placeholder="用于合并旧别名和新版命名"></div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <p data-rules-status class="argus-hidden rounded-[16px] bg-[#eef8f0] px-4 py-3 text-[13px] font-bold leading-6 text-[#2f6a3d]"></p>
+          <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><a class="argus-btn argus-btn-secondary argus-hidden" href="{% url 'watchlist_rules' %}">放弃修改</a><button class="argus-btn argus-btn-primary" type="submit">保存规则</button></div>
+          </section>
+          <aside>
+          <div class="argus-card argus-card-pad">
+            <span class="argus-chip argus-chip-info">当前规则</span>
+            <dl class="mt-5 space-y-3 text-[14px]">
+              <div class="flex justify-between gap-4"><dt class="text-[#737373]">默认汇率</dt><dd class="font-bold text-[#1a1a1a]">{{ default_exchange_rate }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="text-[#737373]">别名映射</dt><dd class="font-bold text-[#1a1a1a]">{{ alias_count }} 条</dd></div>
+              <div class="flex justify-between gap-4"><dt class="text-[#737373]">最低价口径</dt><dd class="font-bold text-[#1a1a1a]">{{ normalization_settings.get_ranking_mode_display }}</dd></div>
+            </dl>
+          </div>
+          </aside>
+        </form>
+      </details>
+    </section>
+{% endblock %}

@@ -130,9 +130,7 @@
         <tbody>
           {% for row in rows %}
             <tr>
-              <td class="argus-model-name">
-                <a class="argus-link" href="{% url 'admin:collector_modelpricesnapshot_changelist' %}?q={{ row.model_name|urlencode }}">{{ row.model_name }}</a>
-              </td>
+              <td class="argus-model-name">{{ row.model_name }}</td>
               <td>{{ row.vendor_name }}</td>
               <td>{{ row.quota_type }}</td>
               <td class="argus-site-cell">

@@ -1,5 +1,7 @@
 # 阿里云 ESA 替代普通 CDN 迁移方案
 
+> 归档提示：1tok 现在已经迁到阿里云 ESA，本文的有效部署规则、验证方法和排障顺序已经整合进 [Docker Compose + 宿主机 Nginx + ESA/CDN 部署指南](docker-compose-nginx-cdn.md)。日常部署和运维请以该主文档为准；本文仅保留迁移过程背景与历史分析。
+
 本文用于把当前“宿主机 Nginx + Docker Compose + 普通 CDN”的部署，迁移到阿里云 ESA（Edge Security Acceleration，边缘安全加速）。目标是解决 AI API 流式响应经过普通 CDN 后出现的延迟放大、响应被缓冲、`client_gone` / `context canceled` 等问题，同时保留静态资源加速、源站保护、HTTPS、WebSocket 与后续安全防护能力。
 
 当前基础部署请先阅读 [Docker Compose + 宿主机 Nginx + CDN 部署指南](docker-compose-nginx-cdn.md)。本文只讨论从普通 CDN 切到 ESA 的差异、变更步骤和验证方法。

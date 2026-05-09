@@ -1,4 +1,5 @@
 import json
+from types import SimpleNamespace
 from decimal import Decimal, InvalidOperation
 from urllib.parse import urljoin
 
@@ -7,7 +8,7 @@ from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
-from collector.models import CompetitorSite, FetchRun, ModelPriceSnapshot, normalize_model_name
+from collector.models import CompetitorSite, FetchRun, ModelAlias, ModelPriceSnapshot, normalize_model_name
 
 
 ZERO = Decimal('0')
@@ -81,6 +82,7 @@ def _normalize_snapshot(
     item: dict,
     payload: dict,
     vendor_lookup: dict,
+    alias_lookup: dict,
     snapshot_at,
 ):
     model_name = (item.get('model_name') or '').strip()
@@ -124,11 +126,14 @@ def _normalize_snapshot(
             request_price = model_price * usd_multiplier
             request_price_converted = model_price * converted_multiplier
 
+    base_model_name = normalize_model_name(model_name)
+    normalized_model_name = alias_lookup.get(base_model_name, base_model_name)
+
     return ModelPriceSnapshot(
         fetch_run=fetch_run,
         site=site,
         model_name=model_name,
-        normalized_model_name=normalize_model_name(model_name),
+        normalized_model_name=normalized_model_name,
         vendor_name=vendor_name,
         quota_type=quota_type,
         input_price_usd_per_1m=input_price,
@@ -150,6 +155,81 @@ def _normalize_snapshot(
     )
 
 
+def _fetch_pricing_payload(requested_url: str):
+    response = requests.get(
+        requested_url,
+        timeout=settings.ARGUS_HTTP_TIMEOUT_SECONDS,
+        headers={'User-Agent': 'CheapToken/0.1'},
+    )
+    response_excerpt = _truncate(response.text)
+    if not response.ok:
+        raise RuntimeError(f'HTTP {response.status_code}')
+
+    payload = response.json()
+    if not payload.get('success'):
+        raise RuntimeError(payload.get('message') or 'Remote API returned success=false')
+
+    items = payload.get('data')
+    if not isinstance(items, list):
+        raise RuntimeError('Remote pricing payload has no list data field')
+
+    return response.status_code, response_excerpt, payload, items
+
+
+def _build_snapshots(site: CompetitorSite, fetch_run: FetchRun, payload: dict, items: list, snapshot_at):
+    vendor_lookup = _build_vendor_lookup(payload)
+    alias_lookup = {
+        alias.source_model_name: alias.target_model_name
+        for alias in ModelAlias.objects.filter(enabled=True).only('source_model_name', 'target_model_name')
+    }
+    snapshots = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        snapshot = _normalize_snapshot(
+            site,
+            fetch_run,
+            item,
+            payload,
+            vendor_lookup,
+            alias_lookup,
+            snapshot_at,
+        )
+        if snapshot is not None:
+            snapshots.append(snapshot)
+    return snapshots
+
+
+def preview_site_pricing(site: CompetitorSite):
+    requested_url = urljoin(site.base_url + '/', 'api/pricing')
+    preview = SimpleNamespace(
+        status=FetchRun.Status.RUNNING,
+        requested_url=requested_url,
+        http_status_code=None,
+        response_excerpt='',
+        created_count=0,
+        error_message='',
+        finished_at=None,
+        snapshots=[],
+    )
+
+    try:
+        http_status_code, response_excerpt, payload, items = _fetch_pricing_payload(requested_url)
+        preview.http_status_code = http_status_code
+        preview.response_excerpt = response_excerpt
+        preview.finished_at = timezone.now()
+        fetch_run = FetchRun(site=site, requested_url=requested_url, status=FetchRun.Status.SUCCESS, finished_at=preview.finished_at)
+        preview.snapshots = _build_snapshots(site, fetch_run, payload, items, preview.finished_at)
+        preview.status = FetchRun.Status.SUCCESS
+        preview.created_count = len(preview.snapshots)
+    except Exception as exc:
+        preview.status = FetchRun.Status.FAILED
+        preview.error_message = str(exc)
+        preview.finished_at = timezone.now()
+
+    return preview
+
+
 @transaction.atomic
 def collect_site_pricing(site: CompetitorSite) -> FetchRun:
     requested_url = urljoin(site.base_url + '/', 'api/pricing')
@@ -157,41 +237,11 @@ def collect_site_pricing(site: CompetitorSite) -> FetchRun:
     finished_at = None
 
     try:
-        response = requests.get(
-            requested_url,
-            timeout=settings.ARGUS_HTTP_TIMEOUT_SECONDS,
-            headers={'User-Agent': 'Argus/0.1'},
-        )
-        fetch_run.http_status_code = response.status_code
-        fetch_run.response_excerpt = _truncate(response.text)
-
-        if not response.ok:
-            raise RuntimeError(f'HTTP {response.status_code}')
-
-        payload = response.json()
-        if not payload.get('success'):
-            raise RuntimeError(payload.get('message') or 'Remote API returned success=false')
-
-        items = payload.get('data')
-        if not isinstance(items, list):
-            raise RuntimeError('Remote pricing payload has no list data field')
-
-        vendor_lookup = _build_vendor_lookup(payload)
+        http_status_code, response_excerpt, payload, items = _fetch_pricing_payload(requested_url)
+        fetch_run.http_status_code = http_status_code
+        fetch_run.response_excerpt = response_excerpt
         finished_at = timezone.now()
-        snapshots = []
-        for item in items:
-            if not isinstance(item, dict):
-                continue
-            snapshot = _normalize_snapshot(
-                site,
-                fetch_run,
-                item,
-                payload,
-                vendor_lookup,
-                finished_at,
-            )
-            if snapshot is not None:
-                snapshots.append(snapshot)
+        snapshots = _build_snapshots(site, fetch_run, payload, items, finished_at)
 
         ModelPriceSnapshot.objects.bulk_create(snapshots)
 

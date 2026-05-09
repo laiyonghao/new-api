@@ -42,6 +42,7 @@
 
     <div class="argus-summary" aria-label="结果摘要">
       <span class="argus-chip argus-chip-strong">{{ row_count }} 个可精确排名模型</span>
+      <span class="argus-chip">最低价口径：{{ ranking_mode_label }}</span>
       {% if normalized_model_name_query %}<span class="argus-chip">关键词：{{ normalized_model_name_query }}</span>{% endif %}
       {% if selected_vendor_name %}<span class="argus-chip">供应商：{{ selected_vendor_name }}</span>{% endif %}
     </div>

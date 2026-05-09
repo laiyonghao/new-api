@@ -360,6 +360,7 @@ Recommended commands:
 
 - `python manage.py collect_due_sites`
 - `python manage.py send_daily_digest`
+- `python manage.py purge_login_codes`
 
 Suggested fixed schedule:
 
@@ -605,6 +606,11 @@ Suggested `.env` contract:
 ### 14.3 Auth
 
 - `ARGUS_LOGIN_CODE_TTL_SECONDS`
+- `ARGUS_LOGIN_CODE_RETENTION_SECONDS`, default `2592000` seconds / 30 days
+- `ARGUS_LOGIN_CODE_COOLDOWN_SECONDS`
+- `ARGUS_LOGIN_CODE_EMAIL_WINDOWS`, e.g. `[(600, 3), (86400, 10)]`
+- `ARGUS_LOGIN_CODE_IP_WINDOWS`, e.g. `[(600, 10), (3600, 30)]`
+- `ARGUS_LOGIN_CODE_MAX_ATTEMPTS`
 - `ARGUS_SESSION_COOKIE_AGE_SECONDS`
 
 ### 14.4 Payment

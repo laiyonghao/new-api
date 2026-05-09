@@ -1,2 +1,6 @@
 django
+django-redis
+gunicorn
+psycopg[binary]
 requests
+whitenoise

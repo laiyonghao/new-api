@@ -6,7 +6,6 @@ areas = {
     'sites.html': 'watchlist/',
     'comparison.html': 'watchlist/',
     'fetch-runs.html': 'watchlist/',
-    'snapshots.html': 'watchlist/',
     'custom-comparison.html': 'watchlist/',
     'site-form.html': 'watchlist/',
     'billing.html': 'pricing/',

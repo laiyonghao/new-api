@@ -36,6 +36,10 @@ Then open:
 
 - http://127.0.0.1:8000/admin/
 
+## Server Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for Docker, Postgres, Redis, nginx, CDN/ESA, SMTP, and Epay production deployment steps.
+
 ## Current Features
 
 - Add a competitor by URL only.

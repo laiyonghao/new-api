@@ -1,197 +1,57 @@
+{% load static %}
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Argus · {% block title %}实时比价{% endblock %}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CheapToken · {% block title %}AI中转站比价监控{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}CheapToken 帮你持续监控 AI 中转站价格、倍率规则和模型可用性，自动生成可比较的价格快照。{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}CheapToken,AI中转站比价,AI价格监控,模型价格监控,token价格,API中转站{% endblock %}">
+  <link rel="icon" href="{% static 'collector/assets/favicon.svg' %}" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'collector/assets/app.css' %}">
+  <script src="{% static 'collector/assets/app.js' %}" defer></script>
   <style>
-    :root {
-      --argus-bg: #faf9f8;
-      --argus-surface: #ffffff;
-      --argus-text: #241f1c;
-      --argus-muted: #6f6761;
-      --argus-border: #e4ded8;
-      --argus-soft: #f2eeea;
-      --argus-accent: #c95f2a;
-      --argus-accent-dark: #93411d;
-      --argus-success-bg: #e6f1e8;
-      --argus-success-text: #2f6a3d;
-      --argus-warning-bg: #f7ead3;
-      --argus-warning-text: #8a5a1f;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--argus-bg);
-      color: var(--argus-text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      letter-spacing: 0;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .argus-shell { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
-
-    .argus-header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid rgba(228, 222, 216, 0.9);
-      background: rgba(250, 249, 248, 0.94);
-      backdrop-filter: blur(18px);
-    }
-
-    .argus-header-inner {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .argus-brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; }
-    .argus-mark {
-      width: 38px;
-      height: 38px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 14px;
-      background: var(--argus-accent);
-      color: #fff;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 22px;
-      line-height: 1;
-    }
-    .argus-brand-name { font-family: Georgia, "Times New Roman", serif; font-size: 22px; }
-
-    .argus-nav { display: flex; align-items: center; gap: 18px; color: var(--argus-muted); font-size: 14px; font-weight: 700; }
-    .argus-nav a { padding: 10px 12px; border-radius: 999px; }
-    .argus-nav a:hover, .argus-nav .is-active { color: var(--argus-text); background: var(--argus-soft); }
-
-    .argus-main { padding: 54px 0 76px; }
     .argus-hero { display: grid; gap: 22px; margin-bottom: 30px; }
-    .argus-kicker {
-      width: fit-content;
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid #dbe6dd;
-      border-radius: 999px;
-      background: #edf4ee;
-      color: #35574a;
-      padding: 7px 12px;
-      font-size: 13px;
-      font-weight: 800;
-    }
-    .argus-title {
-      margin: 0;
-      max-width: 860px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(36px, 6vw, 70px);
-      line-height: 1.02;
-      letter-spacing: 0;
-    }
-    .argus-lead { margin: 0; max-width: 760px; color: var(--argus-muted); font-size: 17px; line-height: 1.8; font-weight: 600; }
-
-    .argus-card {
-      border: 1px solid var(--argus-border);
-      border-radius: 28px;
-      background: var(--argus-surface);
-      box-shadow: 0 16px 42px rgba(68, 54, 42, 0.06);
-    }
-
+    .argus-kicker { width: fit-content; display: inline-flex; align-items: center; border: 1px solid #d8dfd2; border-radius: 7px; background: #e6ece2; color: #435f4c; padding: 7px 12px; font-size: 13px; font-weight: 800; }
+    .argus-title { margin: 0; max-width: 860px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(36px, 6vw, 70px); line-height: 1.02; letter-spacing: 0; }
     .argus-filter { padding: 20px; margin: 34px 0 22px; }
     .argus-filter-grid { display: grid; grid-template-columns: minmax(220px, 1fr) 180px 220px auto; gap: 14px; align-items: end; }
-    .argus-field label { display: block; margin-bottom: 8px; color: var(--argus-muted); font-size: 13px; font-weight: 800; }
-    .argus-input, .argus-select {
-      width: 100%;
-      height: 48px;
-      border: 1px solid var(--argus-border);
-      border-radius: 16px;
-      background: #fff;
-      color: var(--argus-text);
-      font: inherit;
-      font-weight: 700;
-      padding: 0 14px;
-      outline: none;
-    }
-    .argus-input:focus, .argus-select:focus { border-color: var(--argus-accent); box-shadow: 0 0 0 4px rgba(201, 95, 42, 0.12); }
-
-    .argus-button {
-      height: 48px;
-      border: 0;
-      border-radius: 16px;
-      background: var(--argus-accent);
-      color: #fff;
-      cursor: pointer;
-      font: inherit;
-      font-size: 14px;
-      font-weight: 900;
-      padding: 0 20px;
-      white-space: nowrap;
-    }
-    .argus-button:hover { background: var(--argus-accent-dark); }
-    .argus-reset { display: inline-flex; align-items: center; height: 48px; border-radius: 16px; padding: 0 14px; color: var(--argus-muted); font-size: 14px; font-weight: 800; }
-    .argus-reset:hover { background: var(--argus-soft); color: var(--argus-text); }
     .argus-filter-actions { display: flex; gap: 8px; align-items: center; }
-
-    .argus-summary { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; color: var(--argus-muted); font-size: 14px; font-weight: 700; }
-    .argus-chip { display: inline-flex; align-items: center; border: 1px solid var(--argus-border); border-radius: 999px; background: #fff; padding: 7px 11px; }
-    .argus-chip-strong { border-color: #efd3c4; background: #fff4ed; color: var(--argus-accent-dark); }
-
+    .argus-button { height: 48px; border: 0; border-radius: 8px; background: #c96f4f; color: #fffaf3; cursor: pointer; font: inherit; font-size: 14px; font-weight: 900; padding: 0 20px; white-space: nowrap; }
+    .argus-button:hover { background: #a9563c; }
+    .argus-reset { display: inline-flex; align-items: center; height: 48px; border-radius: 8px; padding: 0 14px; color: #7a7065; font-size: 14px; font-weight: 800; }
+    .argus-reset:hover { background: #eee5da; color: #231f1a; }
+    .argus-summary { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; color: #6f6761; font-size: 14px; font-weight: 700; }
+    .argus-chip-strong { border-color: #e8c7b8; background: #f4e1d6; color: #a9563c; }
     .argus-table-wrap { overflow: hidden; }
     .argus-table-scroll { overflow-x: auto; }
     .argus-table { width: 100%; min-width: 1120px; border-collapse: collapse; }
-    .argus-table th {
-      background: #f6f2ee;
-      color: var(--argus-muted);
-      font-size: 12px;
-      font-weight: 900;
-      text-align: left;
-      text-transform: uppercase;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--argus-border);
-    }
-    .argus-table td { vertical-align: top; padding: 18px; border-bottom: 1px solid #eee8e2; }
+    .argus-table th { background: #eee5da; color: #7a7065; font-size: 12px; font-weight: 900; text-align: left; text-transform: uppercase; padding: 16px 18px; border-bottom: 1px solid #e2d8cb; }
+    .argus-table td { vertical-align: top; padding: 18px; border-bottom: 1px solid #e7ddd1; }
     .argus-table tbody tr:last-child td { border-bottom: 0; }
     .argus-model { max-width: 230px; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 14px; font-weight: 900; }
-    .argus-muted { color: var(--argus-muted); }
-    .argus-price { display: block; margin-top: 8px; color: var(--argus-accent-dark); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; font-weight: 900; }
-    .argus-site { display: inline-flex; align-items: center; gap: 8px; color: var(--argus-text); font-weight: 900; }
-    .argus-site:hover { color: var(--argus-accent-dark); }
+    .argus-muted { color: #6f6761; }
+    .argus-price { display: block; margin-top: 8px; color: #a9563c; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; font-weight: 900; }
+    .argus-site { display: inline-flex; align-items: center; gap: 8px; color: #241f1c; font-weight: 900; }
+    .argus-site:hover { color: #a9563c; }
     .argus-endpoints { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .argus-endpoint { border: 1px solid #dbe6dd; border-radius: 999px; background: var(--argus-success-bg); color: var(--argus-success-text); padding: 3px 8px; font-size: 12px; font-weight: 800; }
-    .argus-empty { padding: 34px; color: var(--argus-warning-text); background: var(--argus-warning-bg); border-radius: 22px; font-weight: 800; }
-
-    .argus-footer { padding: 30px 0; border-top: 1px solid var(--argus-border); color: var(--argus-muted); font-size: 14px; font-weight: 700; }
-
-    @media (max-width: 900px) {
-      .argus-shell { width: min(100% - 28px, 1240px); }
-      .argus-header-inner { align-items: flex-start; flex-direction: column; padding: 16px 0; }
-      .argus-nav { flex-wrap: wrap; }
-      .argus-filter-grid { grid-template-columns: 1fr; }
-      .argus-filter-actions { flex-wrap: wrap; }
-    }
+    .argus-endpoint { border: 1px solid #d8dfd2; border-radius: 7px; background: #e6ece2; color: #435f4c; padding: 3px 8px; font-size: 12px; font-weight: 800; }
+    .argus-empty { padding: 34px; color: #7a4f26; background: #efe0c9; border-radius: 10px; font-weight: 800; }
+    @media (max-width: 640px) { .argus-filter-grid { grid-template-columns: 1fr; } .argus-filter-actions { flex-wrap: wrap; } }
   </style>
   {% block extra_head %}{% endblock %}
 </head>
-<body>
-  <header class="argus-header">
-    <div class="argus-shell argus-header-inner">
-      <a class="argus-brand" href="{% url 'home' %}"><span class="argus-mark">A</span><span class="argus-brand-name">Argus</span></a>
-      <nav class="argus-nav" aria-label="主导航">
-        <a class="is-active" href="{% url 'comparison' %}">实时比价</a>
-        <a href="{% url 'admin:index' %}">Admin</a>
-      </nav>
-    </div>
-  </header>
+<body class="{% block body_class %}argus-page{% endblock %}" data-authenticated="{% if request.user.is_authenticated %}true{% else %}false{% endif %}" data-login-url="{% url 'login' %}" data-login-send-url="{% url 'login_send_code' %}" data-login-verify-url="{% url 'login_verify_code' %}" data-logout-url="{% url 'logout' %}" data-checkout-url="{% url 'pricing_checkout' %}" {% block body_data %}{% endblock %}>
+  {% include "collector/includes/site_header.html" %}
   <main class="argus-main">
     {% block content %}{% endblock %}
   </main>
-  <footer class="argus-footer">
-    <div class="argus-shell">比价结果只包含已启用站点的最新成功快照；动态计费模型会被保留在快照中，但不参与最低价排名。</div>
-  </footer>
+  {% include "collector/includes/site_footer.html" %}
+  {% block dialogs %}{% endblock %}
+  {% block extra_body %}{% endblock %}
 </body>
 </html>
